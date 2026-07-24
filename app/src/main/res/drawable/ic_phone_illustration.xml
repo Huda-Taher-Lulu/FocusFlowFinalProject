@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="120dp"
+    android:viewportWidth="200"
+    android:viewportHeight="120">
+
+    <!-- Left Phone (Face Up) -->
+    <path
+        android:fillColor="#F3F4F6"
+        android:pathData="M40,10h50c5.5,0 10,4.5 10,10v80c0,5.5 -4.5,10 -10,10h-50c-5.5,0 -10,-4.5 -10,-10v-80c0,-5.5 4.5,-10 10,-10z"
+        android:strokeWidth="1"
+        android:strokeColor="#E5E7EB"/>
+    <path
+        android:fillColor="#E2F7ED"
+        android:pathData="M65,50m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0" />
+    <path
+        android:fillColor="#2D6A4F"
+        android:pathData="M65,45v5h3m-3-5a5,5 0,1 1,0 10a5,5 0,1 1,0 -10z"
+        android:strokeWidth="1"
+        android:strokeColor="#2D6A4F"/>
+
+    <!-- Arrow -->
+    <path
+        android:fillColor="#2D6A4F"
+        android:pathData="M105,60h20m-5,-5l5,5l-5,5"
+        android:strokeWidth="2"
+        android:strokeColor="#2D6A4F"
+        android:strokeLineCap="round"/>
+
+    <!-- Right Phone (Face Down - Green) -->
+    <path
+        android:fillColor="#1B4332"
+        android:pathData="M140,10h50c5.5,0 10,4.5 10,10v80c0,5.5 -4.5,10 -10,10h-50c-5.5,0 -10,-4.5 -10,-10v-80c0,-5.5 4.5,-10 10,-10z" />
+    <path
+        android:fillColor="#83E7BC"
+        android:pathData="M165,50m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0" />
+    <path
+        android:fillColor="#1B4332"
+        android:pathData="M162,50l2,2l4,-4"
+        android:strokeWidth="2"
+        android:strokeColor="#1B4332"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+</vector>

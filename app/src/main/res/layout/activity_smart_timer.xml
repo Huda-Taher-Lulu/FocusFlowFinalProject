@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_cream"
+    tools:context=".Smart_timer">
+
+    <!-- Header -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clHeader"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:text="@string/app_brand_name"
+            android:textColor="@color/text_green"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivSettings"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_settings"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Content Area -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/clHeader"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav">
+
+        <!-- Timer Section -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clTimer"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/cvActiveTask"
+            app:layout_constraintVertical_bias="0.2">
+
+            <View
+                android:id="@+id/vTimerGlow"
+                android:layout_width="320dp"
+                android:layout_height="320dp"
+                android:background="@drawable/soft_glow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/circular_progress_bar" />
+
+            <LinearLayout
+                android:id="@+id/llTimerClickArea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvTimerDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand"
+                    android:text="00:00"
+                    android:textColor="@color/text_green"
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:letterSpacing="0.1"
+                    android:text="@string/deep_work_label"
+                    android:textColor="@color/text_gray"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/ic_pencil"
+                    app:tint="@color/text_gray" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Active Task Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvActiveTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="2dp"
+            app:layout_constraintTop_toBottomOf="@id/clTimer"
+            app:layout_constraintBottom_toTopOf="@id/ivIllustration">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvTaskTitleDisplay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand"
+                    android:text="No task selected"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/ivSelectTask"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/llCategoryBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/badge_bg_gray"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvTaskTitleDisplay">
+
+                    <ImageView
+                        android:id="@+id/ivTaskIcon"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/ic_book"
+                        app:tint="@color/text_gray" />
+
+                    <TextView
+                        android:id="@+id/tvTaskCategoryDisplay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="@font/inter"
+                        android:text="None"
+                        android:textColor="@color/text_gray"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivSelectTask"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_pencil"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/text_green" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Warning Reminder Badge -->
+        <LinearLayout
+            android:id="@+id/llNoTaskReminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:background="@drawable/badge_bg_red"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/cvActiveTask"
+            app:layout_constraintTop_toTopOf="@id/cvActiveTask"
+            app:layout_constraintEnd_toEndOf="@id/cvActiveTask"
+            app:layout_constraintStart_toStartOf="@id/cvActiveTask">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand"
+                android:text="Choose a task to start"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Illustration -->
+        <ImageView
+            android:id="@+id/ivIllustration"
+            android:layout_width="260dp"
+            android:layout_height="160dp"
+            android:src="@drawable/iphone_removebg_preview"
+            app:layout_constraintTop_toBottomOf="@id/cvActiveTask"
+            app:layout_constraintBottom_toTopOf="@id/tvFlipTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tvFlipTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand"
+            android:text="@string/flip_to_start"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/ivIllustration"
+            app:layout_constraintBottom_toTopOf="@id/llChoiceButtons"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Hidden desc but kept for code compatibility -->
+        <TextView android:id="@+id/tvFlipDesc" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Choice Buttons -->
+        <LinearLayout
+            android:id="@+id/llChoiceButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tvFlipTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout android:id="@+id/llLofiOption" android:layout_width="wrap_content" android:layout_height="36dp" android:layout_marginEnd="8dp" android:background="@drawable/toggle_bg" android:gravity="center" android:paddingHorizontal="10dp">
+                <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_music" />
+                <TextView android:id="@+id/tvLofi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6dp" android:fontFamily="@font/inter" android:text="@string/lofi_beats" android:textColor="@color/black" android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/llSilentOption" android:layout_width="wrap_content" android:layout_height="36dp" android:layout_marginEnd="8dp" android:background="@drawable/toggle_bg" android:gravity="center" android:paddingHorizontal="10dp">
+                <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_volume_off" app:tint="@color/black" />
+                <TextView android:id="@+id/tvSilent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6dp" android:fontFamily="@font/inter" android:text="@string/silent" android:textColor="@color/black" android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/llDndOption" android:layout_width="wrap_content" android:layout_height="36dp" android:background="@drawable/toggle_bg" android:gravity="center" android:paddingHorizontal="10dp">
+                <ImageView android:id="@+id/ivDndIcon" android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_moon" app:tint="@color/black" />
+                <TextView android:id="@+id/tvDnd" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6dp" android:fontFamily="@font/inter" android:text="@string/dnd" android:textColor="@color/black" android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Fixed Bottom Navigation -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@color/white"
+        android:elevation="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/navDashboard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_dashboard" app:tint="@color/text_gray" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_dashboard" android:textColor="@color/text_gray" android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navTasks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_tasks" app:tint="@color/text_gray" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_tasks" android:textColor="@color/text_gray" android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navTimer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:background="@drawable/nav_item_active_bg"
+            android:orientation="vertical">
+            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_timer" app:tint="@color/text_gray" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/nav_timer" android:textColor="@color/text_gray" android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navStats"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_stats" app:tint="@color/text_green" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/quicksand" android:text="@string/nav_stats" android:textColor="@color/text_green" android:textSize="12sp" android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

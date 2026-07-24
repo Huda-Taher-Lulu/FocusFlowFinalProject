@@ -1,0 +1,172 @@
+<resources>
+    <string name="app_name">FocusFlow</string>
+    <string name="app_brand_name">FocusFlow</string>
+    <string name="error_invalid_email">Please enter a valid email</string>
+    <string name="error_weak_password">Password must be 8+ chars with letters, numbers &amp; symbols</string>
+    <string name="enter_major_role">Enter your major / role</string>
+    <string name="major_role_desc">This will be displayed on your profile.</string>
+    <string name="major_hint">e.g. Designer, Student</string>
+    <string name="update">Update</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_new_category">Add new category</string>
+    <string name="category_hint">eg Studying, Sport, family</string>
+    <string name="add">Add</string>
+    <string name="session_complete">Session Complete!</string>
+    <string name="session_quote">"The secret of getting ahead is getting started."</string>
+    <string name="session_author">— Mark Twain</string>
+    <string name="session_reflection">Session Reflection</string>
+    <string name="reflection_hint">What did you achieve during this focus time?</string>
+    <string name="save_finish">Save &amp; Finish</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="time_label">Time</string>
+    <string name="quality_label">Quality</string>
+    <string name="streak_label">Streak</string>
+    <string name="default_time">45 mins</string>
+    <string name="default_quality">Deep\nWork</string>
+    <string name="default_streak">+1 Day</string>
+    <string name="low">Low</string>
+    <string name="medium">Medium</string>
+    <string name="high">High</string>
+    <string name="set_focus_goal">Set Focus Goal</string>
+    <string name="daily_focus_duration">Daily focus duration</string>
+    <string name="hours_label">HOURS</string>
+    <string name="minutes_label">MINUTES</string>
+    <string name="save_goal">Save Goal</string>
+
+    <!-- Welcome / Main -->
+    <string name="skip">Skip</string>
+    <string name="welcome_title">Welcome to FocusFlow</string>
+    <string name="welcome_desc">Transform your time into growth with our mindful productivity flow.</string>
+    <string name="next">Next</string>
+
+    <!-- Sign In -->
+    <string name="sign_in_title">Welcome Back</string>
+    <string name="sign_in_desc">Focus is a journey, let\'s continue yours.</string>
+    <string name="email_label">Email Address</string>
+    <string name="email_hint">hello@focusflow.com</string>
+    <string name="password_label">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="or_continue_with">OR CONTINUE WITH</string>
+    <string name="google">Google</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="dont_have_account">Don\'t have an account? </string>
+    <string name="sign_up">Sign Up</string>
+
+    <!-- Sign Up -->
+    <string name="sign_up_title">Start Your Focus Journey</string>
+    <string name="sign_up_desc">Unlock a calmer, more productive version of yourself today.</string>
+    <string name="full_name_label">Full Name</string>
+    <string name="full_name_hint">Alex Rivers</string>
+    <string name="email_hint_signup">alex@focusflow.com</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_have_account">Already have an account? </string>
+    <string name="or">OR</string>
+    <string name="continue_as_guest">Continue as Guest</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_subtitle">Ready to find your flow today?</string>
+    <string name="daily_focus_label">DAILY FOCUS</string>
+    <string name="hours_completed_label">Hours Completed</string>
+    <string name="resume_session">Resume Session</string>
+    <string name="daily_streak_label">Daily Streak</string>
+    <string name="zero_days">0 Days</string>
+    <string name="on_fire">On Fire!</string>
+    <string name="focus_quality_label">Focus Quality</string>
+    <string name="deep_state">Deep State</string>
+    <string name="recent_badges">Recent Badges</string>
+    <string name="view_all">View All</string>
+    <string name="early_bird">Early Bird</string>
+    <string name="early_bird_desc">Pre-8AM Focus</string>
+    <string name="deep_work_master">Deep Work Master</string>
+    <string name="deep_work_master_desc">4h Uninterrupted</string>
+    <string name="focus_owl">Focus Owl</string>
+    <string name="focus_owl_desc">Late Night Owl</string>
+    <string name="up_next">Up Next</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_tasks">Tasks</string>
+    <string name="nav_timer">Timer</string>
+    <string name="nav_stats">Stats</string>
+
+    <!-- Smart Timer -->
+    <string name="deep_work_label">DEEP WORK</string>
+    <string name="flip_to_start">Flip your phone to start\nyour flow.</string>
+    <string name="flip_desc">Smart sensor will automatically begin the countdown.</string>
+    <string name="lofi_beats">Lofi Beats</string>
+    <string name="silent">Silent</string>
+    <string name="dnd">DND</string>
+    <string name="select_task_warning">Select a task to start</string>
+
+    <!-- Profile -->
+    <string name="profile_name_default">Alex Rivera</string>
+    <string name="focus_hours_label">Focus Hours</string>
+    <string name="tasks_done_label">Tasks Done</string>
+    <string name="streak_label_profile">Streak</string>
+    <string name="my_achievements">My Achievements</string>
+    <string name="early_bird_desc_profile">Focus before 8AM</string>
+    <string name="deep_work">Deep Work</string>
+    <string name="deep_work_desc_profile">4h non-stop</string>
+    <string name="consistent_writer">Consistent Writer</string>
+    <string name="consistent_writer_desc">30 days of logging flow states</string>
+    <string name="account">Account</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="sensor_sensitivity">Sensor Sensitivity</string>
+    <string name="help_support">Help &amp; Support</string>
+
+    <!-- Task Manager -->
+    <string name="my_tasks">My Tasks</string>
+    <string name="ready_to_focus">Ready to focus?</string>
+    <string name="tasks_scheduled_zero">You have 0 tasks scheduled for today.</string>
+    <string name="active_journey">ACTIVE JOURNEY</string>
+    <string name="focus_history">Focus History</string>
+    <string name="tap_to_add">Tap + to add a focus blocks.</string>
+
+    <!-- New Task -->
+    <string name="new_task_title">New Task</string>
+    <string name="task_title_label">Task Title</string>
+    <string name="task_title_hint">What needs to be done?</string>
+    <string name="duration_label">Duration</string>
+    <string name="category_label">Category</string>
+    <string name="category_study">Study</string>
+    <string name="category_code">Code</string>
+    <string name="category_design">Design</string>
+    <string name="audio_preference_label">AUDIO PREFERENCE</string>
+    <string name="save_task">Save Task</string>
+
+    <!-- Stats / Focus State -->
+    <string name="progress_title">Your Progress</string>
+    <string name="weekly_focus">Weekly Focus</string>
+    <string name="weekly_hours_total">24.5 hours total this week</string>
+    <string name="vs_last_week">vs last week</string>
+    <string name="focus_breakdown">Focus Breakdown</string>
+    <string name="category_work">Work</string>
+    <string name="efficiency">Efficiency</string>
+    <string name="sessions">Sessions</string>
+    <string name="best_performance_label">BEST PERFORMANCE</string>
+    <string name="deep_work_marathon">Deep Work Marathon</string>
+    <string name="longest_session_desc">longest session this week</string>
+    <string name="minutes_label_stats">minutes</string>
+    <string name="recent_milestones">Recent Milestones</string>
+    <string name="five_day_streak">5 Day Streak</string>
+    <string name="consistency_is_key">Consistency is the key to focus</string>
+    <string name="early_bird_milestone_desc">3 sessions before 9:00 AM</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding2_title">Flip to Focus</string>
+    <string name="onboarding2_desc">Simply turn your phone face-down to automatically start your study block.</string>
+    <string name="onboarding3_title">Achieve Your Goals</string>
+    <string name="onboarding3_desc">FocusFlow turns your daily productivity into a rewarding journey. Stay sharp, earn badges, and build the habits you\'ve always wanted.</string>
+    <string name="smart_timer_label">Smart Timer</string>
+    <string name="deep_analytics_label">Deep Analytics</string>
+    <string name="get_started">Get Started</string>
+    <string name="onboarding4_title">Ready to find your flow?</string>
+    <string name="onboarding4_desc">Experience intuitive focus. Simply set your timer and flip your phone face-down to begin your session and silence distractions.</string>
+    <string name="step1_title">1. Set your focus time.</string>
+    <string name="step1_desc">Choose your ideal session length.</string>
+    <string name="step2_title">2. Flip your phone over.</string>
+    <string name="step2_desc">Activate the \"Deep Flow\" mode instantly.</string>
+    <string name="step3_title">3. Deep work begins.</string>
+    <string name="step3_desc">Notifications pause so you can focus.</string>
+    <string name="begin_journey">Begin your journy</string>
+
+</resources>

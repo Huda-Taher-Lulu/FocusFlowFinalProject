@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background_cream">#FDFBF5</color>
+    <color name="primary_green">#76D7AD</color>
+    <color name="primary_green_light">#A5F2D0</color>
+    <color name="primary_green_dark">#5CCFA2</color>
+    <color name="text_green">#1B4332</color>
+    <color name="text_gray">#6B7280</color>
+    <color name="indicator_inactive">#D1D5DB</color>
+    <color name="color_indicator_inactive">#D1D5DB</color>
+    <color name="primary_green_start">#97FED7</color>
+    <color name="primary_green_end">#75DAB5</color>
+
+    <!-- Badge Colors -->
+    <color name="badge_yellow">#FFF4D2</color>
+    <color name="badge_green">#E2F7ED</color>
+    <color name="badge_purple">#F0E7FF</color>
+    <color name="badge_gray">#E5E7EB</color>
+    <color name="badge_red">#FFEBEE</color>
+    <color name="text_red">#C62828</color>
+    <color name="card_bg">#FFFFFF</color>
+</resources>

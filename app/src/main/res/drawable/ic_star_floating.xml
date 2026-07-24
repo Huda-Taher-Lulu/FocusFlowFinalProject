@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- الدائرة الصفراء -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M12,2L12,2c5.52,0,10,4.48,10,10s-4.48,10-10,10S2,17.52,2,12S6.48,2,12,2z" />
+
+    <!-- النجمة البيضاء داخل مجموعة للتحكم في حجمها -->
+    <!-- scaleX و scaleY: 0.5 تعني تصغيرها للنصف. يمكنك جعلها 0.6 أو 0.7 حسب الرغبة -->
+    <group
+        android:pivotX="12"
+        android:pivotY="12"
+        android:scaleX="0.6"
+        android:scaleY="0.6">
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M12,17.27L18.18,21l-1.64-7.03L22,9.24l-7.19-0.61L12,2L9.19,8.63L2,9.24l5.46,4.73L5.82,21z" />
+    </group>
+</vector>

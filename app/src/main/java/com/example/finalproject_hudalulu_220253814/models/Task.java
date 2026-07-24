@@ -1,0 +1,40 @@
+package com.example.finalproject_hudalulu_220253814.models;
+
+public class Task {
+    private String title;
+    private int duration;
+    private String category;
+    private String audioPreference;
+    private String status; // "PENDING", "IN PROGRESS", "COMPLETED"
+    private long timeLeftInMillis;
+    private String notes;
+    private long completionTimestamp;
+
+    public Task(String title, int duration, String category, String audioPreference) {
+        this.title = title;
+        this.duration = duration;
+        this.category = category;
+        this.audioPreference = audioPreference;
+        this.status = "PENDING";
+        this.timeLeftInMillis = (long) duration * 60 * 1000;
+        this.notes = "";
+        this.completionTimestamp = 0;
+    }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public int getDuration() { return duration; }
+    public void setDuration(int duration) { this.duration = duration; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+    public String getAudioPreference() { return audioPreference; }
+    public void setAudioPreference(String audioPreference) { this.audioPreference = audioPreference; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public long getTimeLeftInMillis() { return timeLeftInMillis; }
+    public void setTimeLeftInMillis(long timeLeftInMillis) { this.timeLeftInMillis = timeLeftInMillis; }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
+    public long getCompletionTimestamp() { return completionTimestamp; }
+    public void setCompletionTimestamp(long completionTimestamp) { this.completionTimestamp = completionTimestamp; }
+}

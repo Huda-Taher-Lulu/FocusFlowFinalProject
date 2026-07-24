@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_cream"
+    tools:context=".MainActivity">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/tvHeaderLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/app_brand_name"
+        android:textColor="@color/text_green"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/inter"
+        android:text="@string/skip"
+        android:textColor="@color/text_gray"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvHeaderLogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Image Card Area -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clImageContainer"
+        android:layout_width="0dp"
+        android:layout_height="260dp"
+        android:layout_marginTop="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tvTitle"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvImage"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivFlip"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/flip"
+                app:cardCornerRadius="40dp" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Floating Timer Icon -->
+        <ImageView
+            android:id="@+id/ivTimer"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:elevation="8dp"
+            android:src="@drawable/ic_timer_yellow"
+            app:layout_constraintCircle="@id/cvImage"
+            app:layout_constraintCircleAngle="50"
+            app:layout_constraintCircleRadius="160dp"
+            app:layout_constraintEnd_toEndOf="@id/cvImage"
+            app:layout_constraintTop_toTopOf="@+id/cvImage" />
+
+        <!-- Floating Check Icon -->
+        <ImageView
+            android:id="@+id/ivCheck"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="-20dp"
+            android:layout_marginTop="182dp"
+            android:layout_marginBottom="40dp"
+            android:elevation="8dp"
+            android:src="@drawable/ic_check_green"
+            app:layout_constraintBottom_toBottomOf="@id/cvImage"
+            app:layout_constraintStart_toStartOf="@id/cvImage"
+            app:layout_constraintTop_toTopOf="@+id/ivTimer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Title and Description -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/onboarding2_title"
+        android:textColor="@color/text_green"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clImageContainer"
+        app:layout_constraintBottom_toTopOf="@id/tvDescription"/>
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+
+        android:layout_marginEnd="60dp"
+        android:fontFamily="@font/inter"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/onboarding2_desc"
+        android:textColor="@color/text_gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintBottom_toTopOf="@id/btnNext"/>
+
+    <!-- Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="48dp"
+        app:backgroundTint="@null"
+        android:background="@drawable/button_gradient"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@color/text_green"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="32dp"
+        app:icon="@drawable/ic_arrow_next"
+        app:iconGravity="textEnd"
+        app:iconPadding="10dp"
+        app:iconTint="@color/text_green"
+        app:layout_constraintBottom_toTopOf="@id/layoutIndicator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Indicators -->
+    <LinearLayout
+        android:id="@+id/layoutIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/indicator_inactive" />
+
+        <View
+            android:layout_width="32dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/indicator_active" />
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/indicator_inactive" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
