@@ -1,6 +1,7 @@
 package com.example.finalproject_hudalulu_220253814.models;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.example.finalproject_hudalulu_220253814.database.TaskDbHelper;
 
@@ -30,17 +31,23 @@ public class TaskRepository {
         return instance;
     }
 
+    private long getCurrentUserId() {
+        SharedPreferences prefs = appContext.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        return prefs.getLong("currentUserId", -1);
+    }
+
     public void addTask(Context context, Task task) {
+        task.setUserId(getCurrentUserId());
         long newId = dbHelper.insertTask(task);
         task.setId(newId);
     }
 
     public List<Task> getTasks() {
-        return dbHelper.getAllTasks();
+        return dbHelper.getTasksForUser(getCurrentUserId());
     }
 
     public List<Task> getTasksByCategory(String category) {
-        return dbHelper.getTasksByCategory(category);
+        return dbHelper.getTasksByCategoryForUser(getCurrentUserId(), category);
     }
 
     public Task getTask(long id) {

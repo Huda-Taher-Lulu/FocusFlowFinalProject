@@ -14,11 +14,11 @@ import java.util.List;
 public class TaskDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FocusFlow.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
-    // ---------- Tasks table ----------
     public static final String TABLE_TASKS = "tasks";
     public static final String COL_ID = "id";
+    public static final String COL_USER_ID = "user_id";
     public static final String COL_TITLE = "title";
     public static final String COL_DURATION = "duration";
     public static final String COL_CATEGORY = "category";
@@ -28,7 +28,6 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     public static final String COL_NOTES = "notes";
     public static final String COL_COMPLETION_TIMESTAMP = "completion_timestamp";
 
-    // ---------- Categories table ----------
     public static final String TABLE_CATEGORIES = "categories";
     public static final String COL_CAT_ID = "id";
     public static final String COL_CAT_NAME = "name";
@@ -36,6 +35,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_TASKS =
             "CREATE TABLE " + TABLE_TASKS + " (" +
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COL_USER_ID + " INTEGER NOT NULL DEFAULT -1, " + // ربط الجدول بالـ user_id
                     COL_TITLE + " TEXT NOT NULL, " +
                     COL_DURATION + " INTEGER NOT NULL DEFAULT 0, " +
                     COL_CATEGORY + " TEXT, " +
@@ -69,9 +69,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // ======================= CRUD: Tasks =======================
 
-    /** CREATE: Inserts a new task and returns its generated id, or -1 on failure. */
     public long insertTask(Task task) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = taskToContentValues(task);
@@ -80,12 +78,11 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    /** READ: Returns all tasks, most recently added first. */
-    public List<Task> getAllTasks() {
+    public List<Task> getTasksForUser(long userId) {
         List<Task> tasks = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(TABLE_TASKS, null, null, null,
-                null, null, COL_ID + " DESC");
+        Cursor cursor = db.query(TABLE_TASKS, null, COL_USER_ID + "=?",
+                new String[]{String.valueOf(userId)}, null, null, COL_ID + " DESC");
 
         if (cursor.moveToFirst()) {
             do {
@@ -97,7 +94,6 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         return tasks;
     }
 
-    /** READ: Returns a single task by its database id, or null if not found. */
     public Task getTaskById(long id) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_TASKS, null, COL_ID + "=?",
@@ -112,12 +108,12 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         return task;
     }
 
-    /** READ (optional filtering): Returns tasks that belong to a given category. */
-    public List<Task> getTasksByCategory(String category) {
+    public List<Task> getTasksByCategoryForUser(long userId, String category) {
         List<Task> tasks = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(TABLE_TASKS, null, COL_CATEGORY + "=?",
-                new String[]{category}, null, null, COL_ID + " DESC");
+        Cursor cursor = db.query(TABLE_TASKS, null,
+                COL_USER_ID + "=? AND " + COL_CATEGORY + "=?",
+                new String[]{String.valueOf(userId), category}, null, null, COL_ID + " DESC");
 
         if (cursor.moveToFirst()) {
             do {
@@ -129,7 +125,6 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         return tasks;
     }
 
-    /** UPDATE: Updates an existing task (matched by id). Returns rows affected. */
     public int updateTask(Task task) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = taskToContentValues(task);
@@ -139,7 +134,6 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         return rows;
     }
 
-    /** DELETE: Removes a task by id. Returns rows affected. */
     public int deleteTask(long id) {
         SQLiteDatabase db = getWritableDatabase();
         int rows = db.delete(TABLE_TASKS, COL_ID + "=?", new String[]{String.valueOf(id)});
@@ -147,13 +141,11 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         return rows;
     }
 
-    // ======================= CRUD: Categories =======================
 
     public void insertCategory(String name) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COL_CAT_NAME, name);
-        // insertWithOnConflict + IGNORE avoids crashing on duplicate category names
         db.insertWithOnConflict(TABLE_CATEGORIES, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         db.close();
     }
@@ -174,10 +166,10 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         return categories;
     }
 
-    // ======================= Helpers =======================
 
     private ContentValues taskToContentValues(Task task) {
         ContentValues values = new ContentValues();
+        values.put(COL_USER_ID, task.getUserId());
         values.put(COL_TITLE, task.getTitle());
         values.put(COL_DURATION, task.getDuration());
         values.put(COL_CATEGORY, task.getCategory());
@@ -197,6 +189,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
                 cursor.getString(cursor.getColumnIndexOrThrow(COL_AUDIO_PREF))
         );
         task.setId(cursor.getLong(cursor.getColumnIndexOrThrow(COL_ID)));
+        task.setUserId(cursor.getLong(cursor.getColumnIndexOrThrow(COL_USER_ID))); // تعيين معرف المستخدم من القاعدة
         task.setStatus(cursor.getString(cursor.getColumnIndexOrThrow(COL_STATUS)));
         task.setTimeLeftInMillis(cursor.getLong(cursor.getColumnIndexOrThrow(COL_TIME_LEFT_MILLIS)));
         task.setNotes(cursor.getString(cursor.getColumnIndexOrThrow(COL_NOTES)));
