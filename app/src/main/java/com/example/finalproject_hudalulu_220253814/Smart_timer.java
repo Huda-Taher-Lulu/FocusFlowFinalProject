@@ -144,23 +144,33 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         // Load duration and preferences from intent or SharedPreferences
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("DURATION")) {
-            // Start a NEW task session (Requirement 3.2: full Task object passed as Serializable)
-            com.example.finalproject_hudalulu_220253814.models.Task existingTask =
-                    (com.example.finalproject_hudalulu_220253814.models.Task) intent.getSerializableExtra("TASK");
-            taskId = existingTask != null ? existingTask.getId() : -1;
+            // Start a NEW task session or resume from repository
+            taskId = intent.getLongExtra("TASK_ID", -1);
+            if (taskId == -1) {
+                com.example.finalproject_hudalulu_220253814.models.Task t =
+                        (com.example.finalproject_hudalulu_220253814.models.Task) intent.getSerializableExtra("TASK");
+                if (t != null) taskId = t.getId();
+            }
 
-            if (existingTask != null && existingTask.getTimeLeftInMillis() < (long) existingTask.getDuration() * 60000) {
-                // Resume from saved progress in repository
-                startTimeInMillis = (long) existingTask.getDuration() * 60000;
-                timeLeftInMillis = existingTask.getTimeLeftInMillis();
+            // Always fetch the freshest task data from repository
+            com.example.finalproject_hudalulu_220253814.models.Task repoTask =
+                    com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
+
+            if (repoTask != null) {
+                startTimeInMillis = (long) repoTask.getDuration() * 60000;
+                if (repoTask.getTimeLeftInMillis() > 0 && repoTask.getTimeLeftInMillis() < startTimeInMillis) {
+                    timeLeftInMillis = repoTask.getTimeLeftInMillis();
+                } else {
+                    timeLeftInMillis = startTimeInMillis;
+                }
+                currentTaskTitle = repoTask.getTitle();
             } else {
-                // Fresh start
                 int durationMins = intent.getIntExtra("DURATION", 25);
                 startTimeInMillis = durationMins * 60 * 1000L;
                 timeLeftInMillis = startTimeInMillis;
+                currentTaskTitle = intent.getStringExtra("TASK_TITLE");
             }
 
-            currentTaskTitle = intent.getStringExtra("TASK_TITLE");
             selectedAudio = intent.getStringExtra("TASK_AUDIO");
 
             updateAudioUI(selectedAudio);

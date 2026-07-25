@@ -259,10 +259,11 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
+                            android:id="@+id/tvTotalFocusHours"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/quicksand"
-                            android:text="15.2h"
+                            android:text="0.0h"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold"
@@ -307,10 +308,11 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
+                            android:id="@+id/tvStudyHours"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/quicksand"
-                            android:text="9.3h"
+                            android:text="0.0h"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold"
@@ -341,7 +343,13 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="82%" android:textColor="@color/text_green" android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/tvEfficiency"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0%"
+                                android:textColor="@color/text_green"
+                                android:textStyle="bold" />
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/efficiency" android:textColor="@color/text_gray" android:textSize="12sp" />
                         </LinearLayout>
 
@@ -351,7 +359,13 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="42" android:textColor="#D4AC0D" android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/tvSessionsCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="#D4AC0D"
+                                android:textStyle="bold" />
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/sessions" android:textColor="@color/text_gray" android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -421,10 +435,11 @@
                     app:layout_constraintTop_toBottomOf="@id/tvDeepWorkTitle">
 
                     <TextView
+                        android:id="@+id/tvLongestSession"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/quicksand"
-                        android:text="145"
+                        android:text="0"
                         android:textColor="@color/text_green"
                         android:textSize="40sp"
                         android:textStyle="bold" />

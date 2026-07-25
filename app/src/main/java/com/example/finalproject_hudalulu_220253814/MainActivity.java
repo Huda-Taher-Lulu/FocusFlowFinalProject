@@ -1,7 +1,6 @@
 package com.example.finalproject_hudalulu_220253814;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -41,13 +40,16 @@ public class MainActivity extends AppCompatActivity {
         btnNext.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, onboarding2.class);
             startActivity(intent);
+            finish();
         });
 
         // برمجة نص Skip للانتقال المباشر إلى شاشة SignUp
         TextView tvSkip = findViewById(R.id.tvSkip);
         tvSkip.setOnClickListener(v -> {
+            getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).apply();
             Intent intent = new Intent(MainActivity.this, SignUp.class);
             startActivity(intent);
+            finish();
         });
     }
 }

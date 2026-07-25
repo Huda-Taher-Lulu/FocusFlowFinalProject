@@ -30,13 +30,16 @@ public class onboarding2 extends AppCompatActivity {
         btnNext.setOnClickListener(v -> {
             Intent intent = new Intent(onboarding2.this, onboarding3.class);
             startActivity(intent);
+            finish();
         });
 
         // برمجة نص Skip للانتقال المباشر إلى شاشة SignUp
         TextView tvSkip = findViewById(R.id.tvSkip);
         tvSkip.setOnClickListener(v -> {
+            getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).apply();
             Intent intent = new Intent(onboarding2.this, SignUp.class);
             startActivity(intent);
+            finish();
         });
     }
 }

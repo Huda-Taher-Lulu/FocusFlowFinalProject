@@ -31,6 +31,7 @@ public class onboarding3 extends AppCompatActivity {
 
             Intent intent = new Intent(onboarding3.this, SignUp.class);
             startActivity(intent);
+            finish();
         });
 
     }

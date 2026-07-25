@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,9 +24,8 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
 
 public class settings extends AppCompatActivity {
 
@@ -64,9 +62,7 @@ public class settings extends AppCompatActivity {
 
         // Profile
         View cvProfile = findViewById(R.id.cvProfile);
-        cvProfile.setOnClickListener(v -> {
-            startActivity(new Intent(this, Profile.class));
-        });
+        cvProfile.setOnClickListener(v -> startActivity(new Intent(this, Profile.class)));
 
         TextView tvProfileName = findViewById(R.id.tvProfileName);
         tvProfileName.setText(prefs.getString("fullName", "Alex Rivera"));
@@ -98,10 +94,12 @@ public class settings extends AppCompatActivity {
 
         // Logout
         findViewById(R.id.tvLogout).setOnClickListener(v -> {
-            Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, onboarding4.class);
+            prefs.edit().remove("fullName").remove("email").apply();
+            Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, Sign_in.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
+            finish();
         });
     }
 
