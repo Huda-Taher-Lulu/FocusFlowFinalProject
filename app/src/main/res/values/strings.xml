@@ -317,4 +317,6 @@
     <string name="edit_note_title">Edit Note</string>
 
     <string name="view_details">View Details</string>
+    <string name="percent_format">%d%%</string>
+    <string name="mins_with_value">%1$d %2$s</string>
 </resources>

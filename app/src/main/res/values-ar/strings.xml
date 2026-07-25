@@ -322,4 +322,6 @@
     <string name="edit_note_title">تعديل الملاحظة</string>
 
     <string name="view_details">عرض التفاصيل</string>
+    <string name="percent_format">%d%%</string>
+    <string name="mins_with_value">%1$d %2$s</string>
 </resources>

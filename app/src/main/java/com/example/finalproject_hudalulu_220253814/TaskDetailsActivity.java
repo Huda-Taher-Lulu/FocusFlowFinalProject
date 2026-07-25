@@ -96,10 +96,10 @@ public class TaskDetailsActivity extends AppCompatActivity {
         tvCategoryChip.setText(task.getCategory());
         
         String minsLabel = getString(R.string.min_unit);
-        tvDurationValue.setText(getString(R.string.minutes_suffix, task.getDuration()).replace("m", " " + minsLabel));
+        tvDurationValue.setText(getString(R.string.mins_with_value, task.getDuration(), minsLabel));
 
         long timeLeftMins = task.getTimeLeftInMillis() / (60 * 1000);
-        tvRemainingValue.setText(timeLeftMins + " " + minsLabel);
+        tvRemainingValue.setText(getString(R.string.mins_with_value, (int) timeLeftMins, minsLabel));
 
         tvAudioValue.setText(task.getAudioPreference());
         
@@ -127,7 +127,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
             }
         }
         taskProgressBar.setProgress(progress);
-        tvProgressPercent.setText(progress + "%");
+        tvProgressPercent.setText(getString(R.string.percent_format, progress));
 
         // Status Dot Color
         if ("COMPLETED".equals(task.getStatus())) {
