@@ -48,13 +48,14 @@ public class Focus_state extends AppCompatActivity {
     }
 
     private void initViews() {
+        // بنربط العناصر
         tvTotalFocusHours = findViewById(R.id.tvTotalFocusHours);
         tvStudyHours = findViewById(R.id.tvStudyHours);
         tvEfficiency = findViewById(R.id.tvEfficiency);
         tvSessionsCount = findViewById(R.id.tvSessionsCount);
         tvLongestSession = findViewById(R.id.tvLongestSession);
 
-        // Settings / Profile
+        // الإعدادات والبروفايل
         findViewById(R.id.ivSettings).setOnClickListener(v -> {
             startActivity(new Intent(Focus_state.this, settings.class));
         });
@@ -79,6 +80,7 @@ public class Focus_state extends AppCompatActivity {
     }
 
     private void loadStats() {
+        // بنحمل الإحصائيات من الـ SharedPreferences والداتابيز
         long totalFocusMinutes = prefs.getLong("totalFocusMinutes", 0);
         double totalHours = totalFocusMinutes / 60.0;
         tvTotalFocusHours.setText(String.format(Locale.getDefault(), "%.1fh", totalHours));
@@ -86,7 +88,7 @@ public class Focus_state extends AppCompatActivity {
         int sessionsCount = prefs.getInt("completedTasksCount", 0);
         tvSessionsCount.setText(String.valueOf(sessionsCount));
 
-        // Calculate breakdown from repository
+        // بنجيب التفاصيل من الريبوزتوري
         TaskRepository repository = TaskRepository.getInstance(this);
         List<Task> allTasks = repository.getTasks();
         
@@ -97,8 +99,7 @@ public class Focus_state extends AppCompatActivity {
         for (Task task : allTasks) {
             if ("COMPLETED".equalsIgnoreCase(task.getStatus())) {
                 completedCount++;
-                long duration = task.getDuration(); // assuming duration is total planned
-                // But we want actual spent? Let's use duration for now.
+                long duration = task.getDuration();
                 if ("Study".equalsIgnoreCase(task.getCategory())) {
                     studyMinutes += duration;
                 }
@@ -111,7 +112,7 @@ public class Focus_state extends AppCompatActivity {
         tvStudyHours.setText(String.format(Locale.getDefault(), "%.1fh", studyMinutes / 60.0));
         tvLongestSession.setText(String.valueOf(maxSessionMinutes));
         
-        // Efficiency could be (completed / total) * 100
+        // حساب الكفاءة
         if (allTasks.size() > 0) {
             int efficiency = (completedCount * 100) / allTasks.size();
             tvEfficiency.setText(efficiency + "%");
@@ -121,6 +122,7 @@ public class Focus_state extends AppCompatActivity {
     }
 
     private void setupNavigation() {
+        // شريط التنقل
         LinearLayout navDashboard = findViewById(R.id.navDashboard);
         LinearLayout navTasks = findViewById(R.id.navTasks);
         LinearLayout navTimer = findViewById(R.id.navTimer);
@@ -129,6 +131,6 @@ public class Focus_state extends AppCompatActivity {
         navTasks.setOnClickListener(v -> startActivity(new Intent(Focus_state.this, Task_manager.class)));
         navTimer.setOnClickListener(v -> startActivity(new Intent(Focus_state.this, Smart_timer.class)));
         navDashboard.setOnClickListener(v -> startActivity(new Intent(Focus_state.this, Dashboard.class)));
-        navStats.setOnClickListener(v -> {}); // Already here
+        navStats.setOnClickListener(v -> {});
     }
 }

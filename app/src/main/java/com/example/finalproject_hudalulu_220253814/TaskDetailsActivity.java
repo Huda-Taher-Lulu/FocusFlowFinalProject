@@ -43,6 +43,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
             return insets;
         });
 
+        // بنجيب المهمة اللي انبعتت من الشاشة اللي قبل
         task = (Task) getIntent().getSerializableExtra("TASK");
         if (task == null) {
             finish();
@@ -55,6 +56,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        // بنربط العناصر مع الـ View
         tvCategoryChip = findViewById(R.id.tvCategoryChip);
         tvTaskTitle = findViewById(R.id.tvTaskTitle);
         tvProgressPercent = findViewById(R.id.tvProgressPercent);
@@ -69,23 +71,28 @@ public class TaskDetailsActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
+        // زر عشان نرجع لورا
         findViewById(R.id.ivBack).setOnClickListener(v -> finish());
 
+        // لو بدنا نشارك المهمة مع حدا
         findViewById(R.id.ivShare).setOnClickListener(v -> shareTask());
 
+        // عشان نعدل النوتس
         findViewById(R.id.btnEditNote).setOnClickListener(v -> showEditNoteDialog());
 
+        // بنفتح شاشة التعديل الكاملة
         findViewById(R.id.btnEditTask).setOnClickListener(v -> {
             Intent intent = new Intent(this, Edit_session.class);
             intent.putExtra("TASK", task);
             startActivity(intent);
         });
 
+        // زر الحذف مع رسالة تأكيد
         findViewById(R.id.btnDeleteTask).setOnClickListener(v -> showDeleteConfirmationDialog());
     }
 
     private void updateUI() {
-        // Refresh task from DB
+        // بنجيب آخر بيانات من الداتابيز عشان نتأكد
         task = TaskRepository.getInstance(this).getTask(task.getId());
         if (task == null) {
             finish();
@@ -103,7 +110,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         tvAudioValue.setText(task.getAudioPreference());
         
-        // Status mapping to strings
+        // بنشوف شو حالة المهمة وبنحولها لنص
         String statusText = task.getStatus();
         if ("COMPLETED".equals(statusText)) statusText = getString(R.string.completed);
         else if ("IN PROGRESS".equals(statusText)) statusText = getString(R.string.in_progress);
@@ -112,7 +119,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         tvStatusValue.setText(statusText);
         tvNotesContent.setText(task.getNotes());
 
-        // Progress Calculation (Requirement 7)
+        // حساب نسبة الإنجاز
         int progress;
         if ("COMPLETED".equals(task.getStatus())) {
             progress = 100;
@@ -129,7 +136,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         taskProgressBar.setProgress(progress);
         tvProgressPercent.setText(getString(R.string.percent_format, progress));
 
-        // Status Dot Color
+        // بنغير لون النقطة حسب الحالة
         if ("COMPLETED".equals(task.getStatus())) {
             ivStatusDot.setImageTintList(ColorStateList.valueOf(Color.parseColor("#1B4332")));
         } else if ("IN PROGRESS".equals(task.getStatus())) {
@@ -138,7 +145,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
             ivStatusDot.setImageTintList(ColorStateList.valueOf(Color.parseColor("#6B7280")));
         }
 
-        // Category Icon Mapping
+        // بنحط الأيقونة حسب التصنيف
         if ("Study".equalsIgnoreCase(task.getCategory())) {
             ivCategoryIconLarge.setImageResource(R.drawable.ic_book);
         } else if ("Code".equalsIgnoreCase(task.getCategory())) {

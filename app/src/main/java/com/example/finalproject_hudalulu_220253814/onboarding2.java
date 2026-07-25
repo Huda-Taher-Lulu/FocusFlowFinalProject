@@ -25,7 +25,7 @@ public class onboarding2 extends AppCompatActivity {
             return insets;
         });
 
-        // برمجة زر Next للانتقال إلى شاشة onboarding2
+        // زر الانتقال للشاشة التالية
         MaterialButton btnNext = findViewById(R.id.btnNext);
         btnNext.setOnClickListener(v -> {
             Intent intent = new Intent(onboarding2.this, onboarding3.class);
@@ -33,7 +33,7 @@ public class onboarding2 extends AppCompatActivity {
             finish();
         });
 
-        // برمجة نص Skip للانتقال المباشر إلى شاشة SignUp
+        // زر تخطي الشرح
         TextView tvSkip = findViewById(R.id.tvSkip);
         tvSkip.setOnClickListener(v -> {
             getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).apply();

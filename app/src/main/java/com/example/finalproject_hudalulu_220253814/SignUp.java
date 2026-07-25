@@ -30,7 +30,7 @@ public class SignUp extends AppCompatActivity {
     private LinearLayout llEmailContainer, llPasswordContainer;
     private TextView tvEmailError, tvPasswordError;
     private boolean isPasswordVisible = false;
-    private UserDbHelper userDbHelper;
+    private UserDbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +44,9 @@ public class SignUp extends AppCompatActivity {
             return insets;
         });
 
-        userDbHelper = new UserDbHelper(this);
+        dbHelper = new UserDbHelper(this);
 
-        // Initialize Views
+        // هان بنربط العناصر مع الـ View
         etFullName = findViewById(R.id.etFullName);
         etUsername = findViewById(R.id.etUsername);
         etEmail = findViewById(R.id.etEmail);
@@ -62,7 +62,7 @@ public class SignUp extends AppCompatActivity {
         TextView tvSignIn = findViewById(R.id.tvSignIn);
         MaterialButton btnGuest = findViewById(R.id.btnGuest);
 
-        // Password Visibility Toggle
+        // إظهار وإخفاء الباسورد
         ivPasswordVisibility.setOnClickListener(v -> {
             if (isPasswordVisible) {
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -75,7 +75,7 @@ public class SignUp extends AppCompatActivity {
             etPassword.setSelection(etPassword.getText().length());
         });
 
-        // Email Validation Logic (Real-time)
+        // فحص الإيميل واحنا بنكتب
         etEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -93,7 +93,7 @@ public class SignUp extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Password Validation Logic (Real-time)
+        // فحص الباسورد واحنا بنكتب
         etPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -110,7 +110,7 @@ public class SignUp extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Create Account Button Logic
+        // كود إنشاء الحساب
         btnCreateAccount.setOnClickListener(v -> {
             String fullName = etFullName.getText().toString().trim();
             String username = etUsername.getText().toString().trim();
@@ -121,6 +121,7 @@ public class SignUp extends AppCompatActivity {
 
             boolean isValid = true;
 
+            // التأكد إن الحقول مش فاضية وصحيحة
             if (!email.contains("@")) {
                 llEmailContainer.setBackgroundResource(R.drawable.edit_text_error_bg);
                 tvEmailError.setVisibility(View.VISIBLE);
@@ -146,28 +147,28 @@ public class SignUp extends AppCompatActivity {
 
             if (!isValid) return;
 
-            // Requirement 3.3: persist the new account in SQLite (Users database)
-            if (userDbHelper.emailExists(email)) {
+            // بنشيك إذا الإيميل أو اليوزر موجودين قبل هيك
+            if (dbHelper.emailExists(email)) {
                 llEmailContainer.setBackgroundResource(R.drawable.edit_text_error_bg);
                 tvEmailError.setVisibility(View.VISIBLE);
-                Toast.makeText(this, "An account with this email already exists", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "هذا الإيميل مسجل من قبل", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (userDbHelper.usernameExists(username)) {
-                Toast.makeText(this, "This username is already taken", Toast.LENGTH_SHORT).show();
+            if (dbHelper.usernameExists(username)) {
+                Toast.makeText(this, "هذا اليوزر نيم مأخوذ", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            // بنحفظ اليوزر الجديد في الداتابيز
             User newUser = new User(fullName, username, email, phone, address, password);
-            long newUserId = userDbHelper.insertUser(newUser);
+            long newUserId = dbHelper.insertUser(newUser);
 
             if (newUserId == -1) {
-                Toast.makeText(this, "Could not create account. Try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "فشل في إنشاء الحساب، حاول تاني", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // SharedPreferences now only holds the session pointer + a quick-access cache;
-            // the actual account record lives in the Users SQLite database.
+            // بنحفظ بيانات الجلسة الحالية
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putLong("currentUserId", newUserId);
@@ -186,13 +187,13 @@ public class SignUp extends AppCompatActivity {
             finish();
         });
 
-        // Sign In Text Logic
+        // الانتقال لشاشة تسجيل الدخول
         tvSignIn.setOnClickListener(v -> {
             Intent intent = new Intent(SignUp.this, Sign_in.class);
             startActivity(intent);
         });
 
-        // Continue as Guest Logic
+        // الدخول كضيف
         btnGuest.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();

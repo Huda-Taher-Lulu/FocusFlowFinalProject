@@ -31,6 +31,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        // بنحدد إذا كان هيدر أو بطاقة المهمة
         if (viewType == HistoryListItem.TYPE_HEADER) {
             return new HeaderViewHolder(inflater.inflate(R.layout.item_history_header, parent, false));
         } else {
@@ -47,6 +48,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             h.tvCategoryName.setText(header.category);
             h.tvSessionCount.setText(header.sessionCount + (header.sessionCount == 1 ? " session" : " sessions"));
 
+            // تغيير لون المؤشر حسب التصنيف
             int colorRes = R.color.primary_green;
             if ("Study".equalsIgnoreCase(header.category)) colorRes = android.R.color.holo_orange_light;
             else if ("Code".equalsIgnoreCase(header.category)) colorRes = R.color.primary_green;
@@ -61,6 +63,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             h.tvDuration.setText(task.getDuration() + " mins");
             h.tvNotes.setText(task.getNotes() != null && !task.getNotes().isEmpty() ? task.getNotes() : "No notes recorded.");
 
+            // حساب الوقت النسبي (مثلاً: منذ ساعة)
             if (task.getCompletionTimestamp() > 0) {
                 CharSequence relativeTime = DateUtils.getRelativeTimeSpanString(
                         task.getCompletionTimestamp(),

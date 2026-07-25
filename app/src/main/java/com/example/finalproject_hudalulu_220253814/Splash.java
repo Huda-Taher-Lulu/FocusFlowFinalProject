@@ -19,13 +19,13 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Apply saved theme before EdgeToEdge and layout inflation
         SharedPreferences themePrefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         
-        // Apply saved language
+        // تطبيق اللغة المحفوظة
         LanguageHelper.applySavedLocale(this);
 
-        int themeMode = themePrefs.getInt("themeMode", 2); // default to system
+        // تطبيق الثيم المحفوظ
+        int themeMode = themePrefs.getInt("themeMode", 2);
         if (themeMode == 0) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         else if (themeMode == 1) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
@@ -38,25 +38,23 @@ public class Splash extends AppCompatActivity {
             return insets;
         });
 
-        // 1.5 seconds delay for a snappier feel
+        // بنستنى ثانية ونصف وبعدين بنشوف وين نروح
         new Handler(Looper.getMainLooper()).postDelayed(this::checkNavigation, 1500);
     }
 
     private void checkNavigation() {
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
-        
-        // Check local guest/sign-up status (Firebase removed to speed up sync)
         boolean isLocalLoggedIn = prefs.contains("fullName");
 
         if (isFirstRun) {
-            // First time -> Onboarding
+            // أول مرة بيفتح التطبيق
             startActivity(new Intent(Splash.this, MainActivity.class));
         } else if (isLocalLoggedIn) {
-            // Logged in -> Dashboard
+            // مسجل دخول
             startActivity(new Intent(Splash.this, Dashboard.class));
         } else {
-            // Not logged in -> Sign In
+            // مش مسجل دخول
             startActivity(new Intent(Splash.this, Sign_in.class));
         }
         finish();

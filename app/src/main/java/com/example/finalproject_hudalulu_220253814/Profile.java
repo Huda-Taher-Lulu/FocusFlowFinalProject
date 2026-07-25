@@ -30,6 +30,7 @@ public class Profile extends AppCompatActivity {
     private ShapeableImageView ivProfile;
     private static final String DEFAULT_MAJOR = "Enter your major or role";
 
+    // لاختيار صورة من الاستوديو
     private final ActivityResultLauncher<String> galleryLauncher = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             uri -> {
@@ -41,7 +42,7 @@ public class Profile extends AppCompatActivity {
 
     private void saveImageLocally(Uri uri) {
         try {
-            // Create a local file in internal storage
+            // بنحفظ الصورة في ملف داخلي عشان ما تضيع
             java.io.File file = new java.io.File(getFilesDir(), "profile_image.jpg");
             java.io.InputStream inputStream = getContentResolver().openInputStream(uri);
             java.io.FileOutputStream outputStream = new java.io.FileOutputStream(file);
@@ -54,13 +55,11 @@ public class Profile extends AppCompatActivity {
             outputStream.close();
             inputStream.close();
 
-            // Save the LOCAL file path
+            // بنحفظ المسار في الـ SharedPreferences
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             prefs.edit().putString("profileImageUri", file.getAbsolutePath()).apply();
 
-            // Load with Glide
             loadProfileImage(file.getAbsolutePath());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,7 +88,7 @@ public class Profile extends AppCompatActivity {
             return insets;
         });
 
-        // Initialize Views
+        // ربط العناصر
         tvProfileName = findViewById(R.id.tvProfileName);
         tvProfileMajor = findViewById(R.id.tvProfileMajor);
         tvFocusHours = findViewById(R.id.tvFocusHours);
@@ -103,10 +102,9 @@ public class Profile extends AppCompatActivity {
         LinearLayout llEditMajor = findViewById(R.id.llEditMajor);
         ConstraintLayout clProfileAddress = findViewById(R.id.clProfileAddress);
 
-        // Load Data
         refreshProfileData();
 
-        // Address Click -> Google Maps
+        // لو ضغطنا على العنوان بنفتح الخرائط
         if (clProfileAddress != null) {
             clProfileAddress.setOnClickListener(v -> {
                 String address = tvProfileAddress.getText().toString();
@@ -114,27 +112,23 @@ public class Profile extends AppCompatActivity {
                     Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
-                    if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                    try {
                         startActivity(mapIntent);
-                    } else {
-                        // Fallback to any app that can handle geo
+                    } catch (Exception e) {
                         startActivity(new Intent(Intent.ACTION_VIEW, gmmIntentUri));
                     }
                 }
             });
         }
 
-        // Image Selection Logic
+        // تغيير الصورة
         View.OnClickListener imageClickListener = v -> galleryLauncher.launch("image/*");
         ivProfile.setOnClickListener(imageClickListener);
-        if (ivCameraIcon != null) {
-            ivCameraIcon.setOnClickListener(imageClickListener);
-        }
+        if (ivCameraIcon != null) ivCameraIcon.setOnClickListener(imageClickListener);
 
-        // Back Button
-        ImageView ivBack = findViewById(R.id.ivBack);
-        ivBack.setOnClickListener(v -> finish());
+        findViewById(R.id.ivBack).setOnClickListener(v -> finish());
 
+        // مشاركة البروفايل
         ImageView ivShareProfile = findViewById(R.id.ivShareProfile);
         if (ivShareProfile != null) {
             ivShareProfile.setOnClickListener(v -> {
@@ -150,22 +144,16 @@ public class Profile extends AppCompatActivity {
             });
         }
 
-        // Edit Major/Role Dialog
-        if (llEditMajor != null) {
-            llEditMajor.setOnClickListener(v -> showEditMajorDialog());
-        }
+        if (llEditMajor != null) llEditMajor.setOnClickListener(v -> showEditMajorDialog());
 
-        // Navigate to Edit Profile
         ConstraintLayout clEditProfile = findViewById(R.id.clEditProfile);
         if (clEditProfile != null) {
-            clEditProfile.setOnClickListener(v -> {
-                Intent intent = new Intent(Profile.this, Edit_profile.class);
-                startActivity(intent);
-            });
+            clEditProfile.setOnClickListener(v -> startActivity(new Intent(Profile.this, Edit_profile.class)));
         }
     }
 
     private void refreshProfileData() {
+        // بنحدث البيانات من الـ Prefs
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         tvProfileName.setText(prefs.getString("fullName", getString(R.string.profile_name_default)));
         tvProfileMajor.setText(prefs.getString("academicMajor", getString(R.string.enter_major_role)));
@@ -173,15 +161,13 @@ public class Profile extends AppCompatActivity {
         tvProfilePhone.setText(prefs.getString("phone", getString(R.string.phone_number_hint)));
         tvProfileAddress.setText(prefs.getString("address", getString(R.string.address_hint)));
 
-        // Load Real Stats
+        // إحصائيات المستخدم
         long totalMinutes = prefs.getLong("totalFocusMinutes", 0);
         int tasksDone = prefs.getInt("completedTasksCount", 0);
         int streak = prefs.getInt("currentStreak", 0);
 
-        // Format focus hours (e.g., 2.5h or 45m)
         if (totalMinutes >= 60) {
-            float hours = totalMinutes / 60.0f;
-            tvFocusHours.setText(getString(R.string.hours_suffix, hours));
+            tvFocusHours.setText(getString(R.string.hours_suffix, totalMinutes / 60.0f));
         } else {
             tvFocusHours.setText(getString(R.string.minutes_suffix, (int) totalMinutes));
         }
@@ -190,46 +176,31 @@ public class Profile extends AppCompatActivity {
         tvStreak.setText(getString(R.string.days_suffix, streak));
 
         String imageUriStr = prefs.getString("profileImageUri", null);
-        if (imageUriStr != null) {
-            loadProfileImage(imageUriStr);
-        } else {
-            ivProfile.setImageResource(R.drawable.ic_person);
-        }
+        if (imageUriStr != null) loadProfileImage(imageUriStr);
+        else ivProfile.setImageResource(R.drawable.ic_person);
     }
 
     private void showEditMajorDialog() {
+        // ديالوج تعديل التخصص
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_major, null);
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(dialogView)
-                .create();
+        AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
 
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        }
+        if (dialog.getWindow() != null) dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         EditText etMajorInput = dialogView.findViewById(R.id.etMajorInput);
-        View btnUpdateMajor = dialogView.findViewById(R.id.btnUpdateMajor);
-        View btnCancelMajor = dialogView.findViewById(R.id.btnCancelMajor);
-
         String currentMajor = tvProfileMajor.getText().toString();
-        if (!currentMajor.equals(DEFAULT_MAJOR)) {
-            etMajorInput.setText(currentMajor);
-        }
+        if (!currentMajor.equals(DEFAULT_MAJOR)) etMajorInput.setText(currentMajor);
 
-        btnUpdateMajor.setOnClickListener(v -> {
+        dialogView.findViewById(R.id.btnUpdateMajor).setOnClickListener(v -> {
             String newMajor = etMajorInput.getText().toString().trim();
-            if (newMajor.isEmpty()) {
-                newMajor = DEFAULT_MAJOR;
-            }
+            if (newMajor.isEmpty()) newMajor = DEFAULT_MAJOR;
 
-            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-            prefs.edit().putString("academicMajor", newMajor).apply();
+            getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().putString("academicMajor", newMajor).apply();
             tvProfileMajor.setText(newMajor);
             dialog.dismiss();
         });
 
-        btnCancelMajor.setOnClickListener(v -> dialog.dismiss());
-
+        dialogView.findViewById(R.id.btnCancelMajor).setOnClickListener(v -> dialog.dismiss());
         dialog.show();
     }
 

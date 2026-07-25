@@ -2,7 +2,6 @@ package com.example.finalproject_hudalulu_220253814.models;
 
 import java.io.Serializable;
 
-/** Domain model for a registered user account, stored in the Users SQLite database. */
 public class User implements Serializable {
 
     private long id = -1;

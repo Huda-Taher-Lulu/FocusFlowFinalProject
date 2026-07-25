@@ -24,9 +24,9 @@ public class onboarding3 extends AppCompatActivity {
             return insets;
         });
 
+        // هان بنخلص الشرح وبنبدأ الجد
         MaterialButton btnNext = findViewById(R.id.btnGetStarted);
         btnNext.setOnClickListener(v -> {
-            // Mark onboarding as finished
             getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).apply();
 
             Intent intent = new Intent(onboarding3.this, SignUp.class);

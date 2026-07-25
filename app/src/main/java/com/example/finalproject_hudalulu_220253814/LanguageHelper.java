@@ -10,18 +10,18 @@ public class LanguageHelper {
     private static final String KEY_LANGUAGE = "selected_language";
 
     public static void setLocale(Context context, String languageCode) {
-        // Save preference
+        // بنحفظ اللغة المختارة
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putString(KEY_LANGUAGE, languageCode).apply();
 
-        // Apply locale using AppCompatDelegate
+        // تطبيق اللغة على التطبيق
         LocaleListCompat appLocale = LocaleListCompat.forLanguageTags(languageCode);
         AppCompatDelegate.setApplicationLocales(appLocale);
     }
 
     public static String getLanguage(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return prefs.getString(KEY_LANGUAGE, "en"); // Default to English
+        return prefs.getString(KEY_LANGUAGE, "en");
     }
 
     public static void applySavedLocale(Context context) {

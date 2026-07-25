@@ -44,9 +44,10 @@ public class focus_history extends AppCompatActivity {
     }
 
     private void loadHistory() {
+        // بنحمل كل المهام ونفلتر المخلصين منها
         List<Task> allTasks = TaskRepository.getInstance(this).getTasks();
 
-        // Group completed tasks by category, preserving insertion order
+        // تجميع المهام حسب التصنيف
         Map<String, List<Task>> groupedTasks = new LinkedHashMap<>();
         for (Task task : allTasks) {
             if ("COMPLETED".equals(task.getStatus())) {

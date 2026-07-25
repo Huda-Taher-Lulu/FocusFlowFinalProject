@@ -19,8 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.bumptech.glide.Glide;
-import com.google.android.material.imageview.ShapeableImageView;
 import android.content.SharedPreferences;
 
 import androidx.activity.EdgeToEdge;
@@ -57,7 +55,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     private TextView tvLofi, tvSilent, tvDnd;
     private ImageView ivDndIcon;
     private LinearLayout llChoiceButtons;
-    private float sensorThreshold = -8.0f; // Default Medium
+    private float sensorThreshold = -8.0f; 
     private NotificationManager notificationManager;
 
     @Override
@@ -66,7 +64,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_smart_timer);
 
-        // Keep screen on during the focus session
+        // عشان الشاشة تضل شغالة وما تطفي
         getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -75,19 +73,18 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
             return insets;
         });
 
-
-        // Settings / Profile
+        // زر الإعدادات
         findViewById(R.id.ivSettings).setOnClickListener(v -> {
             startActivity(new Intent(Smart_timer.this, settings.class));
         });
 
-        ShapeableImageView ivProfileNav = findViewById(R.id.ivProfile);
+        // البروفايل وصورة المستخدم
+        com.google.android.material.imageview.ShapeableImageView ivProfileNav = findViewById(R.id.ivProfile);
         if (ivProfileNav != null) {
             ivProfileNav.setOnClickListener(v -> {
                 startActivity(new Intent(Smart_timer.this, Profile.class));
             });
 
-            // Load Profile Image
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             String imagePath = prefs.getString("profileImageUri", null);
             if (imagePath != null) {
@@ -101,7 +98,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
             }
         }
 
-
+        // هان بنربط كل العناصر
         tvTimerDisplay = findViewById(R.id.tvTimerDisplay);
         tvTaskTitleDisplay = findViewById(R.id.tvTaskTitleDisplay);
         tvTaskCategoryDisplay = findViewById(R.id.tvTaskCategoryDisplay);
@@ -113,8 +110,10 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         progressBar = findViewById(R.id.progressBar);
         llNoTaskReminder = findViewById(R.id.llNoTaskReminder);
 
+        // نضغط على التايمر عشان نغير الوقت
         findViewById(R.id.llTimerClickArea).setOnClickListener(v -> showDurationPickerDialog());
 
+        // نروح لمدير المهام عشان نختار مهمة
         View.OnClickListener toTaskManager = v -> {
             startActivity(new Intent(this, Task_manager.class));
         };
@@ -130,6 +129,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         tvDnd = findViewById(R.id.tvDnd);
         ivDndIcon = findViewById(R.id.ivDndIcon);
 
+        // شريط التنقل السفلي
         LinearLayout navDashboard = findViewById(R.id.navDashboard);
         LinearLayout navTasks = findViewById(R.id.navTasks);
         LinearLayout navTimer = findViewById(R.id.navTimer);
@@ -140,14 +140,13 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         navDashboard.setOnClickListener(v -> startActivity(new Intent(Smart_timer.this, Dashboard.class)));
         navStats.setOnClickListener(v -> startActivity(new Intent(Smart_timer.this, Focus_state.class)));
 
+        // خيارات الصوت والهدوء
         llLofiOption.setOnClickListener(v -> updateAudioUI("Lofi Beats"));
         llSilentOption.setOnClickListener(v -> updateAudioUI("Silent"));
         llDndOption.setOnClickListener(v -> toggleDnd());
 
-        // Load duration and preferences from intent or SharedPreferences
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("DURATION")) {
-            // Start a NEW task session or resume from repository
             taskId = intent.getLongExtra("TASK_ID", -1);
             if (taskId == -1) {
                 com.example.finalproject_hudalulu_220253814.models.Task t =
@@ -155,7 +154,6 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                 if (t != null) taskId = t.getId();
             }
 
-            // Always fetch the freshest task data from repository
             com.example.finalproject_hudalulu_220253814.models.Task repoTask =
                     com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
 
@@ -180,16 +178,15 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
             updateDndUI();
             setupTaskUI();
         } else {
-            // Try to load an EXISTING active session
+            // لو ما في جلسة مخزنة بنصفر كل اشي
             if (!loadActiveSession()) {
-                // No task selected and no active session
                 startTimeInMillis = 0;
                 timeLeftInMillis = 0;
                 taskId = -1;
                 currentTaskTitle = "";
                 tvFlipTitle.setText(R.string.no_task_selected);
                 tvTaskTitleDisplay.setText(R.string.no_task_selected);
-                tvTaskCategoryDisplay.setText(R.string.low); 
+                tvTaskCategoryDisplay.setText(R.string.none); 
                 if (llNoTaskReminder != null) {
                     llNoTaskReminder.setVisibility(View.VISIBLE);
                 }
@@ -197,10 +194,10 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
             }
         }
 
-        // Force UI update to 00:00 if no session
         updateCountDownText();
         setupProgressBar();
 
+        // تشغيل الحساسات عشان الـ flip
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (sensorManager != null) {
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -210,6 +207,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     }
 
     private void updateAudioUI(String pref) {
+        // تحديث شكل أزرار الصوت
         selectedAudio = pref;
         if ("Lofi Beats".equalsIgnoreCase(pref)) {
             llLofiOption.setBackgroundResource(R.drawable.chip_selected);
@@ -229,6 +227,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     }
 
     private void toggleDnd() {
+        // تفعيل وضع عدم الإزعاج
         isDndEnabled = !isDndEnabled;
         if (isDndEnabled) {
             checkNotificationPolicyAccess();
@@ -256,7 +255,6 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
             if (bgMediaPlayer == null) {
                 bgMediaPlayer = MediaPlayer.create(this, R.raw.calm);
                 bgMediaPlayer.setLooping(true);
-                // Issue 2: Restore position if we have a saved one
                 if (savedAudioPosition > 0) {
                     bgMediaPlayer.seekTo(savedAudioPosition);
                 }
@@ -311,6 +309,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     }
 
     private void setupTaskUI() {
+        // بنعرض بيانات المهمة المختارة
         if (taskId != -1) {
             com.example.finalproject_hudalulu_220253814.models.Task task =
                     com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
@@ -318,7 +317,6 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                 tvTaskTitleDisplay.setText(task.getTitle());
                 tvTaskCategoryDisplay.setText(task.getCategory());
 
-                // Set category icon
                 if ("Study".equalsIgnoreCase(task.getCategory())) {
                     ivTaskIcon.setImageResource(R.drawable.ic_book);
                 } else if ("Code".equalsIgnoreCase(task.getCategory())) {
@@ -330,11 +328,10 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                 if (llNoTaskReminder != null) llNoTaskReminder.setVisibility(View.GONE);
                 tvFlipDesc.setVisibility(View.GONE);
                 llChoiceButtons.setVisibility(View.VISIBLE);
-                return; // Task found and setup done
+                return; 
             }
         }
         
-        // No task found or taskId is -1
         tvTaskTitleDisplay.setText(R.string.no_task_selected);
         tvTaskCategoryDisplay.setText(R.string.none);
         if (llNoTaskReminder != null) llNoTaskReminder.setVisibility(View.VISIBLE);
@@ -342,10 +339,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     }
 
     private void showDurationPickerDialog() {
-        if (isTimerRunning) {
-            Toast.makeText(this, R.string.edit_focus_block, Toast.LENGTH_SHORT).show(); // Reusing string as alert
-            return;
-        }
+        if (isTimerRunning) return;
 
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_set_timer, null);
         androidx.appcompat.app.AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(this)
@@ -378,7 +372,6 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                     startTimeInMillis = totalMins * 60000L;
                     timeLeftInMillis = startTimeInMillis;
 
-                    // Update the task duration in the repository if a task is selected
                     if (taskId != -1) {
                         com.example.finalproject_hudalulu_220253814.models.Task task =
                                 com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
@@ -413,7 +406,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     }
 
     private void saveActiveSession() {
-        // Save to TimerPrefs for quick restoration
+        // بنحفظ حالة الجلسة الحالية عشان لو سكرنا التطبيق ورجعنا
         android.content.SharedPreferences prefs = getSharedPreferences("TimerPrefs", MODE_PRIVATE);
         android.content.SharedPreferences.Editor editor = prefs.edit();
         editor.putLong("startTimeInMillis", startTimeInMillis);
@@ -427,7 +420,6 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         editor.putBoolean("isAwaitingSave", isAwaitingSave);
         editor.putBoolean("hasActiveSession", startTimeInMillis > 0 && !isAwaitingSave);
 
-        // Issue 2: Save audio position
         if (bgMediaPlayer != null) {
             editor.putInt("audioPosition", bgMediaPlayer.getCurrentPosition());
         } else {
@@ -436,7 +428,6 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
 
         editor.apply();
 
-        // Also save specific progress back to the Task object in repository
         if (taskId != -1) {
             com.example.finalproject_hudalulu_220253814.models.Task task =
                     com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
@@ -448,14 +439,13 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     }
 
     private boolean loadActiveSession() {
+        // بنرجع الجلسة المخزنة
         android.content.SharedPreferences prefs = getSharedPreferences("TimerPrefs", MODE_PRIVATE);
-        // Only load if it's explicitly marked as having an active session AND time is remaining
         if (!prefs.getBoolean("hasActiveSession", false)) return false;
 
         startTimeInMillis = prefs.getLong("startTimeInMillis", 0);
         timeLeftInMillis = prefs.getLong("timeLeftInMillis", 0);
         
-        // Safety: If no time left or invalid start time, it's not an active session
         if (startTimeInMillis <= 0 || timeLeftInMillis <= 0) {
             clearActiveSession();
             return false;
@@ -498,7 +488,8 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float z = event.values[2];
 
-            if (z < sensorThreshold) { // Face down
+            // لو قلبنا التلفون على وجهه
+            if (z < sensorThreshold) { 
                 if (!isTimerRunning && !isAwaitingSave && startTimeInMillis > 0 && timeLeftInMillis > 0) {
                     if (isPaused) {
                         resumeTimer();
@@ -506,7 +497,8 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                         startTimer();
                     }
                 }
-            } else if (z > 5.0) { // Face up
+            } else if (z > 5.0) { 
+                // لو مسكنا التلفون وهو شغال
                 if (isTimerRunning) {
                     pauseTimer();
                     playSound(R.raw.warning_sound);
@@ -520,19 +512,15 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     private void startTimer() {
-        if (isDndEnabled && !checkNotificationPolicyAccess()) {
-            return;
-        }
+        if (isDndEnabled && !checkNotificationPolicyAccess()) return;
+        
         isTimerRunning = true;
         isPaused = false;
         playSound(R.raw.start_sound);
         startBackgroundMusic();
 
-        if (isDndEnabled) {
-            setDoNotDisturb(true);
-        }
+        if (isDndEnabled) setDoNotDisturb(true);
 
-        // Update task status to IN PROGRESS only when started
         if (taskId != -1) {
             com.example.finalproject_hudalulu_220253814.models.Task task =
                     com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
@@ -547,17 +535,14 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     }
 
     private void resumeTimer() {
-        if (isDndEnabled && !checkNotificationPolicyAccess()) {
-            return;
-        }
+        if (isDndEnabled && !checkNotificationPolicyAccess()) return;
+        
         isTimerRunning = true;
         isPaused = false;
         playSound(R.raw.resume_sound);
         startBackgroundMusic();
 
-        if (isDndEnabled) {
-            setDoNotDisturb(true);
-        }
+        if (isDndEnabled) setDoNotDisturb(true);
 
         enterDeepFlow();
         runTimer();
@@ -566,13 +551,11 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     private void pauseTimer() {
         isTimerRunning = false;
         isPaused = true;
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-        }
+        if (countDownTimer != null) countDownTimer.cancel();
+        
         pauseBackgroundMusic();
         setDoNotDisturb(false);
 
-        // Show edit controls again
         ivSelectTask.setVisibility(View.VISIBLE);
         findViewById(R.id.llTimerClickArea).setClickable(true);
         tvFlipTitle.setText(R.string.focus_paused);
@@ -592,7 +575,6 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     private void setDoNotDisturb(boolean active) {
         if (notificationManager != null && notificationManager.isNotificationPolicyAccessGranted()) {
             if (active) {
-                // Use PRIORITY filter instead of NONE to allow Media (Music) to play
                 notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY);
             } else {
                 notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL);
@@ -601,6 +583,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     }
 
     private void runTimer() {
+        // الـ CountDownTimer الفعلي
         countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -611,18 +594,16 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
 
             @Override
             public void onFinish() {
-                if (isAwaitingSave) return; // Prevent multiple calls
+                if (isAwaitingSave) return; 
 
                 isTimerRunning = false;
                 isPaused = false;
-                isAwaitingSave = true; // Prevent restart loop
+                isAwaitingSave = true; 
                 timeLeftInMillis = 0;
                 updateCountDownText();
                 updateProgressBar();
 
-                if (countDownTimer != null) {
-                    countDownTimer.cancel();
-                }
+                if (countDownTimer != null) countDownTimer.cancel();
 
                 playSound(R.raw.success_sound);
                 stopBackgroundMusic();
@@ -646,13 +627,14 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
 
         tvFlipTitle.setText(R.string.no_task_selected);
         tvTaskTitleDisplay.setText(R.string.no_task_selected);
-        tvTaskCategoryDisplay.setText(R.string.low);
-        llChoiceButtons.setVisibility(View.VISIBLE); // Keep buttons visible but they won't do much
+        tvTaskCategoryDisplay.setText(R.string.none);
+        llChoiceButtons.setVisibility(View.VISIBLE); 
         if (llNoTaskReminder != null) llNoTaskReminder.setVisibility(View.VISIBLE);
         ivIllustration.setAlpha(1.0f);
     }
 
     private void showSessionCompletedDialog() {
+        // رسالة عند انتهاء الوقت
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_session_completed, null);
         androidx.appcompat.app.AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setView(dialogView)
@@ -665,7 +647,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         TextView tvSessionTime = dialogView.findViewById(R.id.tvSessionTime);
         EditText etReflectionInput = dialogView.findViewById(R.id.etReflectionInput);
         int totalMinutes = (int) (startTimeInMillis / 60000);
-        tvSessionTime.setText(totalMinutes + " mins");
+        tvSessionTime.setText(getString(R.string.mins_with_value, totalMinutes, getString(R.string.min_unit)));
 
         dialogView.findViewById(R.id.btnSaveFinish).setOnClickListener(v -> {
             String notes = etReflectionInput != null ? etReflectionInput.getText().toString().trim() : "";
@@ -690,69 +672,57 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     }
 
     private void updateRealStats(String notes) {
+        // تحديث الإحصائيات بعد ما نخلص الجلسة
         android.content.SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         android.content.SharedPreferences.Editor editor = prefs.edit();
 
-        // 1. Update Focus Minutes
         long totalMinutes = prefs.getLong("totalFocusMinutes", 0);
-        // Calculate actually spent minutes (startTime - timeLeft)
         long sessionDurationMinutes = (startTimeInMillis - timeLeftInMillis) / 60000;
 
-        // If session finished naturally, it might be exactly startTimeInMillis
-        if (sessionDurationMinutes <= 0) {
-            sessionDurationMinutes = startTimeInMillis / 60000;
-        }
+        if (sessionDurationMinutes <= 0) sessionDurationMinutes = startTimeInMillis / 60000;
 
         editor.putLong("totalFocusMinutes", totalMinutes + sessionDurationMinutes);
 
-        // 2. Update Completed Tasks Count (Global Stat)
         int tasksCount = prefs.getInt("completedTasksCount", 0);
         editor.putInt("completedTasksCount", tasksCount + 1);
 
-        // 3. Update Specific Task Status in Repository
         if (taskId != -1) {
             com.example.finalproject_hudalulu_220253814.models.Task task =
                     com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
             if (task != null) {
                 task.setStatus("COMPLETED");
-                task.setTimeLeftInMillis(0); // Mark as fully done
+                task.setTimeLeftInMillis(0); 
                 task.setNotes(notes);
                 task.setCompletionTimestamp(System.currentTimeMillis());
                 com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).updateTask(this, task);
             }
         }
 
-        // Update Streak
+        // تحديث الـ Streak
         int currentStreak = prefs.getInt("currentStreak", 0);
         long lastTimestamp = prefs.getLong("lastActiveTimestamp", 0);
 
         java.util.Calendar cal = java.util.Calendar.getInstance();
-
-        // Today at midnight
         cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
         cal.set(java.util.Calendar.MINUTE, 0);
         cal.set(java.util.Calendar.SECOND, 0);
         cal.set(java.util.Calendar.MILLISECOND, 0);
         long todayStart = cal.getTimeInMillis();
 
-        // Yesterday at midnight
         cal.add(java.util.Calendar.DAY_OF_YEAR, -1);
         long yesterdayStart = cal.getTimeInMillis();
 
-        if (lastTimestamp >= todayStart) {
-            // Already updated today, do nothing to streak
-        } else if (lastTimestamp >= yesterdayStart) {
-            // Continued from yesterday
-            editor.putInt("currentStreak", currentStreak + 1);
-        } else {
-            // New streak
-            editor.putInt("currentStreak", 1);
+        if (lastTimestamp < todayStart) {
+            if (lastTimestamp >= yesterdayStart) {
+                editor.putInt("currentStreak", currentStreak + 1);
+            } else {
+                editor.putInt("currentStreak", 1);
+            }
         }
 
         editor.putLong("lastActiveTimestamp", System.currentTimeMillis());
         editor.apply();
 
-        // Clear active session since it's finished
         clearActiveSession();
 
         Toast.makeText(this, R.string.stats_updated, Toast.LENGTH_SHORT).show();
@@ -763,12 +733,11 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         int seconds = (int) (timeLeftInMillis / 1000) % 60;
         tvTimerDisplay.setText(String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds));
 
-        // Issue 1: Display red color if no time is set (00:00)
         if (timeLeftInMillis == 0) {
-            tvTimerDisplay.setTextColor(Color.parseColor("#C62828")); // Red
+            tvTimerDisplay.setTextColor(Color.parseColor("#C62828")); 
             progressBar.setProgressDrawable(androidx.core.content.ContextCompat.getDrawable(this, R.drawable.circular_progress_bar_red));
         } else {
-            tvTimerDisplay.setTextColor(android.graphics.Color.parseColor("#1B4332")); // Green
+            tvTimerDisplay.setTextColor(android.graphics.Color.parseColor("#1B4332")); 
             progressBar.setProgressDrawable(androidx.core.content.ContextCompat.getDrawable(this, R.drawable.circular_progress_bar));
         }
     }
@@ -778,6 +747,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     }
 
     private void enterDeepFlow() {
+        // حالة التركيز العميق
         ivSelectTask.setVisibility(View.GONE);
         findViewById(R.id.llTimerClickArea).setClickable(false);
         tvFlipTitle.setText(R.string.deep_flow_active);
@@ -793,7 +763,6 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         try {
             MediaPlayer mp = MediaPlayer.create(this, resId);
             if (mp != null) {
-                // Set volume to 30% (lower than the default 100%)
                 mp.setVolume(0.3f, 0.3f);
                 mp.setOnCompletionListener(MediaPlayer::release);
                 mp.start();

@@ -58,15 +58,14 @@ public class settings extends AppCompatActivity {
     }
 
     private void initViews() {
-        // Header
+        // زر الرجوع
         findViewById(R.id.ivBack).setOnClickListener(v -> finish());
 
-        // Profile
-        View cvProfile = findViewById(R.id.cvProfile);
-        cvProfile.setOnClickListener(v -> startActivity(new Intent(this, Profile.class)));
+        // البروفايل
+        findViewById(R.id.cvProfile).setOnClickListener(v -> startActivity(new Intent(this, Profile.class)));
 
         TextView tvProfileName = findViewById(R.id.tvProfileName);
-        tvProfileName.setText(prefs.getString("fullName", "Alex Rivera"));
+        tvProfileName.setText(prefs.getString("fullName", ""));
 
         ShapeableImageView ivProfile = findViewById(R.id.ivProfile);
         String imagePath = prefs.getString("profileImageUri", null);
@@ -79,12 +78,12 @@ public class settings extends AppCompatActivity {
                 .into(ivProfile);
         }
 
-        // Sensor & Gesture
+        // الحساسات والإيماءات
         sliderSensitivity = findViewById(R.id.sliderSensitivity);
         tvSensitivityLevel = findViewById(R.id.tvSensitivityLevel);
         switchFlipVibration = findViewById(R.id.switchFlipVibration);
 
-        // Focus Preferences
+        // إعدادات التركيز
         switchAutoStartBreaks = findViewById(R.id.switchAutoStartBreaks);
         spinnerAmbientSound = findViewById(R.id.spinnerAmbientSound);
         
@@ -92,28 +91,20 @@ public class settings extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAmbientSound.setAdapter(adapter);
 
-        // Appearance
+        // المظهر
         tvThemeLight = findViewById(R.id.tvThemeLight);
         tvThemeDark = findViewById(R.id.tvThemeDark);
         tvThemeSystem = findViewById(R.id.tvThemeSystem);
         
-        // Language
+        // اللغة
         llLanguage = findViewById(R.id.llLanguage);
         tvCurrentLanguage = findViewById(R.id.tvCurrentLanguage);
         
         switchDailyReminders = findViewById(R.id.switchDailyReminders);
 
-        // Logout
+        // تسجيل الخروج
         findViewById(R.id.tvLogout).setOnClickListener(v -> {
-            // Clear User identity from SharedPreferences
-            prefs.edit()
-                .remove("fullName")
-                .remove("email")
-                .remove("password")
-                .remove("isGuest")
-                .apply();
-            
-            // Also clear Remember Me data
+            prefs.edit().remove("fullName").remove("email").remove("password").remove("isGuest").apply();
             getSharedPreferences("LoginPrefs", MODE_PRIVATE).edit().clear().apply();
 
             Toast.makeText(this, R.string.logged_out, Toast.LENGTH_SHORT).show();
@@ -125,38 +116,34 @@ public class settings extends AppCompatActivity {
     }
 
     private void loadSettings() {
-        // Sensitivity
+        // بنحمل الإعدادات المحفوظة
         float sensitivity = prefs.getFloat("sensorSensitivity", 50.0f);
         sliderSensitivity.setValue(sensitivity);
         updateSensitivityUI(sensitivity);
 
-        // Switches
         switchFlipVibration.setChecked(prefs.getBoolean("flipVibrationSoundEnabled", true));
         switchAutoStartBreaks.setChecked(prefs.getBoolean("autoStartBreaks", false));
         switchDailyReminders.setChecked(prefs.getBoolean("dailyReminders", true));
 
-        // Ambient Sound
         String currentSound = prefs.getString("ambientSoundName", "Lofi Rain");
         int selection = Arrays.asList(soundOptions).indexOf(currentSound);
         if (selection != -1) spinnerAmbientSound.setSelection(selection);
 
-        // Theme
         int theme = prefs.getInt("themeMode", 0); 
         updateThemeUI(theme);
 
-        // Language
         String lang = LanguageHelper.getLanguage(this);
         tvCurrentLanguage.setText(lang.equals("ar") ? R.string.arabic : R.string.english);
     }
 
     private void setupListeners() {
-        // Sensitivity Slider
+        // تغيير الحساسية
         sliderSensitivity.addOnChangeListener((slider, value, fromUser) -> {
             updateSensitivityUI(value);
             prefs.edit().putFloat("sensorSensitivity", value).apply();
         });
 
-        // Switches
+        // تشغيل/إيقاف الخيارات
         switchFlipVibration.setOnCheckedChangeListener((buttonView, isChecked) -> 
             prefs.edit().putBoolean("flipVibrationSoundEnabled", isChecked).apply());
         
@@ -166,28 +153,28 @@ public class settings extends AppCompatActivity {
         switchDailyReminders.setOnCheckedChangeListener((buttonView, isChecked) -> 
             prefs.edit().putBoolean("dailyReminders", isChecked).apply());
 
-        // Ambient Sound Spinner
+        // اختيار صوت المحيط
         spinnerAmbientSound.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selected = soundOptions[position];
-                prefs.edit().putString("ambientSoundName", selected).apply();
+                prefs.edit().putString("ambientSoundName", soundOptions[position]).apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // Theme Buttons
+        // تغيير المظهر
         tvThemeLight.setOnClickListener(v -> changeTheme(0));
         tvThemeDark.setOnClickListener(v -> changeTheme(1));
         tvThemeSystem.setOnClickListener(v -> changeTheme(2));
 
-        // Language Button
+        // تغيير اللغة
         llLanguage.setOnClickListener(v -> showLanguageDialog());
     }
 
     private void showLanguageDialog() {
+        // ديالوج اختيار اللغة
         String[] languages = {getString(R.string.english), getString(R.string.arabic)};
         String[] codes = {"en", "ar"};
         
@@ -199,8 +186,6 @@ public class settings extends AppCompatActivity {
                 .setSingleChoiceItems(languages, checkedItem, (dialog, which) -> {
                     LanguageHelper.setLocale(settings.this, codes[which]);
                     dialog.dismiss();
-                    // No need to recreate activity if using AppCompatDelegate.setApplicationLocales
-                    // it should happen automatically, but sometimes a small delay or manual refresh is better
                     recreate(); 
                 })
                 .setNegativeButton(R.string.cancel, null)
@@ -208,6 +193,7 @@ public class settings extends AppCompatActivity {
     }
 
     private void updateSensitivityUI(float value) {
+        // تحديث النص واللون للحساسية
         if (value == 0) {
             tvSensitivityLevel.setText("Low");
             tvSensitivityLevel.setTextColor(ContextCompat.getColor(this, R.color.text_red));
@@ -224,19 +210,17 @@ public class settings extends AppCompatActivity {
     }
 
     private void changeTheme(int mode) {
+        // تطبيق المظهر الجديد
         prefs.edit().putInt("themeMode", mode).apply();
         updateThemeUI(mode);
         
-        if (mode == 0) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        } else if (mode == 1) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        }
+        if (mode == 0) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else if (mode == 1) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
     }
 
     private void updateThemeUI(int mode) {
+        // تحديث شكل أزرار المظهر
         tvThemeLight.setBackgroundResource(0);
         tvThemeLight.setTextColor(getResources().getColor(R.color.text_gray));
         tvThemeDark.setBackgroundResource(0);
@@ -247,6 +231,5 @@ public class settings extends AppCompatActivity {
         TextView selected = mode == 0 ? tvThemeLight : (mode == 1 ? tvThemeDark : tvThemeSystem);
         selected.setBackgroundResource(R.color.white);
         selected.setTextColor(getResources().getColor(R.color.black));
-        // Removed setTypeface(BOLD) as per user request to keep text normal
     }
 }

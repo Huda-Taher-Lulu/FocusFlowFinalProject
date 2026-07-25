@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         
-        // Initialize TaskRepository with Context for persistence
+        // بنشغل الريبوزتوري عشان الداتابيز
         com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -29,13 +29,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Reset academic major to default on every fresh app run as requested
+        // تصفير التخصص عشان نرجع للقيمة الأصلية
         getSharedPreferences("UserPrefs", MODE_PRIVATE)
                 .edit()
                 .remove("academicMajor")
                 .apply();
 
-        // برمجة زر Next للانتقال إلى شاشة onboarding2
+        // زر الانتقال للشاشة اللي بعدها
         MaterialButton btnNext = findViewById(R.id.btnNext);
         btnNext.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, onboarding2.class);
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
-        // برمجة نص Skip للانتقال المباشر إلى شاشة SignUp
+        // لو المستخدم بدو يتخطى الشرح ويروح للتسجيل علطول
         TextView tvSkip = findViewById(R.id.tvSkip);
         tvSkip.setOnClickListener(v -> {
             getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).apply();

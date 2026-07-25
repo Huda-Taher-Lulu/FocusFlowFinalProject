@@ -29,6 +29,7 @@ public class forget_password extends AppCompatActivity {
         EditText etEmail = findViewById(R.id.etEmail);
         MaterialButton btnSend = findViewById(R.id.btnSendResetLink);
 
+        // إرسال رابط استعادة الباسورد
         btnSend.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             if (email.isEmpty() || !email.contains("@")) {
@@ -39,6 +40,7 @@ public class forget_password extends AppCompatActivity {
             }
         });
 
+        // رجوع لشاشة تسجيل الدخول
         findViewById(R.id.llBackToSignIn).setOnClickListener(v -> finish());
     }
 }

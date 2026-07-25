@@ -47,6 +47,7 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
             return insets;
         });
 
+        // هان بنربط العناصر والـ RecyclerView
         rvTasks = findViewById(R.id.rvTasks);
         llEmptyState = findViewById(R.id.llEmptyState);
         tvBannerSubtitle = findViewById(R.id.tvBannerSubtitle);
@@ -55,7 +56,7 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
         taskAdapter = new TaskAdapter(TaskRepository.getInstance(this).getTasks(), this);
         rvTasks.setAdapter(taskAdapter);
 
-        // Settings / Profile
+        // الإعدادات والبروفايل
         ImageView ivSettings = findViewById(R.id.ivSettings);
         ShapeableImageView ivProfile = findViewById(R.id.ivProfile);
 
@@ -79,7 +80,7 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
             }
         }
 
-        // Navigation Bar
+        // شريط التنقل
         LinearLayout navDashboard = findViewById(R.id.navDashboard);
         LinearLayout navTimer = findViewById(R.id.navTimer);
         LinearLayout navStats = findViewById(R.id.navStats);
@@ -88,10 +89,10 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
         if (navDashboard != null) navDashboard.setOnClickListener(v -> startActivity(new Intent(Task_manager.this, Dashboard.class)));
         if (navStats != null) navStats.setOnClickListener(v -> startActivity(new Intent(Task_manager.this, Focus_state.class)));
 
-        // Add New Task FAB
+        // زر إضافة مهمة جديدة
         findViewById(R.id.fabAdd).setOnClickListener(v -> startActivity(new Intent(Task_manager.this, New_task.class)));
 
-        // Focus History Link
+        // رابط سجل التركيز
         TextView tvFocusHistory = findViewById(R.id.tvFocusHistory);
         if (tvFocusHistory != null) {
             tvFocusHistory.setOnClickListener(v -> startActivity(new Intent(Task_manager.this, focus_history.class)));
@@ -105,6 +106,7 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
     }
 
     private void refreshTasks() {
+        // تحديث قائمة المهام
         List<Task> tasks = TaskRepository.getInstance(this).getTasks();
         taskAdapter.updateData(tasks);
 
@@ -122,7 +124,7 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
 
     @Override
     public void onTaskClick(Task task) {
-        // Task Item click: Open Smart_timer (Requirement)
+        // لما نضغط على المهمة بنفتح التايمر علطول
         Intent intent = new Intent(Task_manager.this, Smart_timer.class);
         intent.putExtra("TASK", task);
         intent.putExtra("DURATION", task.getDuration());
@@ -131,7 +133,7 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
 
     @Override
     public void onViewDetailsClick(Task task) {
-        // "View Details" click: Open TaskDetailsActivity (Requirement)
+        // عرض التفاصيل
         Intent intent = new Intent(Task_manager.this, TaskDetailsActivity.class);
         intent.putExtra("TASK", task);
         startActivity(intent);
@@ -139,6 +141,7 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
 
     @Override
     public void onEditClick(Task task) {
+        // تعديل المهمة
         Intent intent = new Intent(Task_manager.this, Edit_session.class);
         intent.putExtra("TASK", task);
         startActivity(intent);
@@ -146,6 +149,7 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
 
     @Override
     public void onDeleteClick(Task task) {
+        // ديالوج الحذف
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_delete_confirmation, null);
         builder.setView(dialogView);

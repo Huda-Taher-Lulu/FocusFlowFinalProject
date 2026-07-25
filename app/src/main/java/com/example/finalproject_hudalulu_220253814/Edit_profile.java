@@ -27,22 +27,21 @@ import androidx.appcompat.app.AlertDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import android.provider.MediaStore;
-import android.content.ContentValues;
 import android.graphics.Bitmap;
 
 public class Edit_profile extends AppCompatActivity {
 
     private ShapeableImageView ivProfile;
 
+    // تشغيل الجاليري
     private final ActivityResultLauncher<String> galleryLauncher = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             uri -> {
-                if (uri != null) {
-                    saveImageLocally(uri);
-                }
+                if (uri != null) saveImageLocally(uri);
             }
     );
 
+    // تشغيل الكاميرا
     private final ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -65,8 +64,7 @@ public class Edit_profile extends AppCompatActivity {
             }
             outputStream.close();
             inputStream.close();
-            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-            prefs.edit().putString("profileImageUri", file.getAbsolutePath()).apply();
+            getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().putString("profileImageUri", file.getAbsolutePath()).apply();
             loadProfileImage(file.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,8 +77,7 @@ public class Edit_profile extends AppCompatActivity {
             java.io.FileOutputStream outputStream = new java.io.FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             outputStream.close();
-            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-            prefs.edit().putString("profileImageUri", file.getAbsolutePath()).apply();
+            getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().putString("profileImageUri", file.getAbsolutePath()).apply();
             loadProfileImage(file.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,13 +97,13 @@ public class Edit_profile extends AppCompatActivity {
     }
 
     private void showImageSourceDialog() {
+        // نختار بين الكاميرا أو الاستوديو
         String[] options = {getString(R.string.camera), getString(R.string.gallery)};
         new AlertDialog.Builder(this)
                 .setTitle(R.string.select_image_source)
                 .setItems(options, (dialog, which) -> {
                     if (which == 0) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        cameraLauncher.launch(intent);
+                        cameraLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
                     } else {
                         galleryLauncher.launch("image/*");
                     }
@@ -125,6 +122,7 @@ public class Edit_profile extends AppCompatActivity {
             return insets;
         });
 
+        // ربط العناصر مع الـ View
         EditText etFullName = findViewById(R.id.etFullName);
         EditText etAcademicMajor = findViewById(R.id.etAcademicMajor);
         EditText etEmail = findViewById(R.id.etEmail);
@@ -133,16 +131,13 @@ public class Edit_profile extends AppCompatActivity {
         EditText etDailyFocus = findViewById(R.id.etDailyFocus);
         ivProfile = findViewById(R.id.ivProfile);
         ImageView ivCameraIcon = findViewById(R.id.ivCameraIcon);
-        MaterialButton btnSave = findViewById(R.id.btnSave);
-        TextView tvCancel = findViewById(R.id.tvCancel);
-        ImageView ivBack = findViewById(R.id.ivBack);
         Slider sliderSensitivity = findViewById(R.id.sliderSensitivity);
         TextView tvSensitivityLevel = findViewById(R.id.tvSensitivityLevel);
 
-        // Load existing data
+        // تحميل البيانات الحالية
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        etFullName.setText(prefs.getString("fullName", "Alex Rivera"));
-        etAcademicMajor.setText(prefs.getString("academicMajor", "Enter your major or role"));
+        etFullName.setText(prefs.getString("fullName", ""));
+        etAcademicMajor.setText(prefs.getString("academicMajor", ""));
         etEmail.setText(prefs.getString("email", ""));
         etPhone.setText(prefs.getString("phone", ""));
         etAddress.setText(prefs.getString("address", ""));
@@ -152,122 +147,78 @@ public class Edit_profile extends AppCompatActivity {
         sliderSensitivity.setValue(savedSensitivity);
         updateSensitivityUI(tvSensitivityLevel, savedSensitivity);
 
-        // Slider Listener
-        sliderSensitivity.addOnChangeListener((slider, value, fromUser) -> {
-            updateSensitivityUI(tvSensitivityLevel, value);
-        });
+        sliderSensitivity.addOnChangeListener((slider, value, fromUser) -> updateSensitivityUI(tvSensitivityLevel, value));
 
         String imageUriStr = prefs.getString("profileImageUri", null);
-        if (imageUriStr != null) {
-            loadProfileImage(imageUriStr);
-        }
+        if (imageUriStr != null) loadProfileImage(imageUriStr);
 
-        // Image Selection Logic
+        // تغيير الصورة
         View.OnClickListener imageClickListener = v -> showImageSourceDialog();
         ivProfile.setOnClickListener(imageClickListener);
-        if (ivCameraIcon != null) {
-            ivCameraIcon.setOnClickListener(imageClickListener);
-        }
+        if (ivCameraIcon != null) ivCameraIcon.setOnClickListener(imageClickListener);
 
-        // Goal Picker Logic
+        // تعديل الهدف اليومي
         View.OnClickListener goalClickListener = v -> showSetFocusGoalDialog(etDailyFocus);
         etDailyFocus.setOnClickListener(goalClickListener);
         findViewById(R.id.ivGoalIcon).setOnClickListener(goalClickListener);
 
-        // Save Button Logic
-        btnSave.setOnClickListener(v -> {
+        // حفظ التعديلات
+        findViewById(R.id.btnSave).setOnClickListener(v -> {
             String newName = etFullName.getText().toString().trim();
-            String newMajor = etAcademicMajor.getText().toString().trim();
             String newEmail = etEmail.getText().toString().trim();
             String newPhone = etPhone.getText().toString().trim();
             String newAddress = etAddress.getText().toString().trim();
-            String newGoal = etDailyFocus.getText().toString().trim();
 
-            boolean isValid = true;
-
-            if (newName.isEmpty()) {
-                etFullName.setError(getString(R.string.error_name_empty));
-                isValid = false;
+            if (newName.isEmpty() || newEmail.isEmpty()) {
+                Toast.makeText(this, "رجاءً عبي الحقول المطلوبة", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            if (newEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
-                etEmail.setError(getString(R.string.error_invalid_email));
-                isValid = false;
-            }
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("fullName", newName);
+            editor.putString("academicMajor", etAcademicMajor.getText().toString().trim());
+            editor.putString("email", newEmail);
+            editor.putString("phone", newPhone);
+            editor.putString("address", newAddress);
+            editor.putString("dailyFocusGoal", etDailyFocus.getText().toString().trim());
+            editor.putFloat("sensorSensitivity", sliderSensitivity.getValue());
+            editor.apply();
 
-            if (newPhone.isEmpty() || !newPhone.matches("\\d{7,15}")) {
-                etPhone.setError(getString(R.string.error_phone_invalid));
-                isValid = false;
-            }
-
-            if (newAddress.isEmpty()) {
-                etAddress.setError(getString(R.string.error_address_empty));
-                isValid = false;
-            }
-
-            if (isValid) {
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("fullName", newName);
-                editor.putString("academicMajor", newMajor);
-                editor.putString("email", newEmail);
-                editor.putString("phone", newPhone);
-                editor.putString("address", newAddress);
-                editor.putString("dailyFocusGoal", newGoal);
-                editor.putFloat("sensorSensitivity", sliderSensitivity.getValue());
-                editor.apply();
-
-                Toast.makeText(this, R.string.profile_updated, Toast.LENGTH_SHORT).show();
-                finish();
-            }
+            Toast.makeText(this, R.string.profile_updated, Toast.LENGTH_SHORT).show();
+            finish();
         });
 
-        // Cancel and Back logic
-        tvCancel.setOnClickListener(v -> finish());
-        ivBack.setOnClickListener(v -> finish());
+        findViewById(R.id.tvCancel).setOnClickListener(v -> finish());
+        findViewById(R.id.ivBack).setOnClickListener(v -> finish());
 
-        // Change Password Logic
+        // تغيير كلمة المرور
         View cvChangePassword = findViewById(R.id.cvChangePassword);
-        if (cvChangePassword != null) {
-            cvChangePassword.setOnClickListener(v -> showChangePasswordDialog());
-        }
+        if (cvChangePassword != null) cvChangePassword.setOnClickListener(v -> showChangePasswordDialog());
     }
 
     private void showChangePasswordDialog() {
-        android.view.View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(dialogView)
-                .create();
+        // ديالوج تغيير كلمة السر
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
+        AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
 
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        }
+        if (dialog.getWindow() != null) dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         EditText etCurrentPassword = dialogView.findViewById(R.id.etCurrentPassword);
         EditText etNewPassword = dialogView.findViewById(R.id.etNewPassword);
         EditText etConfirmNewPassword = dialogView.findViewById(R.id.etConfirmNewPassword);
-        android.view.View btnUpdate = dialogView.findViewById(R.id.btnUpdatePassword);
-        android.view.View btnCancel = dialogView.findViewById(R.id.btnCancelPassword);
 
-        btnUpdate.setOnClickListener(v -> {
-            String current = etCurrentPassword.getText().toString();
-            String newPass = etNewPassword.getText().toString();
-            String confirm = etConfirmNewPassword.getText().toString();
-
+        dialogView.findViewById(R.id.btnUpdatePassword).setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             String savedPass = prefs.getString("password", "");
 
-            if (!current.equals(savedPass)) {
+            if (!etCurrentPassword.getText().toString().equals(savedPass)) {
                 Toast.makeText(this, R.string.error_incorrect_password, Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            if (!isValidPassword(newPass)) {
-                Toast.makeText(this, R.string.error_weak_password, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (!newPass.equals(confirm)) {
-                Toast.makeText(this, R.string.error_password_mismatch, Toast.LENGTH_SHORT).show();
+            String newPass = etNewPassword.getText().toString();
+            if (newPass.length() < 8 || !newPass.equals(etConfirmNewPassword.getText().toString())) {
+                Toast.makeText(this, "تأكد من كلمة السر الجديدة", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -276,65 +227,39 @@ public class Edit_profile extends AppCompatActivity {
             dialog.dismiss();
         });
 
-        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        dialogView.findViewById(R.id.btnCancelPassword).setOnClickListener(v -> dialog.dismiss());
         dialog.show();
     }
 
-    private boolean isValidPassword(String password) {
-        if (password.length() < 8) return false;
-        boolean hasLetter = false, hasDigit = false, hasSymbol = false;
-        String symbols = "!@#$%^&*()_+-=[]{}|;':\",./<>?";
-        for (char c : password.toCharArray()) {
-            if (Character.isLetter(c)) hasLetter = true;
-            else if (Character.isDigit(c)) hasDigit = true;
-            else if (symbols.contains(String.valueOf(c))) hasSymbol = true;
-        }
-        return hasLetter && hasDigit && hasSymbol;
-    }
-
     private void showSetFocusGoalDialog(EditText targetEditText) {
+        // تحديد هدف التركيز اليومي
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_focus_h_goal, null);
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setView(dialogView)
-                .create();
+        AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
 
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        }
+        if (dialog.getWindow() != null) dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         NumberPicker npHours = dialogView.findViewById(R.id.npHours);
         NumberPicker npMinutes = dialogView.findViewById(R.id.npMinutes);
 
-        // Configure Hours
-        npHours.setMinValue(0);
-        npHours.setMaxValue(24);
-        npHours.setValue(3);
+        npHours.setMinValue(0); npHours.setMaxValue(24); npHours.setValue(3);
 
-        // Configure Minutes
         String[] minutesValues = {"00", "15", "30", "45"};
-        npMinutes.setMinValue(0);
-        npMinutes.setMaxValue(minutesValues.length - 1);
+        npMinutes.setMinValue(0); npMinutes.setMaxValue(minutesValues.length - 1);
         npMinutes.setDisplayedValues(minutesValues);
-        npMinutes.setValue(0);
 
         dialogView.findViewById(R.id.btnSaveFocusGoal).setOnClickListener(v -> {
             int h = npHours.getValue();
             String m = minutesValues[npMinutes.getValue()];
-            String result = getString(R.string.daily_focus_goal_format, h, Integer.parseInt(m));
-            if (h == 0 && m.equals("00")) {
-                Toast.makeText(this, R.string.error_goal_zero, Toast.LENGTH_SHORT).show();
-            } else {
-                targetEditText.setText(result);
-                dialog.dismiss();
-            }
+            targetEditText.setText(getString(R.string.daily_focus_goal_format, h, Integer.parseInt(m)));
+            dialog.dismiss();
         });
 
         dialogView.findViewById(R.id.btnCancelFocusGoal).setOnClickListener(v -> dialog.dismiss());
-
         dialog.show();
     }
 
     private void updateSensitivityUI(TextView tv, float value) {
+        // تحديث لون وشكل مستوى الحساسية
         if (value == 0) {
             tv.setText(R.string.low);
             tv.setTextColor(ContextCompat.getColor(this, R.color.text_red));

@@ -11,7 +11,7 @@ public class Task implements Serializable {
     private int duration;
     private String category;
     private String audioPreference;
-    private String status; // "PENDING", "IN PROGRESS", "COMPLETED"
+    private String status;
     private long timeLeftInMillis;
     private String notes;
     private long completionTimestamp;

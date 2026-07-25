@@ -24,6 +24,7 @@ public class onboarding4 extends AppCompatActivity {
             return insets;
         });
 
+        // الانتقال للـ Dashboard بعد تسجيل الدخول أو الاشتراك
         MaterialButton btnGetStarted = findViewById(R.id.btnGetStarted);
         btnGetStarted.setOnClickListener(v -> {
             Intent intent = new Intent(onboarding4.this, Dashboard.class);

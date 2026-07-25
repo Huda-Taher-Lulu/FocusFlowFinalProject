@@ -32,10 +32,11 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     public static final String COL_CAT_ID = "id";
     public static final String COL_CAT_NAME = "name";
 
+    // كود إنشاء الجداول
     private static final String CREATE_TABLE_TASKS =
             "CREATE TABLE " + TABLE_TASKS + " (" +
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COL_USER_ID + " INTEGER NOT NULL DEFAULT -1, " + // ربط الجدول بالـ user_id
+                    COL_USER_ID + " INTEGER NOT NULL DEFAULT -1, " +
                     COL_TITLE + " TEXT NOT NULL, " +
                     COL_DURATION + " INTEGER NOT NULL DEFAULT 0, " +
                     COL_CATEGORY + " TEXT, " +
@@ -69,7 +70,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-
+    // إضافة مهمة
     public long insertTask(Task task) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = taskToContentValues(task);
@@ -78,6 +79,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    // جلب المهام لمستخدم معين
     public List<Task> getTasksForUser(long userId) {
         List<Task> tasks = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -100,9 +102,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(id)}, null, null, null);
 
         Task task = null;
-        if (cursor.moveToFirst()) {
-            task = cursorToTask(cursor);
-        }
+        if (cursor.moveToFirst()) task = cursorToTask(cursor);
         cursor.close();
         db.close();
         return task;
@@ -141,7 +141,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         return rows;
     }
 
-
+    // إدارة التصنيفات
     public void insertCategory(String name) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -166,7 +166,6 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         return categories;
     }
 
-
     private ContentValues taskToContentValues(Task task) {
         ContentValues values = new ContentValues();
         values.put(COL_USER_ID, task.getUserId());
@@ -189,7 +188,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
                 cursor.getString(cursor.getColumnIndexOrThrow(COL_AUDIO_PREF))
         );
         task.setId(cursor.getLong(cursor.getColumnIndexOrThrow(COL_ID)));
-        task.setUserId(cursor.getLong(cursor.getColumnIndexOrThrow(COL_USER_ID))); // تعيين معرف المستخدم من القاعدة
+        task.setUserId(cursor.getLong(cursor.getColumnIndexOrThrow(COL_USER_ID)));
         task.setStatus(cursor.getString(cursor.getColumnIndexOrThrow(COL_STATUS)));
         task.setTimeLeftInMillis(cursor.getLong(cursor.getColumnIndexOrThrow(COL_TIME_LEFT_MILLIS)));
         task.setNotes(cursor.getString(cursor.getColumnIndexOrThrow(COL_NOTES)));

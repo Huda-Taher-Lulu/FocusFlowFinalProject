@@ -32,6 +32,7 @@ public class TaskRepository {
     }
 
     private long getCurrentUserId() {
+        // بنجيب رقم المستخدم الحالي
         SharedPreferences prefs = appContext.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         return prefs.getLong("currentUserId", -1);
     }
@@ -62,8 +63,7 @@ public class TaskRepository {
         dbHelper.deleteTask(id);
     }
 
-    // Categories
-
+    // إدارة التصنيفات المخصصة
     public List<String> getCustomCategories() {
         return dbHelper.getAllCategories();
     }

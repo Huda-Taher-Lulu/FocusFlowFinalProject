@@ -8,12 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.finalproject_hudalulu_220253814.models.User;
 
-/**
- * Separate SQLiteOpenHelper for user accounts (Register/Login), independent from
- * TaskDbHelper. Supports login by either email or username, matching the
- * Register/Login screen requirements (name, email, username, password; login by
- * email/username + password).
- */
 public class UserDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FocusFlowUsers.db";
@@ -28,6 +22,7 @@ public class UserDbHelper extends SQLiteOpenHelper {
     public static final String COL_ADDRESS = "address";
     public static final String COL_PASSWORD = "password";
 
+    // جدول المستخدمين
     private static final String CREATE_TABLE_USERS =
             "CREATE TABLE " + TABLE_USERS + " (" +
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -54,7 +49,7 @@ public class UserDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    /** CREATE: Registers a new user. Returns the new id, or -1 if email/username is taken. */
+    // تسجيل مستخدم جديد
     public long insertUser(User user) {
         if (emailExists(user.getEmail()) || usernameExists(user.getUsername())) return -1;
 
@@ -65,7 +60,7 @@ public class UserDbHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    /** READ: Login by either email OR username, plus password. Returns the User, or null. */
+    // التحقق من بيانات الدخول (إيميل أو يوزر نيم)
     public User getUserByCredentials(String identifier, String password) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_USERS, null,
@@ -73,9 +68,7 @@ public class UserDbHelper extends SQLiteOpenHelper {
                 new String[]{identifier, identifier, password}, null, null, null);
 
         User user = null;
-        if (cursor.moveToFirst()) {
-            user = cursorToUser(cursor);
-        }
+        if (cursor.moveToFirst()) user = cursorToUser(cursor);
         cursor.close();
         db.close();
         return user;
@@ -87,9 +80,7 @@ public class UserDbHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(id)}, null, null, null);
 
         User user = null;
-        if (cursor.moveToFirst()) {
-            user = cursorToUser(cursor);
-        }
+        if (cursor.moveToFirst()) user = cursorToUser(cursor);
         cursor.close();
         db.close();
         return user;
@@ -113,7 +104,6 @@ public class UserDbHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    /** UPDATE: Persists changes to an existing user's profile (matched by id). */
     public int updateUser(User user) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = userToContentValues(user);
@@ -123,7 +113,6 @@ public class UserDbHelper extends SQLiteOpenHelper {
         return rows;
     }
 
-    /** DELETE: Removes a user account permanently. */
     public int deleteUser(long id) {
         SQLiteDatabase db = getWritableDatabase();
         int rows = db.delete(TABLE_USERS, COL_ID + "=?", new String[]{String.valueOf(id)});

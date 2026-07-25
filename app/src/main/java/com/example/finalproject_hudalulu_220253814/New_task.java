@@ -45,6 +45,7 @@ public class New_task extends AppCompatActivity {
             return insets;
         });
 
+        // هان بنربط العناصر
         etTaskTitle = findViewById(R.id.etTaskTitle);
         sliderDuration = findViewById(R.id.sliderDuration);
         tvDurationValue = findViewById(R.id.tvDurationValue);
@@ -53,7 +54,7 @@ public class New_task extends AppCompatActivity {
             tvDurationValue.setText((int) value + "m");
         });
 
-        // Category Selection
+        // اختيار التصنيف
         LinearLayout btnStudy = findViewById(R.id.btnCategoryStudy);
         LinearLayout btnCode = findViewById(R.id.btnCategoryCode);
         LinearLayout btnDesign = findViewById(R.id.btnCategoryDesign);
@@ -73,12 +74,12 @@ public class New_task extends AppCompatActivity {
 
         findViewById(R.id.ivAddCategory).setOnClickListener(v -> showAddCategoryDialog());
 
-        // Load existing custom categories
+        // تحميل التصنيفات المضافة مسبقاً
         for (String cat : TaskRepository.getInstance(this).getCustomCategories()) {
             addNewCategoryButton(cat, false);
         }
 
-        // Audio Preference Selection
+        // اختيار الصوت
         TextView btnLofi = findViewById(R.id.btnAudioLofi);
         TextView btnSilent = findViewById(R.id.btnAudioSilent);
 
@@ -98,6 +99,7 @@ public class New_task extends AppCompatActivity {
             btnLofi.setTextColor(getResources().getColor(R.color.text_gray));
         });
 
+        // بنرجع البيانات لو صار تغيير في حالة الشاشة
         if (savedInstanceState != null) {
             etTaskTitle.setText(savedInstanceState.getString(KEY_TITLE, ""));
             sliderDuration.setValue(savedInstanceState.getFloat(KEY_DURATION, sliderDuration.getValue()));
@@ -113,6 +115,7 @@ public class New_task extends AppCompatActivity {
 
         findViewById(R.id.ivBack).setOnClickListener(v -> finish());
 
+        // حفظ المهمة
         findViewById(R.id.btnSaveTask).setOnClickListener(v -> {
             String title = etTaskTitle.getText().toString().trim();
             if (title.isEmpty()) {
@@ -129,7 +132,7 @@ public class New_task extends AppCompatActivity {
             finish();
         });
 
-        // Navigation Bar
+        // شريط التنقل
         LinearLayout navDashboard = findViewById(R.id.navDashboard);
         LinearLayout navTimer = findViewById(R.id.navTimer);
         LinearLayout navStats = findViewById(R.id.navStats);
@@ -144,7 +147,6 @@ public class New_task extends AppCompatActivity {
             navStats.setOnClickListener(v -> startActivity(new Intent(this, Focus_state.class)));
         }
 
-        // Initial UI update
         updateCategoryUI();
     }
 
@@ -166,6 +168,7 @@ public class New_task extends AppCompatActivity {
     }
 
     private void updateCategoryUI() {
+        // تحديث شكل التصنيفات المختارة
         LinearLayout container = findViewById(R.id.llCategoriesContainer);
         if (container == null) return;
         for (int i = 0; i < container.getChildCount(); i++) {
@@ -178,18 +181,16 @@ public class New_task extends AppCompatActivity {
 
                 boolean isSelected = selectedCategory.equalsIgnoreCase(tag);
 
-                // Apply visual changes for selected state
                 child.setAlpha(isSelected ? 1.0f : 0.4f);
                 child.setScaleX(isSelected ? 1.05f : 1.0f);
                 child.setScaleY(isSelected ? 1.05f : 1.0f);
-
-                // Elevation effect
                 child.setElevation(isSelected ? 8f : 0f);
             }
         }
     }
 
     private void showAddCategoryDialog() {
+        // ديالوج إضافة تصنيف جديد
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_category, null);
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
@@ -218,6 +219,7 @@ public class New_task extends AppCompatActivity {
     }
 
     private void addNewCategoryButton(String name, boolean autoSelect) {
+        // إضافة زر جديد للتصنيف في الـ UI
         LinearLayout container = findViewById(R.id.llCategoriesContainer);
 
         LinearLayout newBtn = new LinearLayout(this);
@@ -243,11 +245,9 @@ public class New_task extends AppCompatActivity {
             updateCategoryUI();
         });
 
-        // Add before the "+" button
         container.addView(newBtn, container.getChildCount() - 1);
 
         if (autoSelect) {
-            // Auto select the new category
             selectedCategory = name;
             updateCategoryUI();
         }

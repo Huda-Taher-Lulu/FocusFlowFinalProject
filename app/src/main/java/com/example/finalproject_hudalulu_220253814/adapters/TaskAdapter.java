@@ -15,9 +15,9 @@ import com.example.finalproject_hudalulu_220253814.models.Task;
 
 import java.util.List;
 
-/** Custom RecyclerView.Adapter for the Task list (Requirement 3.1.3). */
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
+    // واجهة للتعامل مع الأحداث في الـ Activity
     public interface OnTaskActionListener {
         void onTaskClick(Task task);
         void onViewDetailsClick(Task task);
@@ -50,24 +50,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task task = tasks.get(position);
 
+        // تعبئة بيانات المهمة في الصف
         holder.tvTitle.setText(task.getTitle());
-        holder.tvDuration.setText(task.getDuration() + " mins");
+        holder.tvDuration.setText(holder.itemView.getContext().getString(R.string.mins_with_value, task.getDuration(), holder.itemView.getContext().getString(R.string.min_unit)));
         holder.tvCategory.setText(task.getCategory());
 
+        // تغيير الشكل حسب الحالة
         if ("COMPLETED".equals(task.getStatus())) {
-            holder.tvStatus.setText("COMPLETED");
+            holder.tvStatus.setText(R.string.completed);
             holder.tvStatus.setBackgroundResource(R.drawable.badge_bg_green_status);
             holder.tvStatus.setTextColor(Color.parseColor("#1B4332"));
         } else if ("IN PROGRESS".equals(task.getStatus())) {
-            holder.tvStatus.setText("IN PROGRESS");
+            holder.tvStatus.setText(R.string.in_progress);
             holder.tvStatus.setBackgroundResource(R.drawable.badge_bg_yellow);
             holder.tvStatus.setTextColor(Color.parseColor("#B8860B"));
         } else {
-            holder.tvStatus.setText("PENDING");
+            holder.tvStatus.setText(R.string.pending);
             holder.tvStatus.setBackgroundResource(R.drawable.badge_bg_gray);
             holder.tvStatus.setTextColor(holder.itemView.getResources().getColor(R.color.text_gray));
         }
 
+        // تحديد الأيقونة المناسبة للتصنيف
         if ("Study".equalsIgnoreCase(task.getCategory())) {
             holder.ivCategoryIcon.setImageResource(R.drawable.ic_book);
         } else if ("Code".equalsIgnoreCase(task.getCategory())) {
@@ -78,6 +81,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             holder.ivCategoryIcon.setImageResource(R.drawable.ic_tasks);
         }
 
+        // تشغيل المستمعات
         holder.itemView.setOnClickListener(v -> listener.onTaskClick(task));
         holder.btnViewDetails.setOnClickListener(v -> listener.onViewDetailsClick(task));
         holder.ivEdit.setOnClickListener(v -> listener.onEditClick(task));

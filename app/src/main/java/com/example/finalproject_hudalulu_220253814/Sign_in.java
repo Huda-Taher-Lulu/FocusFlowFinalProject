@@ -32,7 +32,7 @@ public class Sign_in extends AppCompatActivity {
     private LinearLayout llEmailContainer, llPasswordContainer;
     private TextView tvEmailError, tvPasswordError;
     private boolean isPasswordVisible = false;
-    private UserDbHelper userDbHelper;
+    private UserDbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +47,9 @@ public class Sign_in extends AppCompatActivity {
             return insets;
         });
 
-        userDbHelper = new UserDbHelper(this);
+        dbHelper = new UserDbHelper(this);
 
-        // Initialize Views
+        // هان بنربط العناصر مع الـ View
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         cbRememberMe = findViewById(R.id.cbRememberMe);
@@ -62,9 +62,9 @@ public class Sign_in extends AppCompatActivity {
         TextView tvSignUp = findViewById(R.id.tvSignUp);
         TextView tvForgotPassword = findViewById(R.id.tvForgotPassword);
         MaterialButton btnGoogle = findViewById(R.id.btnGoogle);
-        MaterialButton btnApple = findViewById(R.id.btnApple); // This is actually Whatsapp in layout
+        MaterialButton btnApple = findViewById(R.id.btnApple);
 
-        // Check for Remember Me data
+        // بنشوف إذا متذكرين المستخدم من قبل
         SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
         boolean isRemembered = loginPrefs.getBoolean("rememberMe", false);
         if (isRemembered) {
@@ -73,7 +73,7 @@ public class Sign_in extends AppCompatActivity {
             cbRememberMe.setChecked(true);
         }
 
-        // Password Visibility Toggle
+        // إظهار وإخفاء الباسورد
         ivPasswordVisibility.setOnClickListener(v -> {
             if (isPasswordVisible) {
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -86,7 +86,7 @@ public class Sign_in extends AppCompatActivity {
             etPassword.setSelection(etPassword.getText().length());
         });
 
-        // Email Validation Logic (Real-time)
+        // فحص الإيميل واحنا بنكتب
         etEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -103,7 +103,7 @@ public class Sign_in extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Password Validation Logic (Real-time)
+        // فحص الباسورد واحنا بنكتب
         etPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -120,9 +120,9 @@ public class Sign_in extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Sign In Button Logic
+        // كود تسجيل الدخول
         btnSignIn.setOnClickListener(v -> {
-            String loginIdentifier = etEmail.getText().toString().trim(); // Can be email or username
+            String loginIdentifier = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
             if (loginIdentifier.isEmpty() || password.isEmpty()) {
@@ -130,9 +130,8 @@ public class Sign_in extends AppCompatActivity {
                 return;
             }
 
-            // Requirement 3.3: authenticate against the Users SQLite database
-            // (matches either email or username, per the Login screen requirement)
-            User user = userDbHelper.getUserByCredentials(loginIdentifier, password);
+            // بنشيك على البيانات من الداتابيز
+            User user = dbHelper.getUserByCredentials(loginIdentifier, password);
 
             if (user != null) {
                 SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
@@ -146,7 +145,7 @@ public class Sign_in extends AppCompatActivity {
                 editor.putBoolean("isGuest", false);
                 editor.apply();
 
-                // Handle Remember Me
+                // لو عامل تذكرني بنحفظ بياناته
                 SharedPreferences lPrefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor loginEditor = lPrefs.edit();
                 if (cbRememberMe.isChecked()) {
@@ -167,20 +166,20 @@ public class Sign_in extends AppCompatActivity {
             }
         });
 
-        // Forgot Password Logic
+        // لو نسي الباسورد
         tvForgotPassword.setOnClickListener(v -> {
             Intent intent = new Intent(Sign_in.this, forget_password.class);
             startActivity(intent);
         });
 
-        // Social Buttons Logic
+        // أزرار التواصل الاجتماعي
         btnGoogle.setOnClickListener(v ->
                 Toast.makeText(this, R.string.firebase_needed, Toast.LENGTH_SHORT).show());
 
         btnApple.setOnClickListener(v ->
                 Toast.makeText(this, R.string.whatsapp_sign_in, Toast.LENGTH_SHORT).show());
 
-        // Sign Up Text Logic
+        // شاشة التسجيل الجديد
         tvSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(Sign_in.this, SignUp.class);
             startActivity(intent);

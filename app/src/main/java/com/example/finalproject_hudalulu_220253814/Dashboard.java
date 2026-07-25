@@ -35,6 +35,7 @@ public class Dashboard extends AppCompatActivity {
             return insets;
         });
 
+        // هان بنربط العناصر مع الـ View
         tvDailyFocusProgress = findViewById(R.id.tvDailyFocusProgress);
         tvGreeting = findViewById(R.id.tvGreeting);
         tvRemainingHours = findViewById(R.id.tvRemainingHours);
@@ -46,7 +47,7 @@ public class Dashboard extends AppCompatActivity {
 
         refreshDashboardStats();
 
-        // Settings / Profile
+        // الإعدادات والبروفايل
         findViewById(R.id.ivSettings).setOnClickListener(v -> {
             startActivity(new Intent(Dashboard.this, settings.class));
         });
@@ -55,7 +56,7 @@ public class Dashboard extends AppCompatActivity {
             startActivity(new Intent(Dashboard.this, Profile.class));
         });
 
-        // Initialize Resume Button
+        // زر المتابعة إذا في سشن شغالة
         Button btnResume = findViewById(R.id.btnResume);
         SharedPreferences timerPrefs = getSharedPreferences("TimerPrefs", MODE_PRIVATE);
         boolean hasActive = timerPrefs.getBoolean("hasActiveSession", false);
@@ -66,14 +67,14 @@ public class Dashboard extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Navigation Bar
+        // شريط التنقل السفلي
         LinearLayout navDashboard = findViewById(R.id.navDashboard);
         LinearLayout navTasks = findViewById(R.id.navTasks);
         LinearLayout navTimer = findViewById(R.id.navTimer);
         LinearLayout navStats = findViewById(R.id.navStats);
 
         navDashboard.setOnClickListener(v -> {
-            // Already here
+            // إحنا هان أصلاً
         });
 
         navTasks.setOnClickListener(v -> {
@@ -104,7 +105,7 @@ public class Dashboard extends AppCompatActivity {
         android.view.View btnSave = dialogView.findViewById(R.id.btnSaveGoal);
         android.view.View btnCancel = dialogView.findViewById(R.id.btnCancelGoal);
 
-        // Pre-fill with current goal
+        // بنعبي القيم الموجودة حالياً
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         String goalStr = prefs.getString("dailyFocusGoal", "3 Hours 00 Minutes");
         try {
@@ -145,7 +146,7 @@ public class Dashboard extends AppCompatActivity {
     private void refreshDashboardStats() {
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         
-        // 1. Greeting logic
+        // 1. رسالة الترحيب حسب الوقت
         String fullName = prefs.getString("fullName", "Alex");
         String firstName = fullName.split(" ")[0];
         
@@ -158,13 +159,11 @@ public class Dashboard extends AppCompatActivity {
         
         tvGreeting.setText(getString(greetingResId, firstName));
 
-        // 2. Focus Goal logic
+        // 2. هدف التركيز اليومي
         String goalStr = prefs.getString("dailyFocusGoal", "3 Hours 00 Minutes");
         float goalHours = 3.0f;
         
         try {
-            // Use regex that works regardless of language if possible, or just use values
-            // Better to store goal as hours and minutes separately in prefs
             java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d+)");
             java.util.regex.Matcher matcher = pattern.matcher(goalStr);
             int h = 0, m = 0;
@@ -175,11 +174,11 @@ public class Dashboard extends AppCompatActivity {
             goalHours = 3.0f;
         }
 
-        // 3. Current Progress logic
+        // 3. التقدم الحالي
         long totalMinutes = prefs.getLong("totalFocusMinutes", 0);
         float currentHours = totalMinutes / 60.0f;
         
-        // Format as "5/8" style inside circle
+        // بنعرضها بصيغة "5/8" جوا الدائرة
         tvDailyFocusProgress.setText(String.format(java.util.Locale.getDefault(), "%.1f / %.1f", currentHours, goalHours));
         
         int progressPercent = 0;
@@ -188,7 +187,7 @@ public class Dashboard extends AppCompatActivity {
         }
         circularProgressBar.setProgress(Math.min(progressPercent, 100));
 
-        // 4. Remaining & Achievement
+        // 4. الساعات المتبقية ونسبة الإنجاز
         float remaining = Math.max(0, goalHours - currentHours);
         if (remaining >= 1.0f) {
             tvRemainingHours.setText(getString(R.string.hours_format, remaining));
@@ -198,7 +197,7 @@ public class Dashboard extends AppCompatActivity {
         
         tvAchievement.setText(progressPercent + "%");
 
-        // 5. Profile Image
+        // 5. صورة البروفايل
         String imagePath = prefs.getString("profileImageUri", null);
         if (imagePath != null && ivProfile != null) {
             com.bumptech.glide.Glide.with(this)
@@ -216,7 +215,7 @@ public class Dashboard extends AppCompatActivity {
         super.onResume();
         refreshDashboardStats();
         
-        // Update resume button visibility
+        // تحديث حالة زر المتابعة
         Button btnResume = findViewById(R.id.btnResume);
         if (btnResume != null) {
             boolean hasActive = getSharedPreferences("TimerPrefs", MODE_PRIVATE).getBoolean("hasActiveSession", false);
