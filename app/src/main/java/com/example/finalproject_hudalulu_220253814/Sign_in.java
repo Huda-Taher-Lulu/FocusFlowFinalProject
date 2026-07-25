@@ -15,13 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.finalproject_hudalulu_220253814.database.UserDbHelper;
+import com.example.finalproject_hudalulu_220253814.models.User;
 import com.google.android.material.button.MaterialButton;
 
 public class Sign_in extends AppCompatActivity {
@@ -32,19 +32,22 @@ public class Sign_in extends AppCompatActivity {
     private LinearLayout llEmailContainer, llPasswordContainer;
     private TextView tvEmailError, tvPasswordError;
     private boolean isPasswordVisible = false;
+    private UserDbHelper userDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_in);
-        
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             Insets ime = insets.getInsets(WindowInsetsCompat.Type.ime());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, Math.max(systemBars.bottom, ime.bottom));
             return insets;
         });
+
+        userDbHelper = new UserDbHelper(this);
 
         // Initialize Views
         etEmail = findViewById(R.id.etEmail);
@@ -65,7 +68,7 @@ public class Sign_in extends AppCompatActivity {
         SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
         boolean isRemembered = loginPrefs.getBoolean("rememberMe", false);
         if (isRemembered) {
-            etEmail.setText(loginPrefs.getString("email", ""));
+            etEmail.setText(loginPrefs.getString("identifier", ""));
             etPassword.setText(loginPrefs.getString("password", ""));
             cbRememberMe.setChecked(true);
         }
@@ -73,11 +76,9 @@ public class Sign_in extends AppCompatActivity {
         // Password Visibility Toggle
         ivPasswordVisibility.setOnClickListener(v -> {
             if (isPasswordVisible) {
-                // Hide Password
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 ivPasswordVisibility.setImageResource(R.drawable.ic_visibility);
             } else {
-                // Show Password
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 ivPasswordVisibility.setImageResource(R.drawable.ic_visibility_off);
             }
@@ -92,8 +93,7 @@ public class Sign_in extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String email = s.toString();
-                if (email.contains("@")) {
+                if (s.toString().contains("@")) {
                     llEmailContainer.setBackgroundResource(R.drawable.edit_text_bg);
                     tvEmailError.setVisibility(View.GONE);
                 }
@@ -125,42 +125,45 @@ public class Sign_in extends AppCompatActivity {
             String loginIdentifier = etEmail.getText().toString().trim(); // Can be email or username
             String password = etPassword.getText().toString().trim();
 
-            boolean isValid = true;
-
             if (loginIdentifier.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, R.string.error_fill_fields, Toast.LENGTH_SHORT).show();
-                isValid = false;
+                return;
             }
 
-            if (isValid) {
-                // Check against SharedPreferences (Simple Login Simulation)
+            // Requirement 3.3: authenticate against the Users SQLite database
+            // (matches either email or username, per the Login screen requirement)
+            User user = userDbHelper.getUserByCredentials(loginIdentifier, password);
+
+            if (user != null) {
                 SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                String savedEmail = prefs.getString("email", "");
-                String savedUsername = prefs.getString("username", "");
-                String savedPassword = prefs.getString("password", "");
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putLong("currentUserId", user.getId());
+                editor.putString("fullName", user.getFullName());
+                editor.putString("username", user.getUsername());
+                editor.putString("email", user.getEmail());
+                editor.putString("phone", user.getPhone());
+                editor.putString("address", user.getAddress());
+                editor.putBoolean("isGuest", false);
+                editor.apply();
 
-                boolean isCorrectIdentifier = loginIdentifier.equals(savedEmail) || loginIdentifier.equals(savedUsername);
-
-                if (isCorrectIdentifier && password.equals(savedPassword)) {
-                    // Handle Remember Me
-                    SharedPreferences lPrefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-                    SharedPreferences.Editor loginEditor = lPrefs.edit();
-                    if (cbRememberMe.isChecked()) {
-                        loginEditor.putBoolean("rememberMe", true);
-                        loginEditor.putString("email", loginIdentifier);
-                        loginEditor.putString("password", password);
-                    } else {
-                        loginEditor.clear();
-                    }
-                    loginEditor.apply();
-
-                    Toast.makeText(this, R.string.sign_in_success, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Sign_in.this, onboarding4.class);
-                    startActivity(intent);
-                    finish();
+                // Handle Remember Me
+                SharedPreferences lPrefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor loginEditor = lPrefs.edit();
+                if (cbRememberMe.isChecked()) {
+                    loginEditor.putBoolean("rememberMe", true);
+                    loginEditor.putString("identifier", loginIdentifier);
+                    loginEditor.putString("password", password);
                 } else {
-                    Toast.makeText(this, R.string.error_invalid_credentials, Toast.LENGTH_SHORT).show();
+                    loginEditor.clear();
                 }
+                loginEditor.apply();
+
+                Toast.makeText(this, R.string.sign_in_success, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Sign_in.this, onboarding4.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(this, R.string.error_invalid_credentials, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -171,11 +174,11 @@ public class Sign_in extends AppCompatActivity {
         });
 
         // Social Buttons Logic
-        btnGoogle.setOnClickListener(v -> 
-            Toast.makeText(this, R.string.firebase_needed, Toast.LENGTH_SHORT).show());
-        
-        btnApple.setOnClickListener(v -> 
-            Toast.makeText(this, R.string.whatsapp_sign_in, Toast.LENGTH_SHORT).show());
+        btnGoogle.setOnClickListener(v ->
+                Toast.makeText(this, R.string.firebase_needed, Toast.LENGTH_SHORT).show());
+
+        btnApple.setOnClickListener(v ->
+                Toast.makeText(this, R.string.whatsapp_sign_in, Toast.LENGTH_SHORT).show());
 
         // Sign Up Text Logic
         tvSignUp.setOnClickListener(v -> {

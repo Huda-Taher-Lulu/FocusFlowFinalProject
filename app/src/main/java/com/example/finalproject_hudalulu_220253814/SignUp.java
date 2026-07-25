@@ -19,9 +19,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.finalproject_hudalulu_220253814.database.UserDbHelper;
+import com.example.finalproject_hudalulu_220253814.models.User;
 import com.google.android.material.button.MaterialButton;
-
-import java.util.UUID;
 
 public class SignUp extends AppCompatActivity {
 
@@ -30,6 +30,7 @@ public class SignUp extends AppCompatActivity {
     private LinearLayout llEmailContainer, llPasswordContainer;
     private TextView tvEmailError, tvPasswordError;
     private boolean isPasswordVisible = false;
+    private UserDbHelper userDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,8 @@ public class SignUp extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, Math.max(systemBars.bottom, ime.bottom));
             return insets;
         });
+
+        userDbHelper = new UserDbHelper(this);
 
         // Initialize Views
         etFullName = findViewById(R.id.etFullName);
@@ -62,16 +65,14 @@ public class SignUp extends AppCompatActivity {
         // Password Visibility Toggle
         ivPasswordVisibility.setOnClickListener(v -> {
             if (isPasswordVisible) {
-                // Hide Password
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 ivPasswordVisibility.setImageResource(R.drawable.ic_visibility);
             } else {
-                // Show Password
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 ivPasswordVisibility.setImageResource(R.drawable.ic_visibility_off);
             }
             isPasswordVisible = !isPasswordVisible;
-            etPassword.setSelection(etPassword.getText().length()); // Keep cursor at the end
+            etPassword.setSelection(etPassword.getText().length());
         });
 
         // Email Validation Logic (Real-time)
@@ -83,7 +84,6 @@ public class SignUp extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String email = s.toString();
                 if (email.contains("@")) {
-                    // Valid
                     llEmailContainer.setBackgroundResource(R.drawable.edit_text_bg);
                     tvEmailError.setVisibility(View.GONE);
                 }
@@ -121,51 +121,69 @@ public class SignUp extends AppCompatActivity {
 
             boolean isValid = true;
 
-            // Email validation check on click
             if (!email.contains("@")) {
                 llEmailContainer.setBackgroundResource(R.drawable.edit_text_error_bg);
                 tvEmailError.setVisibility(View.VISIBLE);
                 isValid = false;
             }
 
-            // Username validation
             if (username.length() < 3) {
                 Toast.makeText(this, R.string.error_username_short, Toast.LENGTH_SHORT).show();
                 isValid = false;
             }
 
-            // Password validation check on click
             if (!isValidPassword(password)) {
                 llPasswordContainer.setBackgroundResource(R.drawable.edit_text_error_bg);
                 tvPasswordError.setVisibility(View.VISIBLE);
                 isValid = false;
             }
 
-            if (fullName.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+            if (fullName.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()
+                    || phone.isEmpty() || address.isEmpty()) {
                 Toast.makeText(this, R.string.error_fill_fields, Toast.LENGTH_SHORT).show();
                 isValid = false;
             }
 
-            if (isValid) {
-                // Save to SharedPreferences
-                SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("fullName", fullName);
-                editor.putString("username", username);
-                editor.putString("userId", UUID.randomUUID().toString());
-                editor.putString("email", email);
-                editor.putString("phone", phone);
-                editor.putString("address", address);
-                editor.putString("password", password);
-                editor.putBoolean("isGuest", false);
-                editor.apply();
+            if (!isValid) return;
 
-                Toast.makeText(this, R.string.account_created, Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(SignUp.this, onboarding4.class);
-                startActivity(intent);
-                finish();
+            // Requirement 3.3: persist the new account in SQLite (Users database)
+            if (userDbHelper.emailExists(email)) {
+                llEmailContainer.setBackgroundResource(R.drawable.edit_text_error_bg);
+                tvEmailError.setVisibility(View.VISIBLE);
+                Toast.makeText(this, "An account with this email already exists", Toast.LENGTH_SHORT).show();
+                return;
             }
+            if (userDbHelper.usernameExists(username)) {
+                Toast.makeText(this, "This username is already taken", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            User newUser = new User(fullName, username, email, phone, address, password);
+            long newUserId = userDbHelper.insertUser(newUser);
+
+            if (newUserId == -1) {
+                Toast.makeText(this, "Could not create account. Try again.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // SharedPreferences now only holds the session pointer + a quick-access cache;
+            // the actual account record lives in the Users SQLite database.
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putLong("currentUserId", newUserId);
+            editor.putString("fullName", fullName);
+            editor.putString("username", username);
+            editor.putString("email", email);
+            editor.putString("phone", phone);
+            editor.putString("address", address);
+            editor.putBoolean("isGuest", false);
+            editor.apply();
+
+            Toast.makeText(this, R.string.account_created, Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(SignUp.this, onboarding4.class);
+            startActivity(intent);
+            finish();
         });
 
         // Sign In Text Logic
@@ -176,12 +194,11 @@ public class SignUp extends AppCompatActivity {
 
         // Continue as Guest Logic
         btnGuest.setOnClickListener(v -> {
-            // Save as Guest
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("isGuest", true);
+            editor.putLong("currentUserId", -1);
             editor.putString("fullName", "Guest User");
-            // Clear any previous major when entering as guest
             editor.remove("academicMajor");
             editor.apply();
 
