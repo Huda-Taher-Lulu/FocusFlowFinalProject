@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProjectHudaLulu220253814">
         <activity
+            android:name=".TaskDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".settings"
             android:exported="false" />
         <activity

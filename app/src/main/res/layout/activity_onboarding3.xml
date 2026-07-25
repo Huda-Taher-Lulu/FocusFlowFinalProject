@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/quicksand"
-        android:text="Achieve Your Goals"
+        android:text="@string/onboarding3_title"
         android:textColor="@color/text_green"
         android:textSize="28sp"
         android:textStyle="bold"
@@ -84,7 +84,7 @@
         android:fontFamily="@font/inter"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
-        android:text="FocusFlow turns your daily productivity into a rewarding journey. Stay sharp, earn badges, and build the habits you've always wanted."
+        android:text="@string/onboarding3_desc"
         android:textColor="@color/text_gray"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/quicksand"
-                    android:text="Smart Timer"
+                    android:text="@string/smart_timer_label"
                     android:textColor="@color/text_green"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -162,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/quicksand"
-                    android:text="Deep Analytics"
+                    android:text="@string/deep_analytics_label"
                     android:textColor="@color/text_green"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -182,7 +182,7 @@
         app:backgroundTint="@null"
         android:background="@drawable/button_gradient"
         android:fontFamily="@font/quicksand"
-        android:text="Get Started"
+        android:text="@string/get_started"
         android:textAllCaps="false"
         android:textColor="@color/text_green"
         android:textSize="20sp"
@@ -210,7 +210,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
-            android:text="Already have an account? "
+            android:text="@string/already_have_account"
             android:textColor="@color/text_gray"
             android:textSize="14sp" />
 
@@ -219,7 +219,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
-            android:text="Sign In"
+            android:text="@string/sign_in"
             android:textColor="@color/text_green"
             android:textSize="14sp"
             android:textStyle="bold" />

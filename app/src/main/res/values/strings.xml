@@ -33,6 +33,11 @@
     <string name="minutes_label">MINUTES</string>
     <string name="save_goal">Save Goal</string>
 
+    <string name="phone_number_label">Phone Number</string>
+    <string name="phone_number_hint">+970567266441</string>
+    <string name="address_label">Address</string>
+    <string name="address_hint">Gaza City, Palestine</string>
+
     <!-- Welcome / Main -->
     <string name="skip">Skip</string>
     <string name="welcome_title">Welcome to FocusFlow</string>
@@ -47,6 +52,7 @@
     <string name="password_label">Password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="sign_in">Sign In</string>
+    <string name="remember_me">Remember Me</string>
     <string name="or_continue_with">OR CONTINUE WITH</string>
     <string name="google">Google</string>
     <string name="whatsapp">Whatsapp</string>
@@ -57,8 +63,12 @@
     <string name="sign_up_title">Start Your Focus Journey</string>
     <string name="sign_up_desc">Unlock a calmer, more productive version of yourself today.</string>
     <string name="full_name_label">Full Name</string>
-    <string name="full_name_hint">Alex Rivers</string>
-    <string name="email_hint_signup">alex@focusflow.com</string>
+    <string name="username_label">Username</string>
+    <string name="username_hint">alex_rivers</string>
+    <string name="full_name_hint">Huda Lulu</string>
+    <string name="email_hint_signup">Hudatlulu@gmail.com</string>
+    <string name="error_username_short">Username must be 3+ characters</string>
+    <string name="email_or_username_hint">Email or Username</string>
     <string name="create_account">Create Account</string>
     <string name="already_have_account">Already have an account? </string>
     <string name="or">OR</string>
@@ -87,6 +97,122 @@
     <string name="nav_tasks">Tasks</string>
     <string name="nav_timer">Timer</string>
     <string name="nav_stats">Stats</string>
+    <string name="deep_flow_active">Deep Flow Active</string>
+    <string name="focus_paused">Focus Paused!</string>
+    <string name="dont_lose_focus">Don\'t lose focus! Flip back to continue.</string>
+    <string name="stats_updated">Stats Updated!</string>
+    <string name="logged_out">Logged Out Successfully</string>
+    <string name="error_fill_fields">Please fill all fields</string>
+    <string name="account_created">Account created successfully!</string>
+    <string name="dnd_access_needed">Please grant DND access to silence notifications</string>
+    <string name="sign_in_success">Sign in successful!</string>
+    <string name="error_invalid_credentials">Invalid email or password</string>
+    <string name="firebase_needed">Google Sign-in requires Firebase setup</string>
+    <string name="whatsapp_sign_in">Sign in with Whatsapp</string>
+    <string name="reset_link_sent_to">Reset link sent to %s</string>
+
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="academic_major_label">Academic Major / Role</string>
+    <string name="major_hint_edit">Enter your major or role</string>
+    <string name="daily_focus_goal_label">Daily Focus Goal</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="no_task_selected">No Task Selected</string>
+    <string name="tasks_scheduled_count">You have %d tasks scheduled for today.</string>
+    <string name="category">Category</string>
+    <string name="sensor_preferences">Sensor Preferences</string>
+    <string name="error_name_empty">Name cannot be empty</string>
+    <string name="profile_updated">Profile updated successfully!</string>
+    <string name="error_task_title_empty">Please enter a task title</string>
+    <string name="task_saved">Task Saved Successfully!</string>
+    <string name="select_image_source">Select Image Source</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="error_goal_zero">Please set a goal higher than 0</string>
+    <string name="error_phone_invalid">Invalid phone (7-15 digits)</string>
+    <string name="error_address_empty">Address cannot be empty</string>
+    <string name="hours_suffix">%.1fh</string>
+    <string name="minutes_suffix">%dm</string>
+    <string name="days_suffix">%dd</string>
+    <string name="share_profile_title">Share profile via</string>
+    <string name="share_task_title">Share task via</string>
+    <string name="task_summary">Focus session: %1$s (%2$d min, %3$s)</string>
+
+    <string name="profile_summary">I\'m %1$s on FocusFlow — %2$s focused, %3$s tasks done, %4$s day streak!</string>
+    <string name="tasks_done_count">%d</string>
+    <string name="choose_task_start">Choose a task to start</string>
+    <string name="delete_task_title">Delete Task?</string>
+    <string name="delete_task_desc">Are you sure you want to delete? This action cannot be undone.</string>
+    <string name="delete">Delete</string>
+    <string name="update_session">UPDATE SESSION</string>
+    <string name="edit_focus_block">Edit Focus Block</string>
+    <string name="duration">Duration</string>
+    <string name="audio_preference">AUDIO PREFERENCE</string>
+    <string name="none">None</string>
+    <string name="forgot_password_title">Forgot Password</string>
+    <string name="forgot_password_desc">Don\'t worry, it happens. Enter your email address and we\'ll send you a link to reset your password.</string>
+    <string name="send_reset_link">Send Reset Link</string>
+    <string name="back_to_sign_in">Back to Sign In</string>
+    <string name="reset_link_sent">Reset link sent to your email!</string>
+    <string name="notes_label">Notes</string>
+    <string name="history_session_count">%d sessions</string>
+    <string name="ago_suffix">%s ago</string>
+    <string name="pending">PENDING</string>
+    <string name="completed">COMPLETED</string>
+    <string name="in_progress">IN PROGRESS</string>
+
+    <string name="day_m">M</string>
+    <string name="day_t">T</string>
+    <string name="day_w">W</string>
+    <string name="day_th">T</string>
+    <string name="day_f">F</string>
+    <string name="day_s">S</string>
+    <string name="day_su">S</string>
+
+
+    <!-- Settings & Dashboard Extras -->
+    <string name="settings_title">Settings</string>
+    <string name="search_settings_hint">Search settings...</string>
+    <string name="premium_member">Premium Member</string>
+    <string name="sensor_gesture_section">Sensor &amp; Gesture</string>
+    <string name="flip_sensitivity_label">Flip-to-Focus Sensitivity</string>
+    <string name="flip_vibration_label">Flip Vibration &amp; Sound</string>
+    <string name="focus_preferences_section">Focus Preferences</string>
+    <string name="auto_start_breaks_label">Auto-start Breaks</string>
+    <string name="ambient_sounds_label">Ambient Background\nSounds</string>
+    <string name="appearance_notifications_section">Appearance &amp; Notifications</string>
+    <string name="theme_mode_label">Theme Mode</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System</string>
+    <string name="daily_study_reminders_label">Daily Study Reminders</string>
+    <string name="daily_reminders_time">At 8:00 AM daily</string>
+    <string name="account_support_section">Account &amp; Support</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="logout">Log Out</string>
+    <string name="version_info">FocusFlow Version 2.4.0</string>
+    <string name="greeting_morning">Good Morning, %s</string>
+    <string name="greeting_afternoon">Good Afternoon, %s</string>
+    <string name="greeting_evening">Good Evening, %s</string>
+    <string name="hours_format">%1$.1f Hours</string>
+    <string name="minutes_format">%d Minutes</string>
+    <string name="daily_focus_goal_format">%d Hours %02d Minutes</string>
+
+    <string name="daily_goal">Daily Goal</string>
+    <string name="remaining">Remaining</string>
+    <string name="achievement">Achievement</string>
+    <string name="quick_start">Quick Start</string>
+    <string name="quick_start_desc">Start a 25-minute focus session now.</string>
+    <string name="start_timer">Start Timer</string>
+    <string name="language">Language</string>
+    <string name="app_language">App Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="goal_question">How many hours do you want to focus?</string>
+    <string name="hrs_unit">hrs</string>
+    <string name="min_unit">min</string>
+
 
     <!-- Smart Timer -->
     <string name="deep_work_label">DEEP WORK</string>
@@ -112,11 +238,19 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="sensor_sensitivity">Sensor Sensitivity</string>
     <string name="help_support">Help &amp; Support</string>
+    <string name="security">Security</string>
+    <string name="change_password">Change Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password_updated">Password updated successfully!</string>
+    <string name="error_incorrect_password">Incorrect current password</string>
+    <string name="error_password_mismatch">Passwords do not match</string>
 
     <!-- Task Manager -->
     <string name="my_tasks">My Tasks</string>
     <string name="ready_to_focus">Ready to focus?</string>
-    <string name="tasks_scheduled_zero">You have 0 tasks scheduled for today.</string>
+    <string name="tasks_scheduled_zero">You have no tasks scheduled for today.</string>
     <string name="active_journey">ACTIVE JOURNEY</string>
     <string name="focus_history">Focus History</string>
     <string name="tap_to_add">Tap + to add a focus blocks.</string>
@@ -169,4 +303,18 @@
     <string name="step3_desc">Notifications pause so you can focus.</string>
     <string name="begin_journey">Begin your journy</string>
 
+    <!-- Task Details -->
+    <string name="task_details_title">Task Details</string>
+    <string name="session_notes">Session Notes</string>
+    <string name="edit_note">Edit Note</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="delete_task_btn">Delete Task</string>
+    <string name="duration_caps">DURATION</string>
+    <string name="remaining_caps">REMAINING</string>
+    <string name="audio_pref_caps">AUDIO PREFERENCE</string>
+    <string name="status_caps">STATUS</string>
+    <string name="share_task_content">Task: %1$s\nDuration: %2$d mins\nCategory: %3$s\nStatus: %4$s</string>
+    <string name="edit_note_title">Edit Note</string>
+
+    <string name="view_details">View Details</string>
 </resources>

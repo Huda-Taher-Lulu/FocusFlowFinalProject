@@ -21,6 +21,10 @@ public class Splash extends AppCompatActivity {
         
         // Apply saved theme before EdgeToEdge and layout inflation
         SharedPreferences themePrefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        
+        // Apply saved language
+        LanguageHelper.applySavedLocale(this);
+
         int themeMode = themePrefs.getInt("themeMode", 2); // default to system
         if (themeMode == 0) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         else if (themeMode == 1) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);

@@ -20,6 +20,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     public interface OnTaskActionListener {
         void onTaskClick(Task task);
+        void onViewDetailsClick(Task task);
         void onEditClick(Task task);
         void onDeleteClick(Task task);
     }
@@ -52,7 +53,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.tvTitle.setText(task.getTitle());
         holder.tvDuration.setText(task.getDuration() + " mins");
         holder.tvCategory.setText(task.getCategory());
-        holder.tvAudioPref.setText(task.getAudioPreference());
 
         if ("COMPLETED".equals(task.getStatus())) {
             holder.tvStatus.setText("COMPLETED");
@@ -78,13 +78,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             holder.ivCategoryIcon.setImageResource(R.drawable.ic_tasks);
         }
 
-        if ("Lofi Beats".equalsIgnoreCase(task.getAudioPreference())) {
-            holder.ivAudioIcon.setImageResource(R.drawable.ic_music);
-        } else {
-            holder.ivAudioIcon.setImageResource(R.drawable.ic_volume_off);
-        }
-
         holder.itemView.setOnClickListener(v -> listener.onTaskClick(task));
+        holder.btnViewDetails.setOnClickListener(v -> listener.onViewDetailsClick(task));
         holder.ivEdit.setOnClickListener(v -> listener.onEditClick(task));
         holder.ivDelete.setOnClickListener(v -> listener.onDeleteClick(task));
     }
@@ -95,18 +90,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     static class TaskViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvDuration, tvCategory, tvAudioPref, tvStatus;
-        ImageView ivCategoryIcon, ivAudioIcon, ivDelete, ivEdit;
+        TextView tvTitle, tvDuration, tvCategory, tvStatus, btnViewDetails;
+        ImageView ivCategoryIcon, ivDelete, ivEdit;
 
         TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTaskTitle);
             tvDuration = itemView.findViewById(R.id.tvTaskDuration);
             tvCategory = itemView.findViewById(R.id.tvTaskCategory);
-            tvAudioPref = itemView.findViewById(R.id.tvAudioPref);
             tvStatus = itemView.findViewById(R.id.tvTaskStatus);
+            btnViewDetails = itemView.findViewById(R.id.btnViewDetails);
             ivCategoryIcon = itemView.findViewById(R.id.ivCategoryIcon);
-            ivAudioIcon = itemView.findViewById(R.id.ivAudioIcon);
             ivDelete = itemView.findViewById(R.id.ivDelete);
             ivEdit = itemView.findViewById(R.id.ivEdit);
         }

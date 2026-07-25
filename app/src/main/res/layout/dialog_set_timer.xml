@@ -20,7 +20,7 @@
             android:layout_marginTop="16dp"
             android:layout_gravity="center"
             android:fontFamily="@font/quicksand"
-            android:text="Edit Session Time"
+            android:text="@string/edit_focus_block"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
                 android:fontFamily="@font/inter"
-                android:text="hrs"
+                android:text="@string/hrs_unit"
                 android:textColor="@color/text_gray"
                 android:textSize="16sp" />
 
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:fontFamily="@font/inter"
-                android:text="min"
+                android:text="@string/min_unit"
                 android:textColor="@color/text_gray"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -87,7 +87,7 @@
             android:layout_marginTop="32dp"
             app:backgroundTint="@color/text_green"
             android:fontFamily="@font/quicksand"
-            android:text="Save"
+            android:text="@string/update"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -101,7 +101,7 @@
             android:layout_height="56dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/quicksand"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textAllCaps="false"
             android:textColor="@color/text_gray"
             android:textSize="16sp"

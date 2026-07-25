@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:fontFamily="@font/inter"
-                android:text="Notes"
+                android:text="@string/notes_label"
                 android:textColor="@color/text_green"
                 android:textSize="11sp"
                 android:textStyle="bold" />

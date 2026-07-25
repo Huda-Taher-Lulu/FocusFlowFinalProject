@@ -50,11 +50,39 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
-            <!--  Achievements Section  -->
+
+            <!-- Contact Info Cards -->
+            <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" app:cardCornerRadius="20dp" app:cardElevation="2dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="8dp">
+                    <!-- Email Card -->
+                    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="64dp" android:paddingHorizontal="16dp">
+                        <ImageView android:id="@+id/ivEmailIcon" android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/nav_item_active_bg" android:padding="10dp" android:src="@drawable/ic_email" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" app:tint="@color/text_green"/>
+                        <TextView android:id="@+id/tvEmailLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:fontFamily="@font/inter" android:text="@string/email_label" android:textColor="@color/text_gray" android:textSize="11sp" android:textStyle="bold" android:textAllCaps="true" app:layout_constraintStart_toEndOf="@id/ivEmailIcon" app:layout_constraintTop_toTopOf="@id/ivEmailIcon" app:layout_constraintBottom_toTopOf="@+id/tvProfileEmail" app:layout_constraintVertical_chainStyle="packed"/>
+                        <TextView android:id="@+id/tvProfileEmail" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/inter" android:text="@string/email_hint" android:textColor="@color/black" android:textSize="15sp" app:layout_constraintStart_toStartOf="@id/tvEmailLabel" app:layout_constraintTop_toBottomOf="@id/tvEmailLabel" app:layout_constraintBottom_toBottomOf="@id/ivEmailIcon"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6" android:layout_marginHorizontal="16dp"/>
+                    <!-- Phone Card -->
+                    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="64dp" android:paddingHorizontal="16dp">
+                        <ImageView android:id="@+id/ivPhoneIcon" android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/nav_item_active_bg" android:padding="10dp" android:src="@drawable/ic_call" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" app:tint="@color/text_green"/>
+                        <TextView android:id="@+id/tvPhoneLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:fontFamily="@font/inter" android:text="@string/phone_number_label" android:textColor="@color/text_gray" android:textSize="11sp" android:textStyle="bold" android:textAllCaps="true" app:layout_constraintStart_toEndOf="@id/ivPhoneIcon" app:layout_constraintTop_toTopOf="@id/ivPhoneIcon" app:layout_constraintBottom_toTopOf="@+id/tvProfilePhone" app:layout_constraintVertical_chainStyle="packed"/>
+                        <TextView android:id="@+id/tvProfilePhone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/inter" android:text="@string/phone_number_hint" android:textColor="@color/black" android:textSize="15sp" app:layout_constraintStart_toStartOf="@id/tvPhoneLabel" app:layout_constraintTop_toBottomOf="@id/tvPhoneLabel" app:layout_constraintBottom_toBottomOf="@id/ivPhoneIcon"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6" android:layout_marginHorizontal="16dp"/>
+                    <!-- Address Card -->
+                    <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/clProfileAddress" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingHorizontal="16dp" android:paddingVertical="12dp">
+                        <ImageView android:id="@+id/ivAddressIcon" android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/nav_item_active_bg" android:padding="10dp" android:src="@drawable/ic_location" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:tint="@color/text_green"/>
+                        <TextView android:id="@+id/tvAddressLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:fontFamily="@font/inter" android:text="@string/address_label" android:textColor="@color/text_gray" android:textSize="11sp" android:textStyle="bold" android:textAllCaps="true" app:layout_constraintStart_toEndOf="@id/ivAddressIcon" app:layout_constraintTop_toTopOf="@id/ivAddressIcon" app:layout_constraintBottom_toTopOf="@+id/tvProfileAddress" app:layout_constraintVertical_chainStyle="packed"/>
+                        <TextView android:id="@+id/tvProfileAddress" android:layout_width="0dp" android:layout_height="wrap_content" android:fontFamily="@font/inter" android:text="@string/address_hint" android:textColor="@color/black" android:textSize="15sp" app:layout_constraintStart_toStartOf="@id/tvAddressLabel" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@id/tvAddressLabel" app:layout_constraintBottom_toBottomOf="parent"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Achievements Section -->
             <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/quicksand" android:text="@string/my_achievements" android:textColor="@color/black" android:textSize="20sp" android:textStyle="bold" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/inter" android:text="@string/view_all" android:textColor="@color/text_green" android:textSize="14sp" android:textStyle="bold" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:orientation="horizontal">
                 <!--  Achievement 1  -->
                 <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="8dp" android:layout_weight="1" app:cardBackgroundColor="@color/badge_yellow" app:cardCornerRadius="20dp" app:cardElevation="0dp">

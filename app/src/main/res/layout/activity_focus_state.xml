@@ -142,7 +142,7 @@
                             android:gravity="center_horizontal|bottom"
                             android:orientation="vertical">
                             <View android:layout_width="16dp" android:layout_height="50dp" android:background="@drawable/bar_monday" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="M" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/day_m" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
                         </LinearLayout>
                         <!-- T -->
                         <LinearLayout
@@ -152,7 +152,7 @@
                             android:gravity="center_horizontal|bottom"
                             android:orientation="vertical">
                             <View android:layout_width="16dp" android:layout_height="80dp" android:background="@drawable/chip_selected" app:backgroundTint="#83E7BC" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="T" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/day_t" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
                         </LinearLayout>
                         <!-- W -->
                         <LinearLayout
@@ -162,7 +162,7 @@
                             android:gravity="center_horizontal|bottom"
                             android:orientation="vertical">
                             <View android:layout_width="16dp" android:layout_height="70dp" android:background="@drawable/chip_selected" app:backgroundTint="#D4AC0D" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="W" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/day_w" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
                         </LinearLayout>
                         <!-- T -->
                         <LinearLayout
@@ -172,7 +172,7 @@
                             android:gravity="center_horizontal|bottom"
                             android:orientation="vertical">
                             <View android:layout_width="16dp" android:layout_height="80dp" android:background="@drawable/chip_selected" app:backgroundTint="#1B4332" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="T" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/day_th" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
                         </LinearLayout>
                         <!-- F -->
                         <LinearLayout
@@ -182,7 +182,7 @@
                             android:gravity="center_horizontal|bottom"
                             android:orientation="vertical">
                             <View android:layout_width="16dp" android:layout_height="90dp" android:background="@drawable/chip_selected" app:backgroundTint="#A5F2D0" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="F" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/day_f" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
                         </LinearLayout>
                         <!-- S -->
                         <LinearLayout
@@ -192,7 +192,7 @@
                             android:gravity="center_horizontal|bottom"
                             android:orientation="vertical">
                             <View android:layout_width="16dp" android:layout_height="50dp" android:background="@drawable/chip_selected" app:backgroundTint="#F1C40F" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="S" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/day_s" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
                         </LinearLayout>
                         <!-- S -->
                         <LinearLayout
@@ -202,7 +202,7 @@
                             android:gravity="center_horizontal|bottom"
                             android:orientation="vertical">
                             <View android:layout_width="16dp" android:layout_height="40dp" android:background="@drawable/bar_monday" app:backgroundTint="#F7DC6F" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="S" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/day_su" android:textColor="@color/text_gray" android:layout_marginTop="8dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -263,7 +263,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/quicksand"
-                            android:text="0.0h"
+                            android:text="@string/hours_suffix"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold"
@@ -312,7 +312,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/quicksand"
-                            android:text="0.0h"
+                            android:text="@string/hours_suffix"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold"
@@ -363,7 +363,7 @@
                                 android:id="@+id/tvSessionsCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0"
+                                android:text="@string/tasks_done_count"
                                 android:textColor="#D4AC0D"
                                 android:textStyle="bold" />
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/sessions" android:textColor="@color/text_gray" android:textSize="12sp" />
@@ -439,7 +439,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/quicksand"
-                        android:text="0"
+                        android:text="@string/tasks_done_count"
                         android:textColor="@color/text_green"
                         android:textSize="40sp"
                         android:textStyle="bold" />

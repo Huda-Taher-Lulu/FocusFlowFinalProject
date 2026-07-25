@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/quicksand"
-            android:text="Edit Profile"
+            android:text="@string/edit_profile_title"
             android:textColor="@color/text_green"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/inter"
-                android:text="Full Name"
+                android:text="@string/full_name_label"
                 android:textColor="@color/text_gray"
                 android:textSize="13sp"
                 android:textStyle="bold" />
@@ -115,7 +115,7 @@
                         android:layout_height="match_parent"
                         android:background="@null"
                         android:fontFamily="@font/inter"
-                        android:text="Huda Taher Lulu"
+                        android:text="@string/profile_name_default"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         app:layout_constraintEnd_toStartOf="@id/ivEditName"
@@ -136,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/inter"
-                android:text="Academic Major / Role"
+                android:text="@string/academic_major_label"
                 android:textColor="@color/text_gray"
                 android:textSize="13sp"
                 android:textStyle="bold" />
@@ -157,7 +157,7 @@
                         android:layout_height="match_parent"
                         android:background="@null"
                         android:fontFamily="@font/inter"
-                        android:hint="Enter your major or role"
+                        android:hint="@string/major_hint_edit"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         app:layout_constraintEnd_toStartOf="@id/ivEditMajor"
@@ -173,12 +173,116 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Email -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/inter"
-                android:text="Daily Focus Goal"
+                android:text="@string/email_label"
+                android:textColor="@color/text_gray"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="16dp">
+                    <EditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:fontFamily="@font/inter"
+                        android:hint="@string/email_hint"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Phone -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/phone_number_label"
+                android:textColor="@color/text_gray"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="16dp">
+                    <EditText
+                        android:id="@+id/etPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:fontFamily="@font/inter"
+                        android:hint="@string/phone_number_hint"
+                        android:inputType="phone"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Address -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/address_label"
+                android:textColor="@color/text_gray"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp">
+                    <EditText
+                        android:id="@+id/etAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:background="@null"
+                        android:fontFamily="@font/inter"
+                        android:hint="@string/address_hint"
+                        android:inputType="textMultiLine|textPostalAddress"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/daily_focus_goal_label"
                 android:textColor="@color/text_gray"
                 android:textSize="13sp"
                 android:textStyle="bold" />
@@ -226,7 +330,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/quicksand"
-                android:text="Sensor Preferences"
+                android:text="@string/sensor_preferences"
                 android:textColor="@color/text_green"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -252,7 +356,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter"
-                            android:text="Sensor Sensitivity"
+                            android:text="@string/sensor_sensitivity"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold"
@@ -265,7 +369,7 @@
                             android:background="@drawable/badge_bg_yellow"
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="4dp"
-                            android:text="Medium"
+                            android:text="@string/medium"
                             android:textColor="#B8860B"
                             android:textSize="12sp"
                             android:textStyle="bold"
@@ -291,11 +395,69 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:paddingHorizontal="8dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Low" android:textColor="@color/text_gray" android:textSize="12sp" android:fontFamily="@font/inter"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Medium" android:textColor="@color/text_gray" android:textSize="12sp" android:fontFamily="@font/inter" android:gravity="center"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="High" android:textColor="@color/text_gray" android:textSize="12sp" android:fontFamily="@font/inter" android:gravity="end"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/low" android:textColor="@color/text_gray" android:textSize="12sp" android:fontFamily="@font/inter"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/medium" android:textColor="@color/text_gray" android:textSize="12sp" android:fontFamily="@font/inter" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/high" android:textColor="@color/text_gray" android:textSize="12sp" android:fontFamily="@font/inter" android:gravity="end"/>
                     </LinearLayout>
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Password Security Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/quicksand"
+                android:text="@string/security"
+                android:textColor="@color/text_green"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="20dp">
+                    <ImageView
+                        android:id="@+id/ivLockIcon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_lock"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/text_green" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/change_password"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivLockIcon"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_arrow_next"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/text_gray" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
@@ -317,7 +479,7 @@
             app:backgroundTint="@null"
             android:background="@drawable/button_gradient"
             android:fontFamily="@font/quicksand"
-            android:text="Save Changes"
+            android:text="@string/save_changes"
             android:textAllCaps="false"
             android:textColor="@color/text_green"
             android:textSize="20sp"
@@ -331,7 +493,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/inter"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@color/text_gray"
             android:textSize="14sp"
             android:textStyle="bold" />

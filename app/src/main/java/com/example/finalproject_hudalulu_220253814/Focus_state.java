@@ -67,8 +67,10 @@ public class Focus_state extends AppCompatActivity {
 
             String imagePath = prefs.getString("profileImageUri", null);
             if (imagePath != null) {
-                Glide.with(this)
+                com.bumptech.glide.Glide.with(this)
                         .load(imagePath)
+                        .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
                         .placeholder(R.drawable.ic_person)
                         .circleCrop()
                         .into(ivProfile);

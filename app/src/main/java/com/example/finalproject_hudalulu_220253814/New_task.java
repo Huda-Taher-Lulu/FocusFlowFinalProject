@@ -116,7 +116,7 @@ public class New_task extends AppCompatActivity {
         findViewById(R.id.btnSaveTask).setOnClickListener(v -> {
             String title = etTaskTitle.getText().toString().trim();
             if (title.isEmpty()) {
-                Toast.makeText(this, "Please enter a task title", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_task_title_empty, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -125,7 +125,7 @@ public class New_task extends AppCompatActivity {
             Task newTask = new Task(title, duration, selectedCategory, selectedAudio);
             TaskRepository.getInstance(this).addTask(this, newTask);
 
-            Toast.makeText(this, "Task Saved Successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.task_saved, Toast.LENGTH_SHORT).show();
             finish();
         });
 

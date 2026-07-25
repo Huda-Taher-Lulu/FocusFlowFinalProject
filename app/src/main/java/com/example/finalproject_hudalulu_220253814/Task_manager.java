@@ -69,7 +69,13 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             String imagePath = prefs.getString("profileImageUri", null);
             if (imagePath != null) {
-                Glide.with(this).load(imagePath).placeholder(R.drawable.ic_person).circleCrop().into(ivProfile);
+                com.bumptech.glide.Glide.with(this)
+                        .load(imagePath)
+                        .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .placeholder(R.drawable.ic_person)
+                        .circleCrop()
+                        .into(ivProfile);
             }
         }
 
@@ -105,10 +111,10 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
         if (llEmptyState != null) {
             if (tasks.isEmpty()) {
                 llEmptyState.setVisibility(View.VISIBLE);
-                if (tvBannerSubtitle != null) tvBannerSubtitle.setText("You have no tasks scheduled for today.");
+                if (tvBannerSubtitle != null) tvBannerSubtitle.setText(R.string.tasks_scheduled_zero);
             } else {
                 llEmptyState.setVisibility(View.GONE);
-                if (tvBannerSubtitle != null) tvBannerSubtitle.setText("You have " + tasks.size() + " tasks scheduled for today.");
+                if (tvBannerSubtitle != null) tvBannerSubtitle.setText(getString(R.string.tasks_scheduled_count, tasks.size()));
             }
         }
     }
@@ -116,10 +122,18 @@ public class Task_manager extends AppCompatActivity implements TaskAdapter.OnTas
 
     @Override
     public void onTaskClick(Task task) {
-        // Explicit Intent + full Task object passed as Serializable (Requirement 3.2)
+        // Task Item click: Open Smart_timer (Requirement)
         Intent intent = new Intent(Task_manager.this, Smart_timer.class);
         intent.putExtra("TASK", task);
         intent.putExtra("DURATION", task.getDuration());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onViewDetailsClick(Task task) {
+        // "View Details" click: Open TaskDetailsActivity (Requirement)
+        Intent intent = new Intent(Task_manager.this, TaskDetailsActivity.class);
+        intent.putExtra("TASK", task);
         startActivity(intent);
     }
 

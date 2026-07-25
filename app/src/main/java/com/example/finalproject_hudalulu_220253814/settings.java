@@ -34,7 +34,8 @@ public class settings extends AppCompatActivity {
     private TextView tvSensitivityLevel;
     private SwitchMaterial switchFlipVibration, switchAutoStartBreaks, switchDailyReminders;
     private Spinner spinnerAmbientSound;
-    private TextView tvThemeLight, tvThemeDark, tvThemeSystem;
+    private TextView tvThemeLight, tvThemeDark, tvThemeSystem, tvCurrentLanguage;
+    private android.view.View llLanguage;
     private final String[] soundOptions = {"Lofi Rain", "Calm Forest", "Ocean Waves", "Silent"};
 
     @Override
@@ -70,7 +71,12 @@ public class settings extends AppCompatActivity {
         ShapeableImageView ivProfile = findViewById(R.id.ivProfile);
         String imagePath = prefs.getString("profileImageUri", null);
         if (imagePath != null) {
-            Glide.with(this).load(imagePath).placeholder(R.drawable.ic_person).into(ivProfile);
+            com.bumptech.glide.Glide.with(this)
+                .load(imagePath)
+                .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .placeholder(R.drawable.ic_person)
+                .into(ivProfile);
         }
 
         // Sensor & Gesture
@@ -90,12 +96,27 @@ public class settings extends AppCompatActivity {
         tvThemeLight = findViewById(R.id.tvThemeLight);
         tvThemeDark = findViewById(R.id.tvThemeDark);
         tvThemeSystem = findViewById(R.id.tvThemeSystem);
+        
+        // Language
+        llLanguage = findViewById(R.id.llLanguage);
+        tvCurrentLanguage = findViewById(R.id.tvCurrentLanguage);
+        
         switchDailyReminders = findViewById(R.id.switchDailyReminders);
 
         // Logout
         findViewById(R.id.tvLogout).setOnClickListener(v -> {
-            prefs.edit().remove("fullName").remove("email").apply();
-            Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
+            // Clear User identity from SharedPreferences
+            prefs.edit()
+                .remove("fullName")
+                .remove("email")
+                .remove("password")
+                .remove("isGuest")
+                .apply();
+            
+            // Also clear Remember Me data
+            getSharedPreferences("LoginPrefs", MODE_PRIVATE).edit().clear().apply();
+
+            Toast.makeText(this, R.string.logged_out, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, Sign_in.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -122,6 +143,10 @@ public class settings extends AppCompatActivity {
         // Theme
         int theme = prefs.getInt("themeMode", 0); 
         updateThemeUI(theme);
+
+        // Language
+        String lang = LanguageHelper.getLanguage(this);
+        tvCurrentLanguage.setText(lang.equals("ar") ? R.string.arabic : R.string.english);
     }
 
     private void setupListeners() {
@@ -157,6 +182,29 @@ public class settings extends AppCompatActivity {
         tvThemeLight.setOnClickListener(v -> changeTheme(0));
         tvThemeDark.setOnClickListener(v -> changeTheme(1));
         tvThemeSystem.setOnClickListener(v -> changeTheme(2));
+
+        // Language Button
+        llLanguage.setOnClickListener(v -> showLanguageDialog());
+    }
+
+    private void showLanguageDialog() {
+        String[] languages = {getString(R.string.english), getString(R.string.arabic)};
+        String[] codes = {"en", "ar"};
+        
+        String currentLang = LanguageHelper.getLanguage(this);
+        int checkedItem = currentLang.equals("ar") ? 1 : 0;
+
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(R.string.app_language)
+                .setSingleChoiceItems(languages, checkedItem, (dialog, which) -> {
+                    LanguageHelper.setLocale(settings.this, codes[which]);
+                    dialog.dismiss();
+                    // No need to recreate activity if using AppCompatDelegate.setApplicationLocales
+                    // it should happen automatically, but sometimes a small delay or manual refresh is better
+                    recreate(); 
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     private void updateSensitivityUI(float value) {

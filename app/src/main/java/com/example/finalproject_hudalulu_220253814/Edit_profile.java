@@ -100,9 +100,9 @@ public class Edit_profile extends AppCompatActivity {
     }
 
     private void showImageSourceDialog() {
-        String[] options = {"Camera", "Gallery"};
+        String[] options = {getString(R.string.camera), getString(R.string.gallery)};
         new AlertDialog.Builder(this)
-                .setTitle("Select Image Source")
+                .setTitle(R.string.select_image_source)
                 .setItems(options, (dialog, which) -> {
                     if (which == 0) {
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -127,6 +127,9 @@ public class Edit_profile extends AppCompatActivity {
 
         EditText etFullName = findViewById(R.id.etFullName);
         EditText etAcademicMajor = findViewById(R.id.etAcademicMajor);
+        EditText etEmail = findViewById(R.id.etEmail);
+        EditText etPhone = findViewById(R.id.etPhone);
+        EditText etAddress = findViewById(R.id.etAddress);
         EditText etDailyFocus = findViewById(R.id.etDailyFocus);
         ivProfile = findViewById(R.id.ivProfile);
         ImageView ivCameraIcon = findViewById(R.id.ivCameraIcon);
@@ -140,6 +143,9 @@ public class Edit_profile extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         etFullName.setText(prefs.getString("fullName", "Alex Rivera"));
         etAcademicMajor.setText(prefs.getString("academicMajor", "Enter your major or role"));
+        etEmail.setText(prefs.getString("email", ""));
+        etPhone.setText(prefs.getString("phone", ""));
+        etAddress.setText(prefs.getString("address", ""));
         etDailyFocus.setText(prefs.getString("dailyFocusGoal", "3 Hours"));
         
         float savedSensitivity = prefs.getFloat("sensorSensitivity", 50.0f);
@@ -172,19 +178,45 @@ public class Edit_profile extends AppCompatActivity {
         btnSave.setOnClickListener(v -> {
             String newName = etFullName.getText().toString().trim();
             String newMajor = etAcademicMajor.getText().toString().trim();
+            String newEmail = etEmail.getText().toString().trim();
+            String newPhone = etPhone.getText().toString().trim();
+            String newAddress = etAddress.getText().toString().trim();
             String newGoal = etDailyFocus.getText().toString().trim();
 
+            boolean isValid = true;
+
             if (newName.isEmpty()) {
-                Toast.makeText(this, "Name cannot be empty", Toast.LENGTH_SHORT).show();
-            } else {
+                etFullName.setError(getString(R.string.error_name_empty));
+                isValid = false;
+            }
+
+            if (newEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
+                etEmail.setError(getString(R.string.error_invalid_email));
+                isValid = false;
+            }
+
+            if (newPhone.isEmpty() || !newPhone.matches("\\d{7,15}")) {
+                etPhone.setError(getString(R.string.error_phone_invalid));
+                isValid = false;
+            }
+
+            if (newAddress.isEmpty()) {
+                etAddress.setError(getString(R.string.error_address_empty));
+                isValid = false;
+            }
+
+            if (isValid) {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("fullName", newName);
                 editor.putString("academicMajor", newMajor);
+                editor.putString("email", newEmail);
+                editor.putString("phone", newPhone);
+                editor.putString("address", newAddress);
                 editor.putString("dailyFocusGoal", newGoal);
                 editor.putFloat("sensorSensitivity", sliderSensitivity.getValue());
                 editor.apply();
 
-                Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.profile_updated, Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -192,6 +224,72 @@ public class Edit_profile extends AppCompatActivity {
         // Cancel and Back logic
         tvCancel.setOnClickListener(v -> finish());
         ivBack.setOnClickListener(v -> finish());
+
+        // Change Password Logic
+        View cvChangePassword = findViewById(R.id.cvChangePassword);
+        if (cvChangePassword != null) {
+            cvChangePassword.setOnClickListener(v -> showChangePasswordDialog());
+        }
+    }
+
+    private void showChangePasswordDialog() {
+        android.view.View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+        EditText etCurrentPassword = dialogView.findViewById(R.id.etCurrentPassword);
+        EditText etNewPassword = dialogView.findViewById(R.id.etNewPassword);
+        EditText etConfirmNewPassword = dialogView.findViewById(R.id.etConfirmNewPassword);
+        android.view.View btnUpdate = dialogView.findViewById(R.id.btnUpdatePassword);
+        android.view.View btnCancel = dialogView.findViewById(R.id.btnCancelPassword);
+
+        btnUpdate.setOnClickListener(v -> {
+            String current = etCurrentPassword.getText().toString();
+            String newPass = etNewPassword.getText().toString();
+            String confirm = etConfirmNewPassword.getText().toString();
+
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            String savedPass = prefs.getString("password", "");
+
+            if (!current.equals(savedPass)) {
+                Toast.makeText(this, R.string.error_incorrect_password, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!isValidPassword(newPass)) {
+                Toast.makeText(this, R.string.error_weak_password, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!newPass.equals(confirm)) {
+                Toast.makeText(this, R.string.error_password_mismatch, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            prefs.edit().putString("password", newPass).apply();
+            Toast.makeText(this, R.string.password_updated, Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+    }
+
+    private boolean isValidPassword(String password) {
+        if (password.length() < 8) return false;
+        boolean hasLetter = false, hasDigit = false, hasSymbol = false;
+        String symbols = "!@#$%^&*()_+-=[]{}|;':\",./<>?";
+        for (char c : password.toCharArray()) {
+            if (Character.isLetter(c)) hasLetter = true;
+            else if (Character.isDigit(c)) hasDigit = true;
+            else if (symbols.contains(String.valueOf(c))) hasSymbol = true;
+        }
+        return hasLetter && hasDigit && hasSymbol;
     }
 
     private void showSetFocusGoalDialog(EditText targetEditText) {
@@ -222,9 +320,9 @@ public class Edit_profile extends AppCompatActivity {
         dialogView.findViewById(R.id.btnSaveFocusGoal).setOnClickListener(v -> {
             int h = npHours.getValue();
             String m = minutesValues[npMinutes.getValue()];
-            String result = h + " Hours " + m + " Minutes";
+            String result = getString(R.string.daily_focus_goal_format, h, Integer.parseInt(m));
             if (h == 0 && m.equals("00")) {
-                Toast.makeText(this, "Please set a goal higher than 0", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_goal_zero, Toast.LENGTH_SHORT).show();
             } else {
                 targetEditText.setText(result);
                 dialog.dismiss();

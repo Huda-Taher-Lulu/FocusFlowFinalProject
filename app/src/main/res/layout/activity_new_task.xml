@@ -180,7 +180,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter"
-                        android:text="CATEGORY"
+                        android:text="@string/category"
                         android:textColor="@color/text_gray"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -210,7 +210,7 @@
                                 android:gravity="center"
                                 android:paddingHorizontal="16dp">
                                 <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_book" app:tint="#4338CA" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Study" android:textColor="#4338CA" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="@string/category_study" android:textColor="#4338CA" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -222,7 +222,7 @@
                                 android:gravity="center"
                                 android:paddingHorizontal="16dp">
                                 <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_code" app:tint="@color/text_green" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Code" android:textColor="@color/text_green" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="@string/category_code" android:textColor="@color/text_green" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -234,7 +234,7 @@
                                 android:gravity="center"
                                 android:paddingHorizontal="16dp">
                                 <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_palette" app:tint="#B8860B" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Design" android:textColor="#B8860B" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="@string/category_design" android:textColor="#B8860B" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
                             </LinearLayout>
 
                             <ImageView

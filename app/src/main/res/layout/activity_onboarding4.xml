@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/quicksand"
-            android:text="FocusFlow"
+            android:text="@string/app_brand_name"
             android:textColor="@color/text_green"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/quicksand"
-        android:text="Ready to find your flow?"
+        android:text="@string/onboarding4_title"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -84,7 +84,7 @@
         android:fontFamily="@font/inter"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
-        android:text="Experience intuitive focus. Simply set your timer and flip your phone face-down to begin your session and silence distractions."
+        android:text="@string/onboarding4_desc"
         android:textColor="@color/text_gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -125,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
-                    android:text="1. Set your focus time."
+                    android:text="@string/step1_title"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -134,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
-                    android:text="Choose your ideal session length."
+                    android:text="@string/step1_desc"
                     android:textColor="@color/text_gray"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -175,7 +175,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
-                    android:text="2. Flip your phone over."
+                    android:text="@string/step2_title"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -184,7 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
-                    android:text="Activate the \&quot;Deep Flow\&quot; mode instantly."
+                    android:text="@string/step2_desc"
                     android:textColor="@color/text_gray"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -225,7 +225,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
-                    android:text="3. Deep work begins."
+                    android:text="@string/step3_title"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -234,7 +234,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
-                    android:text="Notifications pause so you can focus."
+                    android:text="@string/step3_desc"
                     android:textColor="@color/text_gray"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -252,7 +252,7 @@
         app:backgroundTint="@null"
         android:background="@drawable/button_gradient"
         android:fontFamily="@font/quicksand"
-        android:text="Begin your journy"
+        android:text="@string/begin_journey"
         android:textAllCaps="false"
         android:textColor="@color/text_green"
         android:textSize="18sp"

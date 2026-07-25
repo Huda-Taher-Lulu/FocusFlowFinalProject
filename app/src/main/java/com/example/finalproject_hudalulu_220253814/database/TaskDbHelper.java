@@ -11,12 +11,6 @@ import com.example.finalproject_hudalulu_220253814.models.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * SQLiteOpenHelper implementation for the FocusFlow domain (Requirement 3.3).
- * Handles the local database that stores Tasks (focus sessions) and custom
- * Categories created by the user. Replaces the previous SharedPreferences/Gson
- * based storage in TaskRepository.
- */
 public class TaskDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FocusFlow.db";

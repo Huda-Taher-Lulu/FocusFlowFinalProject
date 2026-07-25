@@ -26,7 +26,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 public class Profile extends AppCompatActivity {
 
-    private TextView tvProfileName, tvProfileMajor, tvFocusHours, tvTasksDone, tvStreak;
+    private TextView tvProfileName, tvProfileMajor, tvFocusHours, tvTasksDone, tvStreak, tvProfileEmail, tvProfilePhone, tvProfileAddress;
     private ShapeableImageView ivProfile;
     private static final String DEFAULT_MAJOR = "Enter your major or role";
 
@@ -95,12 +95,34 @@ public class Profile extends AppCompatActivity {
         tvFocusHours = findViewById(R.id.tvFocusHours);
         tvTasksDone = findViewById(R.id.tvTasksDone);
         tvStreak = findViewById(R.id.tvStreak);
+        tvProfileEmail = findViewById(R.id.tvProfileEmail);
+        tvProfilePhone = findViewById(R.id.tvProfilePhone);
+        tvProfileAddress = findViewById(R.id.tvProfileAddress);
         ivProfile = findViewById(R.id.ivProfile);
         ImageView ivCameraIcon = findViewById(R.id.ivCameraIcon);
         LinearLayout llEditMajor = findViewById(R.id.llEditMajor);
+        ConstraintLayout clProfileAddress = findViewById(R.id.clProfileAddress);
 
         // Load Data
         refreshProfileData();
+
+        // Address Click -> Google Maps
+        if (clProfileAddress != null) {
+            clProfileAddress.setOnClickListener(v -> {
+                String address = tvProfileAddress.getText().toString();
+                if (!address.isEmpty()) {
+                    Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(mapIntent);
+                    } else {
+                        // Fallback to any app that can handle geo
+                        startActivity(new Intent(Intent.ACTION_VIEW, gmmIntentUri));
+                    }
+                }
+            });
+        }
 
         // Image Selection Logic
         View.OnClickListener imageClickListener = v -> galleryLauncher.launch("image/*");
@@ -116,13 +138,15 @@ public class Profile extends AppCompatActivity {
         ImageView ivShareProfile = findViewById(R.id.ivShareProfile);
         if (ivShareProfile != null) {
             ivShareProfile.setOnClickListener(v -> {
-                String summary = "I'm " + tvProfileName.getText() + " on FocusFlow — "
-                        + tvFocusHours.getText() + " focused, " + tvTasksDone.getText()
-                        + " tasks done, " + tvStreak.getText() + " day streak!";
+                String summary = getString(R.string.profile_summary, 
+                        tvProfileName.getText(), 
+                        tvFocusHours.getText(), 
+                        tvTasksDone.getText(), 
+                        tvStreak.getText());
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_TEXT, summary);
-                startActivity(Intent.createChooser(shareIntent, "Share profile via"));
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_profile_title)));
             });
         }
 
@@ -143,8 +167,11 @@ public class Profile extends AppCompatActivity {
 
     private void refreshProfileData() {
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        tvProfileName.setText(prefs.getString("fullName", "Alex Rivera"));
-        tvProfileMajor.setText(prefs.getString("academicMajor", DEFAULT_MAJOR));
+        tvProfileName.setText(prefs.getString("fullName", getString(R.string.profile_name_default)));
+        tvProfileMajor.setText(prefs.getString("academicMajor", getString(R.string.enter_major_role)));
+        tvProfileEmail.setText(prefs.getString("email", getString(R.string.email_hint)));
+        tvProfilePhone.setText(prefs.getString("phone", getString(R.string.phone_number_hint)));
+        tvProfileAddress.setText(prefs.getString("address", getString(R.string.address_hint)));
 
         // Load Real Stats
         long totalMinutes = prefs.getLong("totalFocusMinutes", 0);
@@ -154,13 +181,13 @@ public class Profile extends AppCompatActivity {
         // Format focus hours (e.g., 2.5h or 45m)
         if (totalMinutes >= 60) {
             float hours = totalMinutes / 60.0f;
-            tvFocusHours.setText(String.format(java.util.Locale.getDefault(), "%.1fh", hours));
+            tvFocusHours.setText(getString(R.string.hours_suffix, hours));
         } else {
-            tvFocusHours.setText(totalMinutes + "m");
+            tvFocusHours.setText(getString(R.string.minutes_suffix, (int) totalMinutes));
         }
 
-        tvTasksDone.setText(String.valueOf(tasksDone));
-        tvStreak.setText(streak + "d");
+        tvTasksDone.setText(getString(R.string.tasks_done_count, tasksDone));
+        tvStreak.setText(getString(R.string.days_suffix, streak));
 
         String imageUriStr = prefs.getString("profileImageUri", null);
         if (imageUriStr != null) {

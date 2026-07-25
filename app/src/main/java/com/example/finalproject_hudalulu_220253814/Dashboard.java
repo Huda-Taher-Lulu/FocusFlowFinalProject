@@ -20,7 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class Dashboard extends AppCompatActivity {
 
-    private TextView tvDailyFocusProgress, tvDailyStreak;
+    private TextView tvDailyFocusProgress, tvGreeting, tvRemainingHours, tvAchievement;
     private ProgressBar circularProgressBar;
     private ShapeableImageView ivProfile;
 
@@ -36,7 +36,9 @@ public class Dashboard extends AppCompatActivity {
         });
 
         tvDailyFocusProgress = findViewById(R.id.tvDailyFocusProgress);
-        tvDailyStreak = findViewById(R.id.tvDailyStreak);
+        tvGreeting = findViewById(R.id.tvGreeting);
+        tvRemainingHours = findViewById(R.id.tvRemainingHours);
+        tvAchievement = findViewById(R.id.tvAchievement);
         circularProgressBar = findViewById(R.id.circularProgressBar);
         ivProfile = findViewById(R.id.ivProfile);
 
@@ -55,6 +57,10 @@ public class Dashboard extends AppCompatActivity {
 
         // Initialize Resume Button
         Button btnResume = findViewById(R.id.btnResume);
+        SharedPreferences timerPrefs = getSharedPreferences("TimerPrefs", MODE_PRIVATE);
+        boolean hasActive = timerPrefs.getBoolean("hasActiveSession", false);
+        btnResume.setVisibility(hasActive ? android.view.View.VISIBLE : android.view.View.GONE);
+
         btnResume.setOnClickListener(v -> {
             Intent intent = new Intent(Dashboard.this, Smart_timer.class);
             startActivity(intent);
@@ -139,52 +145,66 @@ public class Dashboard extends AppCompatActivity {
     private void refreshDashboardStats() {
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         
-        // 1. Get Focus Goal from Profile (Format: "H Hours MM Minutes")
+        // 1. Greeting logic
+        String fullName = prefs.getString("fullName", "Alex");
+        String firstName = fullName.split(" ")[0];
+        
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        int hour = calendar.get(java.util.Calendar.HOUR_OF_DAY);
+        int greetingResId;
+        if (hour < 12) greetingResId = R.string.greeting_morning;
+        else if (hour < 17) greetingResId = R.string.greeting_afternoon;
+        else greetingResId = R.string.greeting_evening;
+        
+        tvGreeting.setText(getString(greetingResId, firstName));
+
+        // 2. Focus Goal logic
         String goalStr = prefs.getString("dailyFocusGoal", "3 Hours 00 Minutes");
-        float goalHours = 3.0f; // Default
+        float goalHours = 3.0f;
         
         try {
-            // Smart Parsing: Extract Hours and Minutes separately
-            int h = 0;
-            int m = 0;
-            
-            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d+)\\s*Hours\\s*(\\d+)\\s*Minutes");
+            // Use regex that works regardless of language if possible, or just use values
+            // Better to store goal as hours and minutes separately in prefs
+            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d+)");
             java.util.regex.Matcher matcher = pattern.matcher(goalStr);
-            
-            if (matcher.find()) {
-                h = Integer.parseInt(matcher.group(1));
-                m = Integer.parseInt(matcher.group(2));
-                goalHours = h + (m / 60.0f);
-            } else {
-                // Fallback for simple numeric input if any
-                String numericPart = goalStr.replaceAll("[^0-9.]", "");
-                if (!numericPart.isEmpty()) goalHours = Float.parseFloat(numericPart);
-            }
+            int h = 0, m = 0;
+            if (matcher.find()) h = Integer.parseInt(matcher.group(1));
+            if (matcher.find()) m = Integer.parseInt(matcher.group(1));
+            goalHours = h + (m / 60.0f);
         } catch (Exception e) {
             goalHours = 3.0f;
         }
 
-        // 2. Focus Hours Progress
+        // 3. Current Progress logic
         long totalMinutes = prefs.getLong("totalFocusMinutes", 0);
         float currentHours = totalMinutes / 60.0f;
         
+        // Format as "5/8" style inside circle
         tvDailyFocusProgress.setText(String.format(java.util.Locale.getDefault(), "%.1f / %.1f", currentHours, goalHours));
         
-        int progress = 0;
+        int progressPercent = 0;
         if (goalHours > 0) {
-            progress = (int) ((currentHours / goalHours) * 100);
+            progressPercent = (int) ((currentHours / goalHours) * 100);
         }
-        circularProgressBar.setProgress(Math.min(progress, 100));
+        circularProgressBar.setProgress(Math.min(progressPercent, 100));
 
-        // 3. Streak
-        int streak = prefs.getInt("currentStreak", 0);
-        tvDailyStreak.setText(streak + " Days");
+        // 4. Remaining & Achievement
+        float remaining = Math.max(0, goalHours - currentHours);
+        if (remaining >= 1.0f) {
+            tvRemainingHours.setText(getString(R.string.hours_format, remaining));
+        } else {
+            tvRemainingHours.setText(getString(R.string.minutes_format, (int)(remaining * 60)));
+        }
+        
+        tvAchievement.setText(progressPercent + "%");
 
-        // 4. Profile Image
+        // 5. Profile Image
         String imagePath = prefs.getString("profileImageUri", null);
         if (imagePath != null && ivProfile != null) {
-            Glide.with(this)
+            com.bumptech.glide.Glide.with(this)
                 .load(imagePath)
+                .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .placeholder(R.drawable.ic_person)
                 .circleCrop()
                 .into(ivProfile);
@@ -195,5 +215,12 @@ public class Dashboard extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         refreshDashboardStats();
+        
+        // Update resume button visibility
+        Button btnResume = findViewById(R.id.btnResume);
+        if (btnResume != null) {
+            boolean hasActive = getSharedPreferences("TimerPrefs", MODE_PRIVATE).getBoolean("hasActiveSession", false);
+            btnResume.setVisibility(hasActive ? android.view.View.VISIBLE : android.view.View.GONE);
+        }
     }
 }

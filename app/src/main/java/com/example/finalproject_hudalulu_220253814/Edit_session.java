@@ -15,6 +15,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.widget.Toast;
+
 import com.example.finalproject_hudalulu_220253814.models.Task;
 import com.example.finalproject_hudalulu_220253814.models.TaskRepository;
 import com.google.android.material.slider.Slider;
@@ -24,6 +26,8 @@ public class Edit_session extends AppCompatActivity {
     private static final String KEY_CATEGORY = "selectedCategory";
     private static final String KEY_AUDIO = "selectedAudio";
     private static final String KEY_TASK_ID = "taskId";
+    private static final String KEY_TITLE = "taskTitle";
+    private static final String KEY_DURATION = "taskDuration";
 
     private String selectedCategory = "Study";
     private String selectedAudio = "Silent";
@@ -121,9 +125,15 @@ public class Edit_session extends AppCompatActivity {
         }
 
         if (savedInstanceState != null) {
+            etTaskTitle.setText(savedInstanceState.getString(KEY_TITLE, ""));
+            int savedDuration = savedInstanceState.getInt(KEY_DURATION, 45);
+            sliderDuration.setValue(savedDuration);
+            tvDurationValue.setText(savedDuration + "m");
+            
             selectedCategory = savedInstanceState.getString(KEY_CATEGORY, selectedCategory);
             selectedAudio = savedInstanceState.getString(KEY_AUDIO, selectedAudio);
             taskId = savedInstanceState.getLong(KEY_TASK_ID, taskId);
+            
             updateCategoryUI();
             if ("Lofi Beats".equals(selectedAudio)) {
                 btnLofi.performClick();
@@ -135,19 +145,31 @@ public class Edit_session extends AppCompatActivity {
         findViewById(R.id.ivBack).setOnClickListener(v -> finish());
 
         findViewById(R.id.ivShareTask).setOnClickListener(v -> {
-            String summary = "Focus session: " + etTaskTitle.getText().toString()
-                    + " (" + (int) sliderDuration.getValue() + " min, " + selectedCategory + ")";
+            String summary = getString(R.string.task_summary, 
+                    etTaskTitle.getText().toString(), 
+                    (int) sliderDuration.getValue(), 
+                    selectedCategory);
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, summary);
-            startActivity(Intent.createChooser(shareIntent, "Share task via"));
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_task_title)));
         });
 
         findViewById(R.id.btnUpdate).setOnClickListener(v -> {
-            String newTitle = etTaskTitle.getText().toString();
+            String newTitle = etTaskTitle.getText().toString().trim();
             int newDuration = (int) sliderDuration.getValue();
 
+            if (newTitle.isEmpty()) {
+                Toast.makeText(this, R.string.error_task_title_empty, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (currentTask != null) {
+                // If duration changed and it's still pending, update timeLeftInMillis
+                if (currentTask.getDuration() != newDuration && "PENDING".equals(currentTask.getStatus())) {
+                    currentTask.setTimeLeftInMillis((long) newDuration * 60 * 1000);
+                }
+
                 currentTask.setTitle(newTitle);
                 currentTask.setDuration(newDuration);
                 currentTask.setCategory(selectedCategory);
@@ -180,6 +202,8 @@ public class Edit_session extends AppCompatActivity {
     protected void onSaveInstanceState(android.os.Bundle outState) {
         super.onSaveInstanceState(outState);
         // Requirement 3.4: preserve transient UI state not automatically saved by Android.
+        outState.putString(KEY_TITLE, etTaskTitle.getText().toString());
+        outState.putInt(KEY_DURATION, (int) sliderDuration.getValue());
         outState.putString(KEY_CATEGORY, selectedCategory);
         outState.putString(KEY_AUDIO, selectedAudio);
         outState.putLong(KEY_TASK_ID, taskId);
@@ -188,10 +212,26 @@ public class Edit_session extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(android.os.Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        selectedCategory = savedInstanceState.getString(KEY_CATEGORY, selectedCategory);
-        selectedAudio = savedInstanceState.getString(KEY_AUDIO, selectedAudio);
-        taskId = savedInstanceState.getLong(KEY_TASK_ID, taskId);
-        updateCategoryUI();
+        if (savedInstanceState != null) {
+            etTaskTitle.setText(savedInstanceState.getString(KEY_TITLE));
+            int restoredDuration = savedInstanceState.getInt(KEY_DURATION);
+            sliderDuration.setValue(restoredDuration);
+            tvDurationValue.setText(restoredDuration + "m");
+
+            selectedCategory = savedInstanceState.getString(KEY_CATEGORY);
+            selectedAudio = savedInstanceState.getString(KEY_AUDIO);
+            taskId = savedInstanceState.getLong(KEY_TASK_ID);
+
+            updateCategoryUI();
+
+            TextView btnLofi = findViewById(R.id.btnAudioLofi);
+            TextView btnSilent = findViewById(R.id.btnAudioSilent);
+            if ("Lofi Beats".equals(selectedAudio)) {
+                btnLofi.performClick();
+            } else {
+                btnSilent.performClick();
+            }
+        }
     }
 
     private void updateCategoryUI() {

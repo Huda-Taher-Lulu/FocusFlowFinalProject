@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +27,7 @@ import com.google.android.material.button.MaterialButton;
 public class Sign_in extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
+    private CheckBox cbRememberMe;
     private ImageView ivPasswordVisibility;
     private LinearLayout llEmailContainer, llPasswordContainer;
     private TextView tvEmailError, tvPasswordError;
@@ -47,6 +49,7 @@ public class Sign_in extends AppCompatActivity {
         // Initialize Views
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
+        cbRememberMe = findViewById(R.id.cbRememberMe);
         ivPasswordVisibility = findViewById(R.id.ivPasswordVisibility);
         llEmailContainer = findViewById(R.id.llEmailContainer);
         llPasswordContainer = findViewById(R.id.llPasswordContainer);
@@ -57,6 +60,15 @@ public class Sign_in extends AppCompatActivity {
         TextView tvForgotPassword = findViewById(R.id.tvForgotPassword);
         MaterialButton btnGoogle = findViewById(R.id.btnGoogle);
         MaterialButton btnApple = findViewById(R.id.btnApple); // This is actually Whatsapp in layout
+
+        // Check for Remember Me data
+        SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        boolean isRemembered = loginPrefs.getBoolean("rememberMe", false);
+        if (isRemembered) {
+            etEmail.setText(loginPrefs.getString("email", ""));
+            etPassword.setText(loginPrefs.getString("password", ""));
+            cbRememberMe.setChecked(true);
+        }
 
         // Password Visibility Toggle
         ivPasswordVisibility.setOnClickListener(v -> {
@@ -110,25 +122,13 @@ public class Sign_in extends AppCompatActivity {
 
         // Sign In Button Logic
         btnSignIn.setOnClickListener(v -> {
-            String email = etEmail.getText().toString().trim();
+            String loginIdentifier = etEmail.getText().toString().trim(); // Can be email or username
             String password = etPassword.getText().toString().trim();
 
             boolean isValid = true;
 
-            if (!email.contains("@")) {
-                llEmailContainer.setBackgroundResource(R.drawable.edit_text_error_bg);
-                tvEmailError.setVisibility(View.VISIBLE);
-                isValid = false;
-            }
-
-            if (!isValidPassword(password)) {
-                llPasswordContainer.setBackgroundResource(R.drawable.edit_text_error_bg);
-                tvPasswordError.setVisibility(View.VISIBLE);
-                isValid = false;
-            }
-
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            if (loginIdentifier.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, R.string.error_fill_fields, Toast.LENGTH_SHORT).show();
                 isValid = false;
             }
 
@@ -136,15 +136,30 @@ public class Sign_in extends AppCompatActivity {
                 // Check against SharedPreferences (Simple Login Simulation)
                 SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                 String savedEmail = prefs.getString("email", "");
+                String savedUsername = prefs.getString("username", "");
                 String savedPassword = prefs.getString("password", "");
 
-                if (email.equals(savedEmail) && password.equals(savedPassword)) {
-                    Toast.makeText(this, "Sign in successful!", Toast.LENGTH_SHORT).show();
+                boolean isCorrectIdentifier = loginIdentifier.equals(savedEmail) || loginIdentifier.equals(savedUsername);
+
+                if (isCorrectIdentifier && password.equals(savedPassword)) {
+                    // Handle Remember Me
+                    SharedPreferences lPrefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor loginEditor = lPrefs.edit();
+                    if (cbRememberMe.isChecked()) {
+                        loginEditor.putBoolean("rememberMe", true);
+                        loginEditor.putString("email", loginIdentifier);
+                        loginEditor.putString("password", password);
+                    } else {
+                        loginEditor.clear();
+                    }
+                    loginEditor.apply();
+
+                    Toast.makeText(this, R.string.sign_in_success, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Sign_in.this, onboarding4.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_invalid_credentials, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -157,10 +172,10 @@ public class Sign_in extends AppCompatActivity {
 
         // Social Buttons Logic
         btnGoogle.setOnClickListener(v -> 
-            Toast.makeText(this, "Google Sign-in requires Firebase setup", Toast.LENGTH_SHORT).show());
+            Toast.makeText(this, R.string.firebase_needed, Toast.LENGTH_SHORT).show());
         
         btnApple.setOnClickListener(v -> 
-            Toast.makeText(this, "Sign in with Whatsapp", Toast.LENGTH_SHORT).show());
+            Toast.makeText(this, R.string.whatsapp_sign_in, Toast.LENGTH_SHORT).show());
 
         // Sign Up Text Logic
         tvSignUp.setOnClickListener(v -> {

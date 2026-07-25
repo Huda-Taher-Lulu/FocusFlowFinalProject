@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/quicksand"
-            android:text="Settings"
+            android:text="@string/settings_title"
             android:textColor="@color/text_green"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -60,7 +60,7 @@
                 android:background="@drawable/edit_text_bg"
                 android:drawableStart="@android:drawable/ic_menu_search"
                 android:drawablePadding="12dp"
-                android:hint="Search settings..."
+                android:hint="@string/search_settings_hint"
                 android:paddingHorizontal="16dp"
                 android:textSize="16sp" />
 
@@ -103,7 +103,7 @@
                             android:id="@+id/tvProfileName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Alex Rivera"
+                            android:text="@string/profile_name_default"
                             android:textColor="@color/text_green"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -111,7 +111,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Premium Member"
+                            android:text="@string/premium_member"
                             android:textColor="@color/text_gray"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
-                android:text="Sensor &amp; Gesture"
+                android:text="@string/sensor_gesture_section"
                 android:textColor="@color/text_gray"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -150,7 +150,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Flip-to-Focus Sensitivity"
+                            android:text="@string/flip_sensitivity_label"
                             android:textColor="@color/text_green"
                             android:textSize="16sp" />
 
@@ -162,7 +162,7 @@
                             android:background="@drawable/badge_bg_yellow"
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="4dp"
-                            android:text="Medium"
+                            android:text="@string/medium"
                             android:textColor="#B8860B"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -186,9 +186,9 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:paddingHorizontal="8dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Low" android:textColor="@color/text_gray" android:textSize="11sp" android:fontFamily="@font/inter"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Medium" android:textColor="@color/text_gray" android:textSize="11sp" android:fontFamily="@font/inter" android:gravity="center"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="High" android:textColor="@color/text_gray" android:textSize="11sp" android:fontFamily="@font/inter" android:gravity="end"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/low" android:textColor="@color/text_gray" android:textSize="11sp" android:fontFamily="@font/inter"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/medium" android:textColor="@color/text_gray" android:textSize="11sp" android:fontFamily="@font/inter" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/high" android:textColor="@color/text_gray" android:textSize="11sp" android:fontFamily="@font/inter" android:gravity="end"/>
                     </LinearLayout>
 
                     <View
@@ -207,7 +207,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Flip Vibration &amp; Sound"
+                            android:text="@string/flip_vibration_label"
                             android:textColor="@color/text_green"
                             android:textSize="16sp" />
 
@@ -228,7 +228,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
-                android:text="Focus Preferences"
+                android:text="@string/focus_preferences_section"
                 android:textColor="@color/text_gray"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -257,7 +257,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Auto-start Breaks"
+                            android:text="@string/auto_start_breaks_label"
                             android:textColor="@color/text_green"
                             android:textSize="16sp" />
 
@@ -286,7 +286,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Ambient Background\nSounds"
+                            android:text="@string/ambient_sounds_label"
                             android:textColor="@color/text_green"
                             android:textSize="16sp" />
 
@@ -309,7 +309,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
-                android:text="Appearance &amp; Notifications"
+                android:text="@string/appearance_notifications_section"
                 android:textColor="@color/text_gray"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -331,7 +331,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Theme Mode"
+                        android:text="@string/theme_mode_label"
                         android:textColor="@color/text_green"
                         android:textSize="16sp" />
 
@@ -350,7 +350,7 @@
                             android:layout_weight="1"
                             android:background="@color/white"
                             android:gravity="center"
-                            android:text="Light"
+                            android:text="@string/theme_light"
                             android:textColor="@color/black"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -361,7 +361,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Dark"
+                            android:text="@string/theme_dark"
                             android:textColor="@color/text_gray"
                             android:textSize="13sp" />
 
@@ -371,7 +371,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="System"
+                            android:text="@string/theme_system"
                             android:textColor="@color/text_gray"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -397,14 +397,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Daily Study Reminders"
+                                android:text="@string/daily_study_reminders_label"
                                 android:textColor="@color/text_green"
                                 android:textSize="16sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="At 8:00 AM daily"
+                                android:text="@string/daily_reminders_time"
                                 android:textColor="@color/text_gray"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -420,13 +420,73 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Language Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/language"
+                android:textColor="@color/text_gray"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:id="@+id/llLanguage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/app_language"
+                            android:textColor="@color/text_green"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvCurrentLanguage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english"
+                            android:textColor="@color/text_gray"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginStart="8dp"
+                            android:src="@drawable/ic_arrow_next"
+                            app:tint="@color/indicator_inactive" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Account & Support Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
-                android:text="Account &amp; Support"
+                android:text="@string/account_support_section"
                 android:textColor="@color/text_gray"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -462,7 +522,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
-                            android:text="Privacy Policy"
+                            android:text="@string/privacy_policy"
                             android:textColor="@color/text_green"
                             android:textSize="16sp" />
 
@@ -496,7 +556,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
-                            android:text="Help &amp; Support"
+                            android:text="@string/help_support"
                             android:textColor="@color/text_green"
                             android:textSize="16sp" />
 
@@ -516,7 +576,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="40dp"
-                android:text="Log Out"
+                android:text="@string/logout"
                 android:textColor="@color/text_red"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -528,7 +588,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="40dp"
-                android:text="FocusFlow Version 2.4.0"
+                android:text="@string/version_info"
                 android:textColor="@color/text_gray"
                 android:textSize="12sp" />
 

@@ -21,9 +21,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.util.UUID;
+
 public class SignUp extends AppCompatActivity {
 
-    private EditText etFullName, etEmail, etPassword;
+    private EditText etFullName, etUsername, etEmail, etPassword, etPhone, etAddress;
     private ImageView ivPasswordVisibility;
     private LinearLayout llEmailContainer, llPasswordContainer;
     private TextView tvEmailError, tvPasswordError;
@@ -43,7 +45,10 @@ public class SignUp extends AppCompatActivity {
 
         // Initialize Views
         etFullName = findViewById(R.id.etFullName);
+        etUsername = findViewById(R.id.etUsername);
         etEmail = findViewById(R.id.etEmail);
+        etPhone = findViewById(R.id.etPhone);
+        etAddress = findViewById(R.id.etAddress);
         etPassword = findViewById(R.id.etPassword);
         ivPasswordVisibility = findViewById(R.id.ivPasswordVisibility);
         llEmailContainer = findViewById(R.id.llEmailContainer);
@@ -108,7 +113,10 @@ public class SignUp extends AppCompatActivity {
         // Create Account Button Logic
         btnCreateAccount.setOnClickListener(v -> {
             String fullName = etFullName.getText().toString().trim();
+            String username = etUsername.getText().toString().trim();
             String email = etEmail.getText().toString().trim();
+            String phone = etPhone.getText().toString().trim();
+            String address = etAddress.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
             boolean isValid = true;
@@ -120,6 +128,12 @@ public class SignUp extends AppCompatActivity {
                 isValid = false;
             }
 
+            // Username validation
+            if (username.length() < 3) {
+                Toast.makeText(this, R.string.error_username_short, Toast.LENGTH_SHORT).show();
+                isValid = false;
+            }
+
             // Password validation check on click
             if (!isValidPassword(password)) {
                 llPasswordContainer.setBackgroundResource(R.drawable.edit_text_error_bg);
@@ -127,8 +141,8 @@ public class SignUp extends AppCompatActivity {
                 isValid = false;
             }
 
-            if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            if (fullName.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+                Toast.makeText(this, R.string.error_fill_fields, Toast.LENGTH_SHORT).show();
                 isValid = false;
             }
 
@@ -137,12 +151,16 @@ public class SignUp extends AppCompatActivity {
                 SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("fullName", fullName);
+                editor.putString("username", username);
+                editor.putString("userId", UUID.randomUUID().toString());
                 editor.putString("email", email);
+                editor.putString("phone", phone);
+                editor.putString("address", address);
                 editor.putString("password", password);
                 editor.putBoolean("isGuest", false);
                 editor.apply();
 
-                Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.account_created, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(SignUp.this, onboarding4.class);
                 startActivity(intent);

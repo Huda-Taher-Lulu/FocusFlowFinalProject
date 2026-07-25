@@ -1,0 +1,325 @@
+<resources>
+    <string name="app_name">فوكس فلو</string>
+    <string name="app_brand_name">FocusFlow</string>
+    <string name="error_invalid_email">يرجى إدخال بريد إلكتروني صالح</string>
+    <string name="error_weak_password">يجب أن تتكون كلمة المرور من 8 أحرف على الأقل مع أرقام ورموز</string>
+    <string name="enter_major_role">أدخل تخصصك / دورك</string>
+    <string name="major_role_desc">سيتم عرض هذا في ملفك الشخصي.</string>
+    <string name="major_hint">مثال: مصمم، طالب</string>
+    <string name="update">تحديث</string>
+    <string name="cancel">إلغاء</string>
+    <string name="add_new_category">إضافة فئة جديدة</string>
+    <string name="category_hint">مثال: دراسة، رياضة، عائلة</string>
+    <string name="add">إضافة</string>
+    <string name="session_complete">اكتملت الجلسة!</string>
+    <string name="session_quote">"سر المضي قدماً هو البدء."</string>
+    <string name="session_author">— مارك توين</string>
+    <string name="session_reflection">تأمل الجلسة</string>
+    <string name="reflection_hint">ماذا حققت خلال وقت التركيز هذا؟</string>
+    <string name="save_finish">حفظ وإنهاء</string>
+    <string name="dismiss">تجاهل</string>
+    <string name="time_label">الوقت</string>
+    <string name="quality_label">الجودة</string>
+    <string name="streak_label">الاستمرارية</string>
+    <string name="default_time">45 دقيقة</string>
+    <string name="default_quality">عمل\nعميق</string>
+    <string name="default_streak">+1 يوم</string>
+    <string name="low">منخفض</string>
+    <string name="medium">متوسط</string>
+    <string name="high">مرتفع</string>
+    <string name="set_focus_goal">تحديد هدف التركيز</string>
+    <string name="daily_focus_duration">مدة التركيز اليومية</string>
+    <string name="hours_label">ساعات</string>
+    <string name="minutes_label">دقائق</string>
+    <string name="save_goal">حفظ الهدف</string>
+
+    <string name="phone_number_label">رقم الهاتف</string>
+    <string name="phone_number_hint">+1 (555) 123-4567</string>
+    <string name="address_label">عنوان المراسلة</string>
+    <string name="address_hint">123 شارع الإنتاجية، مدينة التركيز</string>
+
+    <!-- Welcome / Main -->
+    <string name="skip">تخطي</string>
+    <string name="welcome_title">مرحباً بك في فوكس فلو</string>
+    <string name="welcome_desc">حول وقتك إلى نمو من خلال تدفق الإنتاجية الواعي لدينا.</string>
+    <string name="next">التالي</string>
+
+    <!-- Sign In -->
+    <string name="sign_in_title">مرحباً بعودتك</string>
+    <string name="sign_in_desc">التركيز رحلة، دعنا نواصل رحلتك.</string>
+    <string name="email_label">البريد الإلكتروني</string>
+    <string name="email_hint">hello@focusflow.com</string>
+    <string name="password_label">كلمة المرور</string>
+    <string name="forgot_password">هل نسيت كلمة المرور؟</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="remember_me">تذكرني</string>
+    <string name="or_continue_with">أو الاستمرار باستخدام</string>
+    <string name="google">جوجل</string>
+    <string name="whatsapp">واتساب</string>
+    <string name="dont_have_account">ليس لديك حساب؟ </string>
+    <string name="sign_up">إنشاء حساب</string>
+
+    <!-- Sign Up -->
+    <string name="sign_up_title">ابدأ رحلة تركيزك</string>
+    <string name="sign_up_desc">افتح نسخة أكثر هدوءاً وإنتاجية من نفسك اليوم.</string>
+    <string name="full_name_label">الاسم الكامل</string>
+    <string name="username_label">اسم المستخدم</string>
+    <string name="username_hint">huda_lulu</string>
+    <string name="full_name_hint">أليكس ريفرز</string>
+    <string name="email_hint_signup">alex@focusflow.com</string>
+    <string name="error_username_short">يجب أن يتكون اسم المستخدم من 3 أحرف على الأقل</string>
+    <string name="email_or_username_hint">البريد الإلكتروني أو اسم المستخدم</string>
+    <string name="create_account">إنشاء حساب</string>
+    <string name="already_have_account">لديك حساب بالفعل؟ </string>
+    <string name="or">أو</string>
+    <string name="continue_as_guest">المتابعة كضيف</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_subtitle">مستعد للعثور على تدفقك اليوم؟</string>
+    <string name="daily_focus_label">التركيز اليومي</string>
+    <string name="hours_completed_label">الساعات المكتملة</string>
+    <string name="resume_session">استئناف الجلسة</string>
+    <string name="daily_streak_label">الاستمرارية اليومية</string>
+    <string name="zero_days">0 أيام</string>
+    <string name="on_fire">متألق!</string>
+    <string name="focus_quality_label">جودة التركيز</string>
+    <string name="deep_state">حالة عميقة</string>
+    <string name="recent_badges">الأوسمة الأخيرة</string>
+    <string name="view_all">عرض الكل</string>
+    <string name="early_bird">طائر مبكر</string>
+    <string name="early_bird_desc">تركيز قبل 8 صباحاً</string>
+    <string name="deep_work_master">سيد العمل العميق</string>
+    <string name="deep_work_master_desc">4 ساعات دون انقطاع</string>
+    <string name="focus_owl">بومة التركيز</string>
+    <string name="focus_owl_desc">تركيز ليلي متأخر</string>
+    <string name="up_next">التالي</string>
+    <string name="nav_dashboard">الرئيسية</string>
+    <string name="nav_tasks">المهام</string>
+    <string name="nav_timer">المؤقت</string>
+    <string name="nav_stats">الإحصائيات</string>
+    <string name="deep_flow_active">التدفق العميق نشط</string>
+    <string name="focus_paused">التركيز متوقف!</string>
+    <string name="dont_lose_focus">لا تفقد تركيزك! اقلب الهاتف للمتابعة.</string>
+    <string name="stats_updated">تم تحديث الإحصائيات!</string>
+    <string name="logged_out">تم تسجيل الخروج بنجاح</string>
+    <string name="error_fill_fields">يرجى ملء جميع الحقول</string>
+    <string name="account_created">تم إنشاء الحساب بنجاح!</string>
+    <string name="dnd_access_needed">يرجى منح حق الوصول لعدم الإزعاج لإسكات الإشعارات</string>
+    <string name="sign_in_success">تم تسجيل الدخول بنجاح!</string>
+    <string name="error_invalid_credentials">البريد الإلكتروني أو كلمة المرور غير صالحة</string>
+    <string name="firebase_needed">تسجيل الدخول بجوجل يتطلب إعداد Firebase</string>
+    <string name="whatsapp_sign_in">تسجيل الدخول بواتساب</string>
+    <string name="reset_link_sent_to">تم إرسال رابط إعادة التعيين إلى %s</string>
+
+
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">تعديل الملف الشخصي</string>
+    <string name="academic_major_label">التخصص الأكاديمي / الدور</string>
+    <string name="major_hint_edit">أدخل تخصصك أو دورك</string>
+    <string name="daily_focus_goal_label">هدف التركيز اليومي</string>
+    <string name="save_changes">حفظ التغييرات</string>
+    <string name="no_task_selected">لم يتم اختيار مهمة</string>
+    <string name="tasks_scheduled_count">لديك %d مهام مجدولة لليوم.</string>
+    <string name="category">الفئة</string>
+    <string name="sensor_preferences">تفضيلات الحساسات</string>
+    <string name="error_name_empty">لا يمكن ترك الاسم فارغاً</string>
+    <string name="profile_updated">تم تحديث الملف الشخصي بنجاح!</string>
+    <string name="error_task_title_empty">يرجى إدخال عنوان المهمة</string>
+    <string name="task_saved">تم حفظ المهمة بنجاح!</string>
+    <string name="select_image_source">اختر مصدر الصورة</string>
+    <string name="camera">الكاميرا</string>
+    <string name="gallery">المعرض</string>
+    <string name="error_goal_zero">يرجى تحديد هدف أكبر من 0</string>
+    <string name="error_phone_invalid">رقم الهاتف غير صالح (7-15 أرقام)</string>
+    <string name="error_address_empty">لا يمكن ترك العنوان فارغاً</string>
+    <string name="hours_suffix">%.1f س</string>
+    <string name="minutes_suffix">%d د</string>
+    <string name="days_suffix">%d ي</string>
+    <string name="share_profile_title">مشاركة الملف الشخصي عبر</string>
+    <string name="share_task_title">مشاركة المهمة عبر</string>
+    <string name="task_summary">جلسة تركيز: %1$s (%2$d دقيقة، %3$s)</string>
+
+    <string name="profile_summary">أنا %1$s على FocusFlow — %2$s من التركيز، %3$s مهام مكتملة، استمرارية %4$s أيام!</string>
+    <string name="tasks_done_count">%d</string>
+    <string name="choose_task_start">اختر مهمة للبدء</string>
+    <string name="delete_task_title">حذف المهمة؟</string>
+    <string name="delete_task_desc">هل أنت متأكد أنك تريد الحذف؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="delete">حذف</string>
+    <string name="update_session">تحديث الجلسة</string>
+    <string name="edit_focus_block">تعديل كتلة التركيز</string>
+    <string name="duration">المدة</string>
+    <string name="audio_preference">تفضيلات الصوت</string>
+    <string name="none">لا شيء</string>
+    <string name="forgot_password_title">هل نسيت كلمة المرور؟</string>
+    <string name="forgot_password_desc">لا تقلق، هذا يحدث. أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.</string>
+    <string name="send_reset_link">إرسال رابط التعيين</string>
+    <string name="back_to_sign_in">العودة لتسجيل الدخول</string>
+    <string name="reset_link_sent">تم إرسال رابط إعادة التعيين لبريدك!</string>
+    <string name="notes_label">ملاحظات</string>
+    <string name="history_session_count">%d جلسات</string>
+    <string name="ago_suffix">منذ %s</string>
+    <string name="pending">قيد الانتظار</string>
+    <string name="completed">مكتمل</string>
+    <string name="in_progress">قيد التنفيذ</string>
+
+    <string name="day_m">ن</string>
+    <string name="day_t">ث</string>
+    <string name="day_w">ر</string>
+    <string name="day_th">خ</string>
+    <string name="day_f">ج</string>
+    <string name="day_s">س</string>
+    <string name="day_su">ح</string>
+
+
+
+
+
+
+
+
+    <!-- Smart Timer -->
+    <string name="deep_work_label">عمل عميق</string>
+    <string name="flip_to_start">اقلب هاتفك لبدء\nتدفقك.</string>
+    <string name="flip_desc">سيبدأ الحساس الذكي العد التنازلي تلقائياً.</string>
+    <string name="lofi_beats">موسيقى لوفاي</string>
+    <string name="silent">صامت</string>
+    <string name="dnd">عدم الإزعاج</string>
+    <string name="select_task_warning">اختر مهمة للبدء</string>
+
+    <!-- Profile -->
+    <string name="profile_name_default">أليكس ريفيرا</string>
+    <string name="focus_hours_label">ساعات التركيز</string>
+    <string name="tasks_done_label">مهام مكتملة</string>
+    <string name="streak_label_profile">استمرارية</string>
+    <string name="my_achievements">إنجازاتي</string>
+    <string name="early_bird_desc_profile">تركيز قبل 8 صباحاً</string>
+    <string name="deep_work">عمل عميق</string>
+    <string name="deep_work_desc_profile">4 ساعات متواصلة</string>
+    <string name="consistent_writer">كاتب متسق</string>
+    <string name="consistent_writer_desc">30 يوماً من تسجيل حالات التدفق</string>
+    <string name="account">الحساب</string>
+    <string name="edit_profile">تعديل الملف الشخصي</string>
+    <string name="sensor_sensitivity">حساسية الحساس</string>
+    <string name="help_support">المساعدة والدعم</string>
+    <string name="security">الأمان</string>
+    <string name="change_password">تغيير كلمة المرور</string>
+    <string name="current_password">كلمة المرور الحالية</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+    <string name="confirm_password">تأكيد كلمة المرور الجديدة</string>
+    <string name="password_updated">تم تحديث كلمة المرور بنجاح!</string>
+    <string name="error_incorrect_password">كلمة المرور الحالية غير صحيحة</string>
+    <string name="error_password_mismatch">كلمات المرور غير متطابقة</string>
+
+    <!-- Task Manager -->
+    <string name="my_tasks">مهامي</string>
+    <string name="ready_to_focus">مستعد للتركيز؟</string>
+    <string name="tasks_scheduled_zero">ليس لديك مهام مجدولة لليوم.</string>
+    <string name="active_journey">الرحلة النشطة</string>
+    <string name="focus_history">سجل التركيز</string>
+    <string name="tap_to_add">انقر على + لإضافة كتل تركيز.</string>
+
+    <!-- New Task -->
+    <string name="new_task_title">مهمة جديدة</string>
+    <string name="task_title_label">عنوان المهمة</string>
+    <string name="task_title_hint">ما الذي يجب فعله؟</string>
+    <string name="duration_label">المدة</string>
+    <string name="category_label">الفئة</string>
+    <string name="category_study">دراسة</string>
+    <string name="category_code">برمجة</string>
+    <string name="category_design">تصميم</string>
+    <string name="audio_preference_label">تفضيلات الصوت</string>
+    <string name="save_task">حفظ المهمة</string>
+
+    <!-- Stats / Focus State -->
+    <string name="progress_title">تقدمك</string>
+    <string name="weekly_focus">التركيز الأسبوعي</string>
+    <string name="weekly_hours_total">إجمالي 24.5 ساعة هذا الأسبوع</string>
+    <string name="vs_last_week">مقارنة بالأسبوع الماضي</string>
+    <string name="focus_breakdown">توزيع التركيز</string>
+    <string name="category_work">عمل</string>
+    <string name="efficiency">الكفاءة</string>
+    <string name="sessions">الجلسات</string>
+    <string name="best_performance_label">أفضل أداء</string>
+    <string name="deep_work_marathon">ماراثون العمل العميق</string>
+    <string name="longest_session_desc">أطول جلسة هذا الأسبوع</string>
+    <string name="minutes_label_stats">دقائق</string>
+    <string name="recent_milestones">الإنجازات الأخيرة</string>
+    <string name="five_day_streak">استمرارية 5 أيام</string>
+    <string name="consistency_is_key">الاستمرارية هي مفتاح التركيز</string>
+    <string name="early_bird_milestone_desc">3 جلسات قبل 9:00 صباحاً</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding2_title">اقلب للتركيز</string>
+    <string name="onboarding2_desc">بساطة اقلب هاتفك ووجهه للأسفل لبدء جلسة الدراسة تلقائياً.</string>
+    <string name="onboarding3_title">حقق أهدافك</string>
+    <string name="onboarding3_desc">فوكس فلو يحول إنتاجيتك اليومية إلى رحلة مجزية. ابق متيقظاً، واكسب الأوسمة، وابنِ العادات التي طالما رغبت بها.</string>
+    <string name="smart_timer_label">المؤقت الذكي</string>
+    <string name="deep_analytics_label">تحليلات عميقة</string>
+    <string name="get_started">ابدأ الآن</string>
+    <string name="onboarding4_title">مستعد للعثور على تدفقك؟</string>
+    <string name="onboarding4_desc">جرب التركيز البديهي. ببساطة اضبط المؤقت واقلب هاتفك ووجهه للأسفل لبدء جلستك وإسكات المشتتات.</string>
+    <string name="step1_title">1. حدد وقت تركيزك.</string>
+    <string name="step1_desc">اختر طول الجلسة المثالي لك.</string>
+    <string name="step2_title">2. اقلب هاتفك.</string>
+    <string name="step2_desc">قم بتنشيط وضع \"التدفق العميق\" على الفور.</string>
+    <string name="step3_title">3. يبدأ العمل العميق.</string>
+    <string name="step3_desc">تتوقف الإشعارات مؤقتاً حتى تتمكن من التركيز.</string>
+    <string name="begin_journey">ابدأ رحلتك</string>
+
+    <!-- Settings & Dashboard Extras -->
+    <string name="settings_title">الإعدادات</string>
+    <string name="search_settings_hint">البحث في الإعدادات...</string>
+    <string name="premium_member">عضو مميز</string>
+    <string name="sensor_gesture_section">الحساسات والإيماءات</string>
+    <string name="flip_sensitivity_label">حساسية التدوير للتركيز</string>
+    <string name="flip_vibration_label">اهتزاز وصوت التدوير</string>
+    <string name="focus_preferences_section">تفضيلات التركيز</string>
+    <string name="auto_start_breaks_label">بدء الاستراحات تلقائياً</string>
+    <string name="ambient_sounds_label">أصوات الخلفية\nالمحيطة</string>
+    <string name="appearance_notifications_section">المظهر والتنبيهات</string>
+    <string name="theme_mode_label">وضع المظهر</string>
+    <string name="theme_light">فاتح</string>
+    <string name="theme_dark">داكن</string>
+    <string name="theme_system">النظام</string>
+    <string name="daily_study_reminders_label">تذكيرات الدراسة اليومية</string>
+    <string name="daily_reminders_time">يومياً الساعة 8:00 صباحاً</string>
+    <string name="account_support_section">الحساب والدعم</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="version_info">إصدار فوكس فلو 2.4.0</string>
+    <string name="greeting_morning">صباح الخير، %s</string>
+    <string name="greeting_afternoon">طاب مساؤك، %s</string>
+    <string name="greeting_evening">مساء الخير، %s</string>
+    <string name="hours_format">%1$.1f ساعة</string>
+    <string name="minutes_format">%d دقيقة</string>
+    <string name="daily_focus_goal_format">%d ساعات %02d دقائق</string>
+
+    <string name="daily_goal">الهدف اليومي</string>
+    <string name="remaining">المتبقي</string>
+    <string name="achievement">الإنجاز</string>
+    <string name="quick_start">بدء سريع</string>
+    <string name="quick_start_desc">ابدأ جلسة تركيز لمدة 25 دقيقة الآن.</string>
+    <string name="start_timer">ابدأ المؤقت</string>
+    <string name="language">اللغة</string>
+    <string name="app_language">لغة التطبيق</string>
+    <string name="english">الإنجليزية</string>
+    <string name="arabic">العربية</string>
+    <string name="goal_question">كم عدد الساعات التي تريد التركيز فيها؟</string>
+    <string name="hrs_unit">ساعة</string>
+    <string name="min_unit">دقيقة</string>
+    <!-- Task Details -->
+    <string name="task_details_title">تفاصيل المهمة</string>
+    <string name="session_notes">ملاحظات الجلسة</string>
+    <string name="edit_note">تعديل الملاحظة</string>
+    <string name="edit_task">تعديل المهمة</string>
+    <string name="delete_task_btn">حذف المهمة</string>
+    <string name="duration_caps">المدة</string>
+    <string name="remaining_caps">المتبقي</string>
+    <string name="audio_pref_caps">تفضيلات الصوت</string>
+    <string name="status_caps">الحالة</string>
+    <string name="share_task_content">المهمة: %1$s\nالمدة: %2$d دقيقة\nالفئة: %3$s\nالحالة: %4$s</string>
+    <string name="edit_note_title">تعديل الملاحظة</string>
+
+    <string name="view_details">عرض التفاصيل</string>
+</resources>

@@ -32,9 +32,9 @@ public class forget_password extends AppCompatActivity {
         btnSend.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             if (email.isEmpty() || !email.contains("@")) {
-                Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_invalid_email, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Reset link sent to " + email, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.reset_link_sent_to, email), Toast.LENGTH_LONG).show();
                 finish();
             }
         });

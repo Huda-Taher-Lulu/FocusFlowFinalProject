@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/quicksand"
-            android:text="Edit Focus Block"
+            android:text="@string/edit_focus_block"
             android:textColor="@color/text_green"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -84,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:fontFamily="@font/inter"
-                        android:text="Biology Study Session"
+                        android:text="@string/task_title_hint"
                         android:textColor="@color/text_gray"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -124,7 +124,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter"
-                            android:text="Duration"
+                            android:text="@string/duration"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:textStyle="bold"
@@ -138,7 +138,7 @@
                             app:backgroundTint="#E2F7ED"
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="4dp"
-                            android:text="45m"
+                            android:text="@string/default_time"
                             android:textColor="@color/text_green"
                             android:textSize="12sp"
                             android:textStyle="bold"
@@ -188,7 +188,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter"
-                        android:text="CATEGORY"
+                        android:text="@string/category"
                         android:textColor="@color/text_gray"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -218,7 +218,7 @@
                                 android:gravity="center"
                                 android:paddingHorizontal="16dp">
                                 <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_book" app:tint="#4338CA" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Study" android:textColor="#4338CA" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="@string/category_study" android:textColor="#4338CA" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -230,7 +230,7 @@
                                 android:gravity="center"
                                 android:paddingHorizontal="16dp">
                                 <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_code" app:tint="@color/text_green" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Code" android:textColor="@color/text_green" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="@string/category_code" android:textColor="@color/text_green" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -242,7 +242,7 @@
                                 android:gravity="center"
                                 android:paddingHorizontal="16dp">
                                 <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_palette" app:tint="#B8860B" />
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Design" android:textColor="#B8860B" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="@string/category_design" android:textColor="#B8860B" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
                             </LinearLayout>
 
                             <ImageView
@@ -279,7 +279,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter"
-                        android:text="AUDIO PREFERENCE"
+                        android:text="@string/audio_preference"
                         android:textColor="@color/text_gray"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -299,7 +299,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/quicksand"
                             android:gravity="center"
-                            android:text="Lofi Beats"
+                            android:text="@string/lofi_beats"
                             android:textColor="@color/text_gray"
                             android:textStyle="bold" />
 
@@ -311,7 +311,7 @@
                             android:background="@drawable/chip_selected"
                             android:fontFamily="@font/quicksand"
                             android:gravity="center"
-                            android:text="Silent"
+                            android:text="@string/silent"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -328,7 +328,7 @@
                 app:backgroundTint="@null"
                 android:background="@drawable/button_gradient"
                 android:fontFamily="@font/quicksand"
-                android:text="UPDATE SESSION"
+                android:text="@string/update_session"
                 android:textAllCaps="false"
                 android:textColor="@color/text_green"
                 android:textSize="18sp"
@@ -369,7 +369,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:text="Dashboard"
+                android:text="@string/nav_dashboard"
                 android:textColor="@color/text_gray"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -395,7 +395,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand"
-                android:text="Tasks"
+                android:text="@string/nav_tasks"
                 android:textColor="@color/text_green"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -420,7 +420,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:text="Timer"
+                android:text="@string/nav_timer"
                 android:textColor="@color/text_gray"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -444,7 +444,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:text="Stats"
+                android:text="@string/nav_stats"
                 android:textColor="@color/text_gray"
                 android:textSize="12sp" />
         </LinearLayout>

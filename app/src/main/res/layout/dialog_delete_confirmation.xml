@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/quicksand"
-            android:text="Delete Task?"
+            android:text="@string/delete_task_title"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -45,7 +45,7 @@
             android:fontFamily="@font/inter"
             android:gravity="center"
             android:lineSpacingExtra="4dp"
-            android:text="Are you sure you want to delete? This action cannot be undone."
+            android:text="@string/delete_task_desc"
             android:textColor="@color/text_gray"
             android:textSize="14sp" />
 
@@ -57,7 +57,7 @@
             android:layout_marginTop="32dp"
             app:backgroundTint="#C0392B"
             android:fontFamily="@font/quicksand"
-            android:text="Delete"
+            android:text="@string/delete"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -72,7 +72,7 @@
             android:layout_marginTop="8dp"
             android:backgroundTint="#F3F4F6"
             android:fontFamily="@font/quicksand"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textAllCaps="false"
             android:textColor="@color/text_gray"
             android:textSize="16sp"

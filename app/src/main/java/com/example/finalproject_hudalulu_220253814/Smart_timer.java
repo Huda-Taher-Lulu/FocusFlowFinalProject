@@ -47,6 +47,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     private long startTimeInMillis = 0;
     private long timeLeftInMillis = 0;
     private String selectedAudio = "Silent";
+    private int savedAudioPosition = 0;
     private long taskId = -1;
     private String currentTaskTitle = "";
     private MediaPlayer bgMediaPlayer;
@@ -90,8 +91,10 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             String imagePath = prefs.getString("profileImageUri", null);
             if (imagePath != null) {
-                Glide.with(this)
+                com.bumptech.glide.Glide.with(this)
                         .load(imagePath)
+                        .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
                         .placeholder(R.drawable.ic_person)
                         .circleCrop()
                         .into(ivProfileNav);
@@ -182,13 +185,19 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                 // No task selected and no active session
                 startTimeInMillis = 0;
                 timeLeftInMillis = 0;
-                tvFlipTitle.setText("No Task Selected");
-                tvTaskTitleDisplay.setText("No Task Selected");
-                tvTaskCategoryDisplay.setText("None");
-                if (llNoTaskReminder != null) llNoTaskReminder.setVisibility(View.VISIBLE);
+                taskId = -1;
+                currentTaskTitle = "";
+                tvFlipTitle.setText(R.string.no_task_selected);
+                tvTaskTitleDisplay.setText(R.string.no_task_selected);
+                tvTaskCategoryDisplay.setText(R.string.low); 
+                if (llNoTaskReminder != null) {
+                    llNoTaskReminder.setVisibility(View.VISIBLE);
+                }
+                ivIllustration.setAlpha(1.0f);
             }
         }
 
+        // Force UI update to 00:00 if no session
         updateCountDownText();
         setupProgressBar();
 
@@ -247,6 +256,10 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
             if (bgMediaPlayer == null) {
                 bgMediaPlayer = MediaPlayer.create(this, R.raw.calm);
                 bgMediaPlayer.setLooping(true);
+                // Issue 2: Restore position if we have a saved one
+                if (savedAudioPosition > 0) {
+                    bgMediaPlayer.seekTo(savedAudioPosition);
+                }
             }
             if (!bgMediaPlayer.isPlaying()) {
                 bgMediaPlayer.start();
@@ -256,6 +269,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
 
     private void pauseBackgroundMusic() {
         if (bgMediaPlayer != null && bgMediaPlayer.isPlaying()) {
+            savedAudioPosition = bgMediaPlayer.getCurrentPosition();
             bgMediaPlayer.pause();
         }
     }
@@ -312,16 +326,24 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                 } else if ("Design".equalsIgnoreCase(task.getCategory())) {
                     ivTaskIcon.setImageResource(R.drawable.ic_palette);
                 }
+                
+                if (llNoTaskReminder != null) llNoTaskReminder.setVisibility(View.GONE);
+                tvFlipDesc.setVisibility(View.GONE);
+                llChoiceButtons.setVisibility(View.VISIBLE);
+                return; // Task found and setup done
             }
         }
-        tvFlipDesc.setVisibility(View.GONE);
+        
+        // No task found or taskId is -1
+        tvTaskTitleDisplay.setText(R.string.no_task_selected);
+        tvTaskCategoryDisplay.setText(R.string.none);
+        if (llNoTaskReminder != null) llNoTaskReminder.setVisibility(View.VISIBLE);
         llChoiceButtons.setVisibility(View.VISIBLE);
-        if (llNoTaskReminder != null) llNoTaskReminder.setVisibility(View.GONE);
     }
 
     private void showDurationPickerDialog() {
         if (isTimerRunning) {
-            Toast.makeText(this, "Finish or pause the timer to edit duration", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.edit_focus_block, Toast.LENGTH_SHORT).show(); // Reusing string as alert
             return;
         }
 
@@ -371,12 +393,12 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                     setupProgressBar();
                     saveActiveSession();
                     dialog.dismiss();
-                    Toast.makeText(this, "Timer updated and saved to task!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.task_saved, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "Please enter a valid duration", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_goal_zero, Toast.LENGTH_SHORT).show();
                 }
             } catch (NumberFormatException e) {
-                Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_invalid_email, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -404,6 +426,14 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         editor.putLong("taskId", taskId);
         editor.putBoolean("isAwaitingSave", isAwaitingSave);
         editor.putBoolean("hasActiveSession", startTimeInMillis > 0 && !isAwaitingSave);
+
+        // Issue 2: Save audio position
+        if (bgMediaPlayer != null) {
+            editor.putInt("audioPosition", bgMediaPlayer.getCurrentPosition());
+        } else {
+            editor.putInt("audioPosition", savedAudioPosition);
+        }
+
         editor.apply();
 
         // Also save specific progress back to the Task object in repository
@@ -419,10 +449,18 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
 
     private boolean loadActiveSession() {
         android.content.SharedPreferences prefs = getSharedPreferences("TimerPrefs", MODE_PRIVATE);
+        // Only load if it's explicitly marked as having an active session AND time is remaining
         if (!prefs.getBoolean("hasActiveSession", false)) return false;
 
         startTimeInMillis = prefs.getLong("startTimeInMillis", 0);
         timeLeftInMillis = prefs.getLong("timeLeftInMillis", 0);
+        
+        // Safety: If no time left or invalid start time, it's not an active session
+        if (startTimeInMillis <= 0 || timeLeftInMillis <= 0) {
+            clearActiveSession();
+            return false;
+        }
+
         isTimerRunning = false;
         isPaused = prefs.getBoolean("isPaused", true) || prefs.getBoolean("isTimerRunning", false);
         currentTaskTitle = prefs.getString("currentTaskTitle", "");
@@ -430,12 +468,11 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         isDndEnabled = prefs.getBoolean("isDndEnabled", false);
         taskId = prefs.getLong("taskId", -1);
         isAwaitingSave = prefs.getBoolean("isAwaitingSave", false);
+        savedAudioPosition = prefs.getInt("audioPosition", 0);
 
         updateAudioUI(selectedAudio);
         updateDndUI();
         setupTaskUI();
-        if (isPaused) {
-        }
         return true;
     }
 
@@ -473,7 +510,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                 if (isTimerRunning) {
                     pauseTimer();
                     playSound(R.raw.warning_sound);
-                    Toast.makeText(this, "Don't lose focus! Flip back to continue.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.dont_lose_focus, Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -538,13 +575,13 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         // Show edit controls again
         ivSelectTask.setVisibility(View.VISIBLE);
         findViewById(R.id.llTimerClickArea).setClickable(true);
-        tvFlipTitle.setText("Focus Paused!");
+        tvFlipTitle.setText(R.string.focus_paused);
         ivIllustration.setAlpha(1.0f);
     }
 
     private boolean checkNotificationPolicyAccess() {
         if (notificationManager != null && !notificationManager.isNotificationPolicyAccessGranted()) {
-            Toast.makeText(this, "Please grant DND access to silence notifications", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.dnd_access_needed, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
             startActivity(intent);
             return false;
@@ -607,9 +644,9 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         updateCountDownText();
         updateProgressBar();
 
-        tvFlipTitle.setText("No Task Selected");
-        tvTaskTitleDisplay.setText("No Task Selected");
-        tvTaskCategoryDisplay.setText("None");
+        tvFlipTitle.setText(R.string.no_task_selected);
+        tvTaskTitleDisplay.setText(R.string.no_task_selected);
+        tvTaskCategoryDisplay.setText(R.string.low);
         llChoiceButtons.setVisibility(View.VISIBLE); // Keep buttons visible but they won't do much
         if (llNoTaskReminder != null) llNoTaskReminder.setVisibility(View.VISIBLE);
         ivIllustration.setAlpha(1.0f);
@@ -718,13 +755,22 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         // Clear active session since it's finished
         clearActiveSession();
 
-        Toast.makeText(this, "Stats Updated!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.stats_updated, Toast.LENGTH_SHORT).show();
     }
 
     private void updateCountDownText() {
         int minutes = (int) (timeLeftInMillis / 1000) / 60;
         int seconds = (int) (timeLeftInMillis / 1000) % 60;
         tvTimerDisplay.setText(String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds));
+
+        // Issue 1: Display red color if no time is set (00:00)
+        if (timeLeftInMillis == 0) {
+            tvTimerDisplay.setTextColor(Color.parseColor("#C62828")); // Red
+            progressBar.setProgressDrawable(androidx.core.content.ContextCompat.getDrawable(this, R.drawable.circular_progress_bar_red));
+        } else {
+            tvTimerDisplay.setTextColor(android.graphics.Color.parseColor("#1B4332")); // Green
+            progressBar.setProgressDrawable(androidx.core.content.ContextCompat.getDrawable(this, R.drawable.circular_progress_bar));
+        }
     }
 
     private void updateProgressBar() {
@@ -734,7 +780,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     private void enterDeepFlow() {
         ivSelectTask.setVisibility(View.GONE);
         findViewById(R.id.llTimerClickArea).setClickable(false);
-        tvFlipTitle.setText("Deep Flow Active");
+        tvFlipTitle.setText(R.string.deep_flow_active);
         ivIllustration.setAlpha(0.3f);
     }
 
