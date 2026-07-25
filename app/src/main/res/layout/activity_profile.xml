@@ -1,510 +1,113 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background_cream"
-    tools:context=".Profile">
-
-    <!-- Toolbar -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:paddingHorizontal="20dp"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/ivBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_back"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/quicksand"
-            android:text="@string/app_brand_name"
-            android:textColor="@color/text_green"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:id="@+id/main" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/background_cream" tools:context=".Profile">
+    <!--  Toolbar  -->
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/clToolbar" android:layout_width="match_parent" android:layout_height="64dp" android:paddingHorizontal="20dp" app:layout_constraintTop_toTopOf="parent">
+        <ImageView android:id="@+id/ivBack" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_back" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/quicksand" android:text="@string/app_brand_name" android:textColor="@color/text_green" android:textSize="22sp" android:textStyle="bold" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+        <!--  Implicit Intent: shares the user's profile stats via ACTION_SEND (Requirement 3.1.7)  -->
+        <ImageView android:id="@+id/ivShareProfile" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_share" android:contentDescription="Share profile" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- Scrollable Content -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        android:scrollbars="none"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clToolbar">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <!-- Profile Info -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-
-                <!-- Profile Image Container -->
-                <FrameLayout
-                    android:id="@+id/flProfileContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/ivProfile"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:padding="2dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_person"
-                        app:shapeAppearanceOverlay="@style/CircleImage"
-                        app:strokeColor="@color/white"
-                        app:strokeWidth="4dp"
-                        android:elevation="4dp"/>
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/ivCameraIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_gravity="bottom|end"
-                        android:background="@color/primary_green_light"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_camera"
-                        app:shapeAppearanceOverlay="@style/CircleImage"
-                        android:elevation="6dp"
-                        app:strokeColor="@color/white"
-                        app:strokeWidth="2dp"/>
+    <!--  Scrollable Content  -->
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:fillViewport="true" android:scrollbars="none" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@id/clToolbar">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+            <!--  Profile Info  -->
+            <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp">
+                <!--  Profile Image Container  -->
+                <FrameLayout android:id="@+id/flProfileContainer" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
+                    <com.google.android.material.imageview.ShapeableImageView android:id="@+id/ivProfile" android:layout_width="120dp" android:layout_height="120dp" android:padding="2dp" android:scaleType="centerCrop" android:src="@drawable/ic_person" app:shapeAppearanceOverlay="@style/CircleImage" app:strokeColor="@color/white" app:strokeWidth="4dp" android:elevation="4dp"/>
+                    <com.google.android.material.imageview.ShapeableImageView android:id="@+id/ivCameraIcon" android:layout_width="36dp" android:layout_height="36dp" android:layout_gravity="bottom|end" android:background="@color/primary_green_light" android:padding="8dp" android:src="@drawable/ic_camera" app:shapeAppearanceOverlay="@style/CircleImage" android:elevation="6dp" app:strokeColor="@color/white" app:strokeWidth="2dp"/>
                 </FrameLayout>
-
-                <TextView
-                    android:id="@+id/tvProfileName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
-                    android:fontFamily="@font/quicksand"
-                    android:text="@string/profile_name_default"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/flProfileContainer" />
-
-                <LinearLayout
-                    android:id="@+id/llEditMajor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/nav_item_active_bg"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="4dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvProfileName">
-
-                    <TextView
-                        android:id="@+id/tvProfileMajor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter"
-                        android:text="@string/enter_major_role"
-                        android:textColor="@color/text_green"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/ivEditName"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_marginStart="5dp"
-                        android:src="@drawable/ic_edit"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView android:id="@+id/tvProfileName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:fontFamily="@font/quicksand" android:text="@string/profile_name_default" android:textColor="@color/black" android:textSize="24sp" android:textStyle="bold" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/flProfileContainer"/>
+                <LinearLayout android:id="@+id/llEditMajor" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:background="@drawable/nav_item_active_bg" android:gravity="center_vertical" android:orientation="horizontal" android:paddingHorizontal="16dp" android:paddingVertical="4dp" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/tvProfileName">
+                    <TextView android:id="@+id/tvProfileMajor" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/inter" android:text="@string/enter_major_role" android:textColor="@color/text_green" android:textSize="12sp" android:textStyle="bold"/>
+                    <ImageView android:id="@+id/ivEditName" android:layout_width="15dp" android:layout_height="15dp" android:layout_marginStart="5dp" android:src="@drawable/ic_edit" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- Stats Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="32dp"
-                android:orientation="horizontal">
-
-                <!-- Stat 1 -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-                        <TextView
-                            android:id="@+id/tvFocusHours"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="24h"
-                            android:textColor="@color/text_green"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/quicksand"/>
+            <!--  Stats Row  -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="80dp" android:layout_marginTop="32dp" android:orientation="horizontal">
+                <!--  Stat 1  -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="8dp" android:layout_weight="1" app:cardCornerRadius="16dp" app:cardElevation="2dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                        <TextView android:id="@+id/tvFocusHours" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="24h" android:textColor="@color/text_green" android:textSize="20sp" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/focus_hours_label" android:textColor="@color/text_gray" android:textSize="10sp" android:fontFamily="@font/inter"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
-                <!-- Stat 2 -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-                        <TextView
-                            android:id="@+id/tvTasksDone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="12"
-                            android:textColor="#4285F4"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/quicksand"/>
+                <!--  Stat 2  -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginHorizontal="4dp" android:layout_weight="1" app:cardCornerRadius="16dp" app:cardElevation="2dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                        <TextView android:id="@+id/tvTasksDone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="12" android:textColor="#4285F4" android:textSize="20sp" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/tasks_done_label" android:textColor="@color/text_gray" android:textSize="10sp" android:fontFamily="@font/inter"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
-                <!-- Stat 3 -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                <!--  Stat 3  -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:layout_weight="1" app:cardCornerRadius="16dp" app:cardElevation="2dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="16dp">
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center">
-                            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_fire" />
-                            <TextView
-                                android:id="@+id/tvStreak"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:text="7d"
-                                android:textColor="#E67E22"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:fontFamily="@font/quicksand"/>
+                            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_fire"/>
+                            <TextView android:id="@+id/tvStreak" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="4dp" android:text="7d" android:textColor="#E67E22" android:textSize="20sp" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
                         </LinearLayout>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/streak_label_profile" android:textColor="@color/text_gray" android:textSize="10sp" android:fontFamily="@font/inter"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
-
-            <!-- Achievements Section -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/quicksand"
-                    android:text="@string/my_achievements"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/view_all"
-                    android:textColor="@color/text_green"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <!--  Achievements Section  -->
+            <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/quicksand" android:text="@string/my_achievements" android:textColor="@color/black" android:textSize="20sp" android:textStyle="bold" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/inter" android:text="@string/view_all" android:textColor="@color/text_green" android:textSize="14sp" android:textStyle="bold" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal">
-
-                <!-- Achievement 1 -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/badge_yellow"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="20dp">
-                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/ic_sun" android:background="@color/white" android:padding="8dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:orientation="horizontal">
+                <!--  Achievement 1  -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="8dp" android:layout_weight="1" app:cardBackgroundColor="@color/badge_yellow" app:cardCornerRadius="20dp" app:cardElevation="0dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="20dp">
+                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/ic_sun" android:background="@color/white" android:padding="8dp"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="@string/early_bird" android:textColor="#B8860B" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/early_bird_desc_profile" android:textColor="#B8860B" android:textSize="10sp" android:fontFamily="@font/inter"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
-                <!-- Achievement 2 -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/badge_green"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="20dp">
-                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/ic_diamond" android:background="@color/white" android:padding="8dp" />
+                <!--  Achievement 2  -->
+                <androidx.cardview.widget.CardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:layout_weight="1" app:cardBackgroundColor="@color/badge_green" app:cardCornerRadius="20dp" app:cardElevation="0dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="20dp">
+                        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/ic_diamond" android:background="@color/white" android:padding="8dp"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="@string/deep_work" android:textColor="@color/text_green" android:textStyle="bold" android:fontFamily="@font/quicksand"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/deep_work_desc_profile" android:textColor="@color/text_green" android:textSize="10sp" android:fontFamily="@font/inter"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
-
-            <!-- Achievement 3 (Horizontal) -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardBackgroundColor="#F0E7FF"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp">
-                    <ImageView
-                        android:id="@+id/ivBadgeIcon3"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@color/white"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_pencil"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
-                    <TextView
-                        android:id="@+id/tvBadgeTitle3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:fontFamily="@font/quicksand"
-                        android:text="@string/consistent_writer"
-                        android:textColor="#6366F1"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@id/ivBadgeIcon3"
-                        app:layout_constraintTop_toTopOf="parent" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter"
-                        android:text="@string/consistent_writer_desc"
-                        android:textColor="#818CF8"
-                        android:textSize="11sp"
-                        app:layout_constraintStart_toStartOf="@id/tvBadgeTitle3"
-                        app:layout_constraintTop_toBottomOf="@id/tvBadgeTitle3" />
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_star_floating"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="#A5B4FC" />
+            <!--  Achievement 3 (Horizontal)  -->
+            <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" app:cardBackgroundColor="#F0E7FF" app:cardCornerRadius="20dp" app:cardElevation="0dp">
+                <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp">
+                    <ImageView android:id="@+id/ivBadgeIcon3" android:layout_width="48dp" android:layout_height="48dp" android:background="@color/white" android:padding="10dp" android:src="@drawable/ic_pencil" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+                    <TextView android:id="@+id/tvBadgeTitle3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:fontFamily="@font/quicksand" android:text="@string/consistent_writer" android:textColor="#6366F1" android:textStyle="bold" app:layout_constraintStart_toEndOf="@id/ivBadgeIcon3" app:layout_constraintTop_toTopOf="parent"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:fontFamily="@font/inter" android:text="@string/consistent_writer_desc" android:textColor="#818CF8" android:textSize="11sp" app:layout_constraintStart_toStartOf="@id/tvBadgeTitle3" app:layout_constraintTop_toBottomOf="@id/tvBadgeTitle3"/>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_star_floating" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent" app:tint="#A5B4FC"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
-
-            <!-- Account Section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:fontFamily="@font/quicksand"
-                android:text="@string/account"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <!-- Edit Profile -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/clEditProfile"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:paddingHorizontal="16dp">
-                        <ImageView
-                            android:id="@+id/ivAccIcon1"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:background="@drawable/bg_circle_gray"
-                            android:padding="6dp"
-                            android:src="@drawable/ic_person"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:fontFamily="@font/inter"
-                            android:text="@string/edit_profile"
-                            android:textColor="@color/black"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/ivAccIcon1"
-                            app:layout_constraintTop_toTopOf="parent" />
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_arrow_next"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/text_gray" />
+            <!--  Account Section  -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="32dp" android:fontFamily="@font/quicksand" android:text="@string/account" android:textColor="@color/black" android:textSize="20sp" android:textStyle="bold"/>
+            <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" app:cardCornerRadius="20dp" app:cardElevation="2dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="8dp">
+                    <!--  Edit Profile  -->
+                    <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/clEditProfile" android:layout_width="match_parent" android:layout_height="56dp" android:paddingHorizontal="16dp">
+                        <ImageView android:id="@+id/ivAccIcon1" android:layout_width="32dp" android:layout_height="32dp" android:background="@drawable/bg_circle_gray" android:padding="6dp" android:src="@drawable/ic_person" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:fontFamily="@font/inter" android:text="@string/edit_profile" android:textColor="@color/black" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toEndOf="@id/ivAccIcon1" app:layout_constraintTop_toTopOf="parent"/>
+                        <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_arrow_next" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent" app:tint="@color/text_gray"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6" android:layout_marginHorizontal="16dp" />
-
-                    <!-- Sensor Sensitivity -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:paddingHorizontal="16dp">
-                        <ImageView
-                            android:id="@+id/ivAccIcon2"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:background="@drawable/bg_circle_gray"
-                            android:padding="6dp"
-                            android:src="@drawable/ic_sensor"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:fontFamily="@font/inter"
-                            android:text="@string/sensor_sensitivity"
-                            android:textColor="@color/black"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/ivAccIcon2"
-                            app:layout_constraintTop_toTopOf="parent" />
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_arrow_next"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/text_gray" />
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6" android:layout_marginHorizontal="16dp"/>
+                    <!--  Sensor Sensitivity  -->
+                    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="56dp" android:paddingHorizontal="16dp">
+                        <ImageView android:id="@+id/ivAccIcon2" android:layout_width="32dp" android:layout_height="32dp" android:background="@drawable/bg_circle_gray" android:padding="6dp" android:src="@drawable/ic_sensor" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:fontFamily="@font/inter" android:text="@string/sensor_sensitivity" android:textColor="@color/black" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toEndOf="@id/ivAccIcon2" app:layout_constraintTop_toTopOf="parent"/>
+                        <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_arrow_next" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent" app:tint="@color/text_gray"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6" android:layout_marginHorizontal="16dp" />
-
-                    <!-- Help & Support -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:paddingHorizontal="16dp">
-                        <ImageView
-                            android:id="@+id/ivAccIcon3"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:background="@drawable/bg_circle_gray"
-                            android:padding="6dp"
-                            android:src="@drawable/ic_help"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:fontFamily="@font/inter"
-                            android:text="@string/help_support"
-                            android:textColor="@color/black"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/ivAccIcon3"
-                            app:layout_constraintTop_toTopOf="parent" />
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_arrow_next"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/text_gray" />
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F3F4F6" android:layout_marginHorizontal="16dp"/>
+                    <!--  Help & Support  -->
+                    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="56dp" android:paddingHorizontal="16dp">
+                        <ImageView android:id="@+id/ivAccIcon3" android:layout_width="32dp" android:layout_height="32dp" android:background="@drawable/bg_circle_gray" android:padding="6dp" android:src="@drawable/ic_help" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:fontFamily="@font/inter" android:text="@string/help_support" android:textColor="@color/black" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toEndOf="@id/ivAccIcon3" app:layout_constraintTop_toTopOf="parent"/>
+                        <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/ic_arrow_next" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent" app:tint="@color/text_gray"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

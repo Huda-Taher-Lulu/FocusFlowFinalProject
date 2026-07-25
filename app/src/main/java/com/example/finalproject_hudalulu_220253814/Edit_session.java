@@ -2,10 +2,8 @@ package com.example.finalproject_hudalulu_220253814;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,9 +21,14 @@ import com.google.android.material.slider.Slider;
 
 public class Edit_session extends AppCompatActivity {
 
+    private static final String KEY_CATEGORY = "selectedCategory";
+    private static final String KEY_AUDIO = "selectedAudio";
+    private static final String KEY_TASK_ID = "taskId";
+
     private String selectedCategory = "Study";
     private String selectedAudio = "Silent";
-    private int taskIndex = -1;
+    private long taskId = -1;
+    private Task currentTask;
     private EditText etTaskTitle;
     private Slider sliderDuration;
     private TextView tvDurationValue;
@@ -94,24 +97,21 @@ public class Edit_session extends AppCompatActivity {
             btnLofi.setTextColor(getResources().getColor(R.color.text_gray));
         });
 
-        // Load existing data
+        // Load existing data from the passed-in Task object
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("TASK_INDEX")) {
-            taskIndex = intent.getIntExtra("TASK_INDEX", -1);
-            String title = intent.getStringExtra("TASK_TITLE");
-            int duration = intent.getIntExtra("TASK_DURATION", 45);
-            String category = intent.getStringExtra("TASK_CATEGORY");
-            String audio = intent.getStringExtra("TASK_AUDIO");
+        if (intent != null && intent.hasExtra("TASK")) {
+            currentTask = (Task) intent.getSerializableExtra("TASK");
 
-            if (title != null) etTaskTitle.setText(title);
-            sliderDuration.setValue(duration);
-            tvDurationValue.setText(duration + "m");
-            if (category != null) {
-                selectedCategory = category;
+            if (currentTask != null) {
+                taskId = currentTask.getId();
+                etTaskTitle.setText(currentTask.getTitle());
+                sliderDuration.setValue(currentTask.getDuration());
+                tvDurationValue.setText(currentTask.getDuration() + "m");
+
+                selectedCategory = currentTask.getCategory();
                 updateCategoryUI();
-            }
-            if (audio != null) {
-                selectedAudio = audio;
+
+                selectedAudio = currentTask.getAudioPreference();
                 if ("Lofi Beats".equals(selectedAudio)) {
                     btnLofi.performClick();
                 } else {
@@ -120,23 +120,40 @@ public class Edit_session extends AppCompatActivity {
             }
         }
 
+        if (savedInstanceState != null) {
+            selectedCategory = savedInstanceState.getString(KEY_CATEGORY, selectedCategory);
+            selectedAudio = savedInstanceState.getString(KEY_AUDIO, selectedAudio);
+            taskId = savedInstanceState.getLong(KEY_TASK_ID, taskId);
+            updateCategoryUI();
+            if ("Lofi Beats".equals(selectedAudio)) {
+                btnLofi.performClick();
+            } else {
+                btnSilent.performClick();
+            }
+        }
+
         findViewById(R.id.ivBack).setOnClickListener(v -> finish());
+
+        findViewById(R.id.ivShareTask).setOnClickListener(v -> {
+            String summary = "Focus session: " + etTaskTitle.getText().toString()
+                    + " (" + (int) sliderDuration.getValue() + " min, " + selectedCategory + ")";
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, summary);
+            startActivity(Intent.createChooser(shareIntent, "Share task via"));
+        });
 
         findViewById(R.id.btnUpdate).setOnClickListener(v -> {
             String newTitle = etTaskTitle.getText().toString();
             int newDuration = (int) sliderDuration.getValue();
 
-            if (taskIndex >= 0) {
-                Task task = TaskRepository.getInstance(this).getTask(taskIndex);
-                if (task != null) {
-                    task.setTitle(newTitle);
-                    task.setDuration(newDuration);
-                    task.setCategory(selectedCategory);
-                    task.setAudioPreference(selectedAudio);
-                    TaskRepository.getInstance(this).updateTask(this, taskIndex, task);
-                }
+            if (currentTask != null) {
+                currentTask.setTitle(newTitle);
+                currentTask.setDuration(newDuration);
+                currentTask.setCategory(selectedCategory);
+                currentTask.setAudioPreference(selectedAudio);
+                TaskRepository.getInstance(this).updateTask(this, currentTask);
             }
-            // For negative indices (static cards), we just finish as they aren't backed by the repository yet
             finish();
         });
 
@@ -159,6 +176,24 @@ public class Edit_session extends AppCompatActivity {
         updateCategoryUI();
     }
 
+    @Override
+    protected void onSaveInstanceState(android.os.Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Requirement 3.4: preserve transient UI state not automatically saved by Android.
+        outState.putString(KEY_CATEGORY, selectedCategory);
+        outState.putString(KEY_AUDIO, selectedAudio);
+        outState.putLong(KEY_TASK_ID, taskId);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(android.os.Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        selectedCategory = savedInstanceState.getString(KEY_CATEGORY, selectedCategory);
+        selectedAudio = savedInstanceState.getString(KEY_AUDIO, selectedAudio);
+        taskId = savedInstanceState.getLong(KEY_TASK_ID, taskId);
+        updateCategoryUI();
+    }
+
     private void updateCategoryUI() {
         LinearLayout container = findViewById(R.id.llCategoriesContainer);
         if (container == null) return;
@@ -171,12 +206,12 @@ public class Edit_session extends AppCompatActivity {
                 else if (child.getId() == R.id.btnCategoryDesign) tag = "Design";
 
                 boolean isSelected = selectedCategory.equalsIgnoreCase(tag);
-                
+
                 // Apply visual changes for selected state
                 child.setAlpha(isSelected ? 1.0f : 0.4f);
                 child.setScaleX(isSelected ? 1.05f : 1.0f);
                 child.setScaleY(isSelected ? 1.05f : 1.0f);
-                
+
                 // Optionally add a border-like effect or elevation
                 child.setElevation(isSelected ? 8f : 0f);
             }

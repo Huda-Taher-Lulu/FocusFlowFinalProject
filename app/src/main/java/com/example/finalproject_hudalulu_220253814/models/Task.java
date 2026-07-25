@@ -1,6 +1,11 @@
 package com.example.finalproject_hudalulu_220253814.models;
 
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
+
+    private long id = -1;
+
     private String title;
     private int duration;
     private String category;
@@ -21,6 +26,8 @@ public class Task {
         this.completionTimestamp = 0;
     }
 
+    public long getId() { return id; }
+    public void setId(long id) { this.id = id; }
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
     public int getDuration() { return duration; }

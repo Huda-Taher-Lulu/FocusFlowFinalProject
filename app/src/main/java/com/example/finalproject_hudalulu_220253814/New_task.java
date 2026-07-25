@@ -1,12 +1,9 @@
 package com.example.finalproject_hudalulu_220253814;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,8 +22,17 @@ import com.google.android.material.slider.Slider;
 
 public class New_task extends AppCompatActivity {
 
+    private static final String KEY_TITLE = "draftTitle";
+    private static final String KEY_DURATION = "draftDuration";
+    private static final String KEY_CATEGORY = "draftCategory";
+    private static final String KEY_AUDIO = "draftAudio";
+
     private String selectedCategory = "Study";
     private String selectedAudio = "Silent";
+
+    private EditText etTaskTitle;
+    private Slider sliderDuration;
+    private TextView tvDurationValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +45,9 @@ public class New_task extends AppCompatActivity {
             return insets;
         });
 
-        EditText etTaskTitle = findViewById(R.id.etTaskTitle);
-        Slider sliderDuration = findViewById(R.id.sliderDuration);
-        TextView tvDurationValue = findViewById(R.id.tvDurationValue);
+        etTaskTitle = findViewById(R.id.etTaskTitle);
+        sliderDuration = findViewById(R.id.sliderDuration);
+        tvDurationValue = findViewById(R.id.tvDurationValue);
 
         sliderDuration.addOnChangeListener((slider, value, fromUser) -> {
             tvDurationValue.setText((int) value + "m");
@@ -92,6 +98,19 @@ public class New_task extends AppCompatActivity {
             btnLofi.setTextColor(getResources().getColor(R.color.text_gray));
         });
 
+        if (savedInstanceState != null) {
+            etTaskTitle.setText(savedInstanceState.getString(KEY_TITLE, ""));
+            sliderDuration.setValue(savedInstanceState.getFloat(KEY_DURATION, sliderDuration.getValue()));
+            tvDurationValue.setText((int) sliderDuration.getValue() + "m");
+            selectedCategory = savedInstanceState.getString(KEY_CATEGORY, selectedCategory);
+            selectedAudio = savedInstanceState.getString(KEY_AUDIO, selectedAudio);
+            if ("Lofi Beats".equals(selectedAudio)) {
+                btnLofi.performClick();
+            } else {
+                btnSilent.performClick();
+            }
+        }
+
         findViewById(R.id.ivBack).setOnClickListener(v -> finish());
 
         findViewById(R.id.btnSaveTask).setOnClickListener(v -> {
@@ -102,7 +121,7 @@ public class New_task extends AppCompatActivity {
             }
 
             int duration = (int) sliderDuration.getValue();
-            
+
             Task newTask = new Task(title, duration, selectedCategory, selectedAudio);
             TaskRepository.getInstance(this).addTask(this, newTask);
 
@@ -126,6 +145,23 @@ public class New_task extends AppCompatActivity {
         }
 
         // Initial UI update
+        updateCategoryUI();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(KEY_TITLE, etTaskTitle.getText().toString());
+        outState.putFloat(KEY_DURATION, sliderDuration.getValue());
+        outState.putString(KEY_CATEGORY, selectedCategory);
+        outState.putString(KEY_AUDIO, selectedAudio);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        selectedCategory = savedInstanceState.getString(KEY_CATEGORY, selectedCategory);
+        selectedAudio = savedInstanceState.getString(KEY_AUDIO, selectedAudio);
         updateCategoryUI();
     }
 
@@ -183,7 +219,7 @@ public class New_task extends AppCompatActivity {
 
     private void addNewCategoryButton(String name, boolean autoSelect) {
         LinearLayout container = findViewById(R.id.llCategoriesContainer);
-        
+
         LinearLayout newBtn = new LinearLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -192,15 +228,15 @@ public class New_task extends AppCompatActivity {
         newBtn.setLayoutParams(lp);
         newBtn.setBackgroundResource(R.drawable.edit_text_bg);
         newBtn.setGravity(android.view.Gravity.CENTER);
-        newBtn.setPadding((int) (16 * getResources().getDisplayMetrics().density), 0, 
-                         (int) (16 * getResources().getDisplayMetrics().density), 0);
+        newBtn.setPadding((int) (16 * getResources().getDisplayMetrics().density), 0,
+                (int) (16 * getResources().getDisplayMetrics().density), 0);
         newBtn.setTag(name);
 
         TextView tv = new TextView(this);
         tv.setText(name);
         tv.setTextColor(getResources().getColor(R.color.text_gray));
         tv.setTypeface(ResourcesCompat.getFont(this, R.font.quicksand), android.graphics.Typeface.BOLD);
-        
+
         newBtn.addView(tv);
         newBtn.setOnClickListener(v -> {
             selectedCategory = name;
@@ -209,7 +245,7 @@ public class New_task extends AppCompatActivity {
 
         // Add before the "+" button
         container.addView(newBtn, container.getChildCount() - 1);
-        
+
         if (autoSelect) {
             // Auto select the new category
             selectedCategory = name;

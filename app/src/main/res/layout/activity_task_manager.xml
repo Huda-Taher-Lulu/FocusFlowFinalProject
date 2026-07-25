@@ -144,13 +144,15 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Dynamic Tasks Container -->
-            <LinearLayout
-                android:id="@+id/llTasksContainer"
+            <!-- Tasks RecyclerView (Requirement 3.1.3) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTasks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="vertical"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_task_dynamic"
                 app:layout_constraintTop_toBottomOf="@id/clSectionHeader" />
 
             <!-- Bottom Empty State Footer -->
@@ -161,7 +163,7 @@
                 android:layout_marginTop="40dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/llTasksContainer">
+                app:layout_constraintTop_toBottomOf="@id/rvTasks">
 
                 <ImageView
                     android:layout_width="32dp"

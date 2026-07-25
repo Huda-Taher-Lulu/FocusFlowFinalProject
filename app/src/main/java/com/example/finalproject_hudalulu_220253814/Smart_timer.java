@@ -47,11 +47,11 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     private long startTimeInMillis = 0;
     private long timeLeftInMillis = 0;
     private String selectedAudio = "Silent";
-    private int taskIndex = -1;
+    private long taskId = -1;
     private String currentTaskTitle = "";
     private MediaPlayer bgMediaPlayer;
     private boolean isDndEnabled = false;
-    
+
     private LinearLayout llLofiOption, llSilentOption, llDndOption, llNoTaskReminder;
     private TextView tvLofi, tvSilent, tvDnd;
     private ImageView ivDndIcon;
@@ -64,7 +64,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_smart_timer);
-        
+
         // Keep screen on during the focus session
         getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -91,10 +91,10 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
             String imagePath = prefs.getString("profileImageUri", null);
             if (imagePath != null) {
                 Glide.with(this)
-                    .load(imagePath)
-                    .placeholder(R.drawable.ic_person)
-                    .circleCrop()
-                    .into(ivProfileNav);
+                        .load(imagePath)
+                        .placeholder(R.drawable.ic_person)
+                        .circleCrop()
+                        .into(ivProfileNav);
             }
         }
 
@@ -111,13 +111,13 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         llNoTaskReminder = findViewById(R.id.llNoTaskReminder);
 
         findViewById(R.id.llTimerClickArea).setOnClickListener(v -> showDurationPickerDialog());
-        
+
         View.OnClickListener toTaskManager = v -> {
             startActivity(new Intent(this, Task_manager.class));
         };
         ivSelectTask.setOnClickListener(toTaskManager);
         findViewById(R.id.cvActiveTask).setOnClickListener(toTaskManager);
-        
+
         llChoiceButtons = findViewById(R.id.llChoiceButtons);
         llLofiOption = findViewById(R.id.llLofiOption);
         llSilentOption = findViewById(R.id.llSilentOption);
@@ -144,14 +144,10 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         // Load duration and preferences from intent or SharedPreferences
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("DURATION")) {
-            // Start a NEW task session
-            taskIndex = intent.getIntExtra("TASK_INDEX", -1);
-            
-            // Check if this task already has progress
-            com.example.finalproject_hudalulu_220253814.models.Task existingTask = null;
-            if (taskIndex != -1) {
-                existingTask = com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskIndex);
-            }
+            // Start a NEW task session (Requirement 3.2: full Task object passed as Serializable)
+            com.example.finalproject_hudalulu_220253814.models.Task existingTask =
+                    (com.example.finalproject_hudalulu_220253814.models.Task) intent.getSerializableExtra("TASK");
+            taskId = existingTask != null ? existingTask.getId() : -1;
 
             if (existingTask != null && existingTask.getTimeLeftInMillis() < (long) existingTask.getDuration() * 60000) {
                 // Resume from saved progress in repository
@@ -163,10 +159,10 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                 startTimeInMillis = durationMins * 60 * 1000L;
                 timeLeftInMillis = startTimeInMillis;
             }
-            
+
             currentTaskTitle = intent.getStringExtra("TASK_TITLE");
             selectedAudio = intent.getStringExtra("TASK_AUDIO");
-            
+
             updateAudioUI(selectedAudio);
             updateDndUI();
             setupTaskUI();
@@ -182,7 +178,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                 if (llNoTaskReminder != null) llNoTaskReminder.setVisibility(View.VISIBLE);
             }
         }
-        
+
         updateCountDownText();
         setupProgressBar();
 
@@ -190,7 +186,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         if (sensorManager != null) {
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
-        
+
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
@@ -291,13 +287,13 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     }
 
     private void setupTaskUI() {
-        if (taskIndex != -1) {
-            com.example.finalproject_hudalulu_220253814.models.Task task = 
-                com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskIndex);
+        if (taskId != -1) {
+            com.example.finalproject_hudalulu_220253814.models.Task task =
+                    com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
             if (task != null) {
                 tvTaskTitleDisplay.setText(task.getTitle());
                 tvTaskCategoryDisplay.setText(task.getCategory());
-                
+
                 // Set category icon
                 if ("Study".equalsIgnoreCase(task.getCategory())) {
                     ivTaskIcon.setImageResource(R.drawable.ic_book);
@@ -332,7 +328,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         EditText etMinutes = dialogView.findViewById(R.id.etMinutes);
         MaterialButton btnSave = dialogView.findViewById(R.id.btnSaveGoal);
         MaterialButton btnCancel = dialogView.findViewById(R.id.btnCancelGoal);
-        
+
         int currentMins = (int) (startTimeInMillis / 60000);
         etHours.setText(String.valueOf(currentMins / 60));
         etMinutes.setText(String.valueOf(currentMins % 60));
@@ -340,7 +336,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         btnSave.setOnClickListener(v -> {
             String h = etHours.getText().toString().trim();
             String m = etMinutes.getText().toString().trim();
-            
+
             try {
                 int hours = Integer.parseInt(h.isEmpty() ? "0" : h);
                 int minutes = Integer.parseInt(m.isEmpty() ? "0" : m);
@@ -349,15 +345,15 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                 if (totalMins > 0) {
                     startTimeInMillis = totalMins * 60000L;
                     timeLeftInMillis = startTimeInMillis;
-                    
+
                     // Update the task duration in the repository if a task is selected
-                    if (taskIndex != -1) {
-                        com.example.finalproject_hudalulu_220253814.models.Task task = 
-                            com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskIndex);
+                    if (taskId != -1) {
+                        com.example.finalproject_hudalulu_220253814.models.Task task =
+                                com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
                         if (task != null) {
                             task.setDuration(totalMins);
                             task.setTimeLeftInMillis(startTimeInMillis);
-                            com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).updateTask(this, taskIndex, task);
+                            com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).updateTask(this, task);
                         }
                     }
 
@@ -395,18 +391,18 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         editor.putString("currentTaskTitle", currentTaskTitle);
         editor.putString("selectedAudio", selectedAudio);
         editor.putBoolean("isDndEnabled", isDndEnabled);
-        editor.putInt("taskIndex", taskIndex);
+        editor.putLong("taskId", taskId);
         editor.putBoolean("isAwaitingSave", isAwaitingSave);
         editor.putBoolean("hasActiveSession", startTimeInMillis > 0 && !isAwaitingSave);
         editor.apply();
 
         // Also save specific progress back to the Task object in repository
-        if (taskIndex != -1) {
-            com.example.finalproject_hudalulu_220253814.models.Task task = 
-                com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskIndex);
+        if (taskId != -1) {
+            com.example.finalproject_hudalulu_220253814.models.Task task =
+                    com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
             if (task != null) {
                 task.setTimeLeftInMillis(timeLeftInMillis);
-                com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).updateTask(this, taskIndex, task);
+                com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).updateTask(this, task);
             }
         }
     }
@@ -417,19 +413,18 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
 
         startTimeInMillis = prefs.getLong("startTimeInMillis", 0);
         timeLeftInMillis = prefs.getLong("timeLeftInMillis", 0);
-        isTimerRunning = false; 
+        isTimerRunning = false;
         isPaused = prefs.getBoolean("isPaused", true) || prefs.getBoolean("isTimerRunning", false);
         currentTaskTitle = prefs.getString("currentTaskTitle", "");
         selectedAudio = prefs.getString("selectedAudio", "Silent");
         isDndEnabled = prefs.getBoolean("isDndEnabled", false);
-        taskIndex = prefs.getInt("taskIndex", -1);
+        taskId = prefs.getLong("taskId", -1);
         isAwaitingSave = prefs.getBoolean("isAwaitingSave", false);
 
         updateAudioUI(selectedAudio);
         updateDndUI();
         setupTaskUI();
         if (isPaused) {
-            // tvFlipTitle.setText("Focus Paused!"); // Removed
         }
         return true;
     }
@@ -441,14 +436,13 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     private void loadSensorSensitivity() {
         android.content.SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         float sensitivityValue = prefs.getFloat("sensorSensitivity", 50.0f);
-        
-        // Map UI values (0, 50, 100) to actual Z-axis thresholds
+
         if (sensitivityValue == 0) {
-            sensorThreshold = -9.5f; // Low sensitivity: Needs to be perfectly flat face down
+            sensorThreshold = -9.5f;
         } else if (sensitivityValue == 50) {
-            sensorThreshold = -8.0f; // Medium sensitivity: Standard
+            sensorThreshold = -8.0f;
         } else {
-            sensorThreshold = -6.0f; // High sensitivity: Triggers even if slightly tilted
+            sensorThreshold = -6.0f;
         }
     }
 
@@ -468,7 +462,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
             } else if (z > 5.0) { // Face up
                 if (isTimerRunning) {
                     pauseTimer();
-                    playSound(R.raw.warning_sound); 
+                    playSound(R.raw.warning_sound);
                     Toast.makeText(this, "Don't lose focus! Flip back to continue.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -486,18 +480,18 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         isPaused = false;
         playSound(R.raw.start_sound);
         startBackgroundMusic();
-        
+
         if (isDndEnabled) {
             setDoNotDisturb(true);
         }
 
         // Update task status to IN PROGRESS only when started
-        if (taskIndex != -1) {
-            com.example.finalproject_hudalulu_220253814.models.Task task = 
-                com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskIndex);
+        if (taskId != -1) {
+            com.example.finalproject_hudalulu_220253814.models.Task task =
+                    com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
             if (task != null) {
                 task.setStatus("IN PROGRESS");
-                com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).updateTask(this, taskIndex, task);
+                com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).updateTask(this, task);
             }
         }
 
@@ -513,7 +507,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         isPaused = false;
         playSound(R.raw.resume_sound);
         startBackgroundMusic();
-        
+
         if (isDndEnabled) {
             setDoNotDisturb(true);
         }
@@ -530,7 +524,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         }
         pauseBackgroundMusic();
         setDoNotDisturb(false);
-        
+
         // Show edit controls again
         ivSelectTask.setVisibility(View.VISIBLE);
         findViewById(R.id.llTimerClickArea).setClickable(true);
@@ -575,18 +569,18 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
                 isTimerRunning = false;
                 isPaused = false;
                 isAwaitingSave = true; // Prevent restart loop
-                timeLeftInMillis = 0; 
+                timeLeftInMillis = 0;
                 updateCountDownText();
                 updateProgressBar();
-                
+
                 if (countDownTimer != null) {
                     countDownTimer.cancel();
                 }
-                
+
                 playSound(R.raw.success_sound);
                 stopBackgroundMusic();
                 setDoNotDisturb(false);
-                
+
                 showSessionCompletedDialog();
                 clearActiveSession();
             }
@@ -596,13 +590,13 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     private void clearTimerAndUI() {
         startTimeInMillis = 0;
         timeLeftInMillis = 0;
-        taskIndex = -1;
+        taskId = -1;
         currentTaskTitle = "";
         isAwaitingSave = false;
-        
+
         updateCountDownText();
         updateProgressBar();
-        
+
         tvFlipTitle.setText("No Task Selected");
         tvTaskTitleDisplay.setText("No Task Selected");
         tvTaskCategoryDisplay.setText("None");
@@ -630,11 +624,11 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
             String notes = etReflectionInput != null ? etReflectionInput.getText().toString().trim() : "";
             updateRealStats(notes);
             dialog.dismiss();
-            
+
             clearTimerAndUI();
-            finish(); 
+            finish();
         });
-        
+
         dialogView.findViewById(R.id.btnDismiss).setOnClickListener(v -> {
             dialog.dismiss();
             clearTimerAndUI();
@@ -656,12 +650,12 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         long totalMinutes = prefs.getLong("totalFocusMinutes", 0);
         // Calculate actually spent minutes (startTime - timeLeft)
         long sessionDurationMinutes = (startTimeInMillis - timeLeftInMillis) / 60000;
-        
+
         // If session finished naturally, it might be exactly startTimeInMillis
         if (sessionDurationMinutes <= 0) {
             sessionDurationMinutes = startTimeInMillis / 60000;
         }
-        
+
         editor.putLong("totalFocusMinutes", totalMinutes + sessionDurationMinutes);
 
         // 2. Update Completed Tasks Count (Global Stat)
@@ -669,31 +663,31 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
         editor.putInt("completedTasksCount", tasksCount + 1);
 
         // 3. Update Specific Task Status in Repository
-        if (taskIndex != -1) {
-            com.example.finalproject_hudalulu_220253814.models.Task task = 
-                com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskIndex);
+        if (taskId != -1) {
+            com.example.finalproject_hudalulu_220253814.models.Task task =
+                    com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).getTask(taskId);
             if (task != null) {
                 task.setStatus("COMPLETED");
                 task.setTimeLeftInMillis(0); // Mark as fully done
                 task.setNotes(notes);
                 task.setCompletionTimestamp(System.currentTimeMillis());
-                com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).updateTask(this, taskIndex, task);
+                com.example.finalproject_hudalulu_220253814.models.TaskRepository.getInstance(this).updateTask(this, task);
             }
         }
 
-        // 4. Update Streak
+        // Update Streak
         int currentStreak = prefs.getInt("currentStreak", 0);
         long lastTimestamp = prefs.getLong("lastActiveTimestamp", 0);
-        
+
         java.util.Calendar cal = java.util.Calendar.getInstance();
-        
+
         // Today at midnight
         cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
         cal.set(java.util.Calendar.MINUTE, 0);
         cal.set(java.util.Calendar.SECOND, 0);
         cal.set(java.util.Calendar.MILLISECOND, 0);
         long todayStart = cal.getTimeInMillis();
-        
+
         // Yesterday at midnight
         cal.add(java.util.Calendar.DAY_OF_YEAR, -1);
         long yesterdayStart = cal.getTimeInMillis();
@@ -707,10 +701,10 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
             // New streak
             editor.putInt("currentStreak", 1);
         }
-        
+
         editor.putLong("lastActiveTimestamp", System.currentTimeMillis());
         editor.apply();
-        
+
         // Clear active session since it's finished
         clearActiveSession();
 
@@ -737,7 +731,7 @@ public class Smart_timer extends AppCompatActivity implements SensorEventListene
     private void playSound(int resId) {
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         boolean soundEnabled = prefs.getBoolean("flipVibrationSoundEnabled", true);
-        
+
         if (!soundEnabled) return;
 
         try {

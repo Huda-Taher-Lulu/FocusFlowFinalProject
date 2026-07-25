@@ -45,7 +45,7 @@ public class Profile extends AppCompatActivity {
             java.io.File file = new java.io.File(getFilesDir(), "profile_image.jpg");
             java.io.InputStream inputStream = getContentResolver().openInputStream(uri);
             java.io.FileOutputStream outputStream = new java.io.FileOutputStream(file);
-            
+
             byte[] buffer = new byte[1024];
             int length;
             while ((length = inputStream.read(buffer)) > 0) {
@@ -60,7 +60,7 @@ public class Profile extends AppCompatActivity {
 
             // Load with Glide
             loadProfileImage(file.getAbsolutePath());
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,12 +69,12 @@ public class Profile extends AppCompatActivity {
     private void loadProfileImage(String path) {
         if (path != null) {
             Glide.with(this)
-                .load(path)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .placeholder(R.drawable.ic_person)
-                .circleCrop()
-                .into(ivProfile);
+                    .load(path)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .placeholder(R.drawable.ic_person)
+                    .circleCrop()
+                    .into(ivProfile);
         }
     }
 
@@ -98,7 +98,7 @@ public class Profile extends AppCompatActivity {
         ivProfile = findViewById(R.id.ivProfile);
         ImageView ivCameraIcon = findViewById(R.id.ivCameraIcon);
         LinearLayout llEditMajor = findViewById(R.id.llEditMajor);
-        
+
         // Load Data
         refreshProfileData();
 
@@ -112,6 +112,19 @@ public class Profile extends AppCompatActivity {
         // Back Button
         ImageView ivBack = findViewById(R.id.ivBack);
         ivBack.setOnClickListener(v -> finish());
+
+        ImageView ivShareProfile = findViewById(R.id.ivShareProfile);
+        if (ivShareProfile != null) {
+            ivShareProfile.setOnClickListener(v -> {
+                String summary = "I'm " + tvProfileName.getText() + " on FocusFlow — "
+                        + tvFocusHours.getText() + " focused, " + tvTasksDone.getText()
+                        + " tasks done, " + tvStreak.getText() + " day streak!";
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, summary);
+                startActivity(Intent.createChooser(shareIntent, "Share profile via"));
+            });
+        }
 
         // Edit Major/Role Dialog
         if (llEditMajor != null) {
@@ -132,7 +145,7 @@ public class Profile extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         tvProfileName.setText(prefs.getString("fullName", "Alex Rivera"));
         tvProfileMajor.setText(prefs.getString("academicMajor", DEFAULT_MAJOR));
-        
+
         // Load Real Stats
         long totalMinutes = prefs.getLong("totalFocusMinutes", 0);
         int tasksDone = prefs.getInt("completedTasksCount", 0);
@@ -148,7 +161,7 @@ public class Profile extends AppCompatActivity {
 
         tvTasksDone.setText(String.valueOf(tasksDone));
         tvStreak.setText(streak + "d");
-        
+
         String imageUriStr = prefs.getString("profileImageUri", null);
         if (imageUriStr != null) {
             loadProfileImage(imageUriStr);
